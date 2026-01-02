@@ -4,6 +4,7 @@ A collection of profitable trading algorithms and trading strategies designed to
 
 ## Quick Links
 
+- **[Quick Reference](QUICK_REFERENCE.md)** - At-a-glance summary of all 14+ indicators
 - **[Available Trading Indicators](INDICATORS.md)** - Complete list of technical indicators available for trading strategies
 - **[Detailed Documentation](Financial-Algorithm%20Contents/README.md)** - Comprehensive guide to all strategies and implementations
 
