@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Compatibility shim for legacy imports.
-
-All volume indicators are now split into individual modules under the
-`indicators.volume` package. Importing from this file re-exports them.
-"""
-
-import os
-import sys
-
-_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-if _ROOT not in sys.path:
-    sys.path.insert(0, _ROOT)
-
-from indicators.volume import (
+from .price import (
+    ma_cross_strategy,
+    sar_stoch_strategy,
+    stoch_macd_strategy,
+    rsi_strategy,
+    bb_rsi_strategy,
+    rsi_obv_bb_strategy,
+    adx_strategy,
+    cci_adx_strategy,
+    wr_strategy,
+    vwsma_strategy,
+)
+from .volume import (
     acc_dist_index,
     on_balance_volume,
     chaikin_money_flow,
@@ -27,6 +24,16 @@ from indicators.volume import (
 )
 
 __all__ = [
+    'ma_cross_strategy',
+    'sar_stoch_strategy',
+    'stoch_macd_strategy',
+    'rsi_strategy',
+    'bb_rsi_strategy',
+    'rsi_obv_bb_strategy',
+    'adx_strategy',
+    'cci_adx_strategy',
+    'wr_strategy',
+    'vwsma_strategy',
     'acc_dist_index',
     'on_balance_volume',
     'chaikin_money_flow',

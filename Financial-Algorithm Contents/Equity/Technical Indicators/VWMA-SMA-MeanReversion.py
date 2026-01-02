@@ -5,9 +5,17 @@ Created on Fri Nov  1 11:51:21 2019
 @author: ArmelFabrice
 """
 
+import os
+import sys
 import pandas as pd
 import numpy as np
-import ta_strategies
+
+# Ensure repository root is on sys.path to import indicators package
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
+from indicators.price import vwsma_strategy
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -58,7 +66,7 @@ def create_df(freq):
             df['NTrend'][i+1] = 0
     
     #Signals creation
-    df = ta_strategies.vwsma_strategy(df, sl)
+    df = vwsma_strategy(df, sl)
     df['Trend_signal'] = df['NTrend']
     
     #Price Rise
