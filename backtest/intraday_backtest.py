@@ -20,14 +20,14 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
     Run backtest for intraday strategy with stop loss and take profit.
     
     This backtest assumes signals are already generated and includes:
-    - position column indicating current position
-    - stop_loss and take_profit levels
+    - signal column indicating entry signals ('long', 'short', 'none')
+    - stop_loss and take_profit levels for each signal
     
     Parameters
     ----------
     df : pd.DataFrame
         Dataframe with OHLCV data, indicators, regime, and signals
-        Must include columns: timestamp, close, signal, position, stop_loss, take_profit
+        Must include columns: close, signal, stop_loss, take_profit
     initial_capital : float
         Starting capital in dollars
     position_size_pct : float
@@ -47,6 +47,8 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
     entry_price = 0
     entry_time = None
     shares = 0
+    current_stop_loss = 0
+    current_take_profit = 0
     
     trades = []
     equity_curve = []
@@ -66,38 +68,26 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
         
         equity_curve.append({'timestamp': current_time, 'equity': equity})
         
-        # Check for signal
-        if row['signal'] != 'none' and position == 0:
-            # Enter new position
-            signal = row['signal']
-            position = 1 if signal == 'long' else -1
-            entry_price = close
-            entry_time = current_time
-            
-            # Calculate position size
-            position_value = capital * position_size_pct
-            shares = position_value / entry_price
-            
-        # Check exit conditions
-        elif position != 0:
+        # Check exit conditions first if in position
+        if position != 0:
             exit_reason = None
             exit_price = None
             
             # Check stop loss
-            if position == 1 and close <= row['stop_loss']:
+            if position == 1 and close <= current_stop_loss:
                 exit_reason = 'stop_loss'
-                exit_price = row['stop_loss']
-            elif position == -1 and close >= row['stop_loss']:
+                exit_price = current_stop_loss
+            elif position == -1 and close >= current_stop_loss:
                 exit_reason = 'stop_loss'
-                exit_price = row['stop_loss']
+                exit_price = current_stop_loss
             
             # Check take profit
-            elif position == 1 and close >= row['take_profit']:
+            elif position == 1 and close >= current_take_profit:
                 exit_reason = 'take_profit'
-                exit_price = row['take_profit']
-            elif position == -1 and close <= row['take_profit']:
+                exit_price = current_take_profit
+            elif position == -1 and close <= current_take_profit:
                 exit_reason = 'take_profit'
-                exit_price = row['take_profit']
+                exit_price = current_take_profit
             
             # Execute exit
             if exit_reason is not None:
@@ -107,7 +97,7 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
                 else:  # position == -1
                     pnl = shares * (entry_price - exit_price)
                 
-                pnl_pct = pnl / (shares * entry_price)
+                pnl_pct = pnl / (shares * entry_price) if shares * entry_price > 0 else 0
                 
                 # Record trade
                 trades.append({
@@ -130,6 +120,24 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
                 entry_price = 0
                 entry_time = None
                 shares = 0
+                current_stop_loss = 0
+                current_take_profit = 0
+        
+        # Check for new signal (only if flat)
+        if row['signal'] != 'none' and position == 0:
+            # Enter new position
+            signal = row['signal']
+            position = 1 if signal == 'long' else -1
+            entry_price = close
+            entry_time = current_time
+            
+            # Store stop loss and take profit for this position
+            current_stop_loss = row['stop_loss']
+            current_take_profit = row['take_profit']
+            
+            # Calculate position size
+            position_value = capital * position_size_pct
+            shares = position_value / entry_price if entry_price > 0 else 0
     
     # Close any open position at end
     if position != 0:
@@ -142,7 +150,7 @@ def run_intraday_backtest(df: pd.DataFrame, initial_capital: float = 100000.0,
         else:
             pnl = shares * (entry_price - close)
         
-        pnl_pct = pnl / (shares * entry_price)
+        pnl_pct = pnl / (shares * entry_price) if shares * entry_price > 0 else 0
         
         trades.append({
             'entry_time': entry_time,

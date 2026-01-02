@@ -39,8 +39,12 @@ def calculate_vwap(df: pd.DataFrame, session_col: str = 'session') -> pd.Series:
     typical_price = (df['high'] + df['low'] + df['close']) / 3
     pv = typical_price * df['volume']
     
+    # Create temporary dataframe for groupby operations
+    temp_df = df.copy()
+    temp_df['_pv'] = pv
+    
     # Calculate cumulative sum within each session
-    cumulative_pv = df.groupby(session_col)[pv.name].cumsum()
+    cumulative_pv = temp_df.groupby(session_col)['_pv'].cumsum()
     cumulative_volume = df.groupby(session_col)['volume'].cumsum()
     
     vwap = cumulative_pv / cumulative_volume
