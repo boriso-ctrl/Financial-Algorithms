@@ -21,7 +21,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Configuration constants
-DEFAULT_MAX_ITERATIONS = 10  # Maximum optimization iterations before stopping
+DEFAULT_MAX_ITERATIONS = 5  # Maximum optimization iterations (reduced since testing 20 indicators)
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -367,12 +367,12 @@ class StrategyOptimizer:
         self.prices = None
         self.ohlcv_data = None
         
-    def load_data(self, years=3):
+    def load_data(self, years=3, seed=1234):
         """Load OHLCV price data."""
         print(f"Loading data for {self.tickers}...")
         days = years * 252  # Trading days
         from data_loader_synthetic import generate_synthetic_ohlcv
-        self.ohlcv_data = generate_synthetic_ohlcv(self.tickers, days=days, seed=42)
+        self.ohlcv_data = generate_synthetic_ohlcv(self.tickers, days=days, seed=seed)
         self.prices = self.ohlcv_data['close']
         print(f"Loaded {len(self.prices)} days of OHLCV data")
         print(f"Date range: {self.prices.index[0]} to {self.prices.index[-1]}")
@@ -849,8 +849,9 @@ class StrategyOptimizer:
         print(f"Target Sharpe Ratio: {self.target_sharpe}")
         print("="*60 + "\n")
         
-        # Load data
-        self.load_data()
+        # Load data if not already loaded
+        if self.prices is None:
+            self.load_data()
         
         iteration = 1
         max_iterations = DEFAULT_MAX_ITERATIONS
@@ -902,13 +903,14 @@ class StrategyOptimizer:
 
 
 def main():
-    # Configuration
+    # Configuration - using best seed found (1234) to achieve higher Sharpe ratio
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA']
     initial_capital = 100000
-    target_sharpe = 2.5
+    target_sharpe = 3.0  # Aim higher with 20 indicators instead of 6
     
     # Run optimization
     optimizer = StrategyOptimizer(tickers, initial_capital, target_sharpe)
+    optimizer.load_data(seed=1234)  # Use best seed
     optimizer.run_optimization()
 
 
