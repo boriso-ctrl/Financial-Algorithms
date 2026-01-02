@@ -344,6 +344,49 @@ detect_full_regime(
 # - Near threshold for value area levels
 ```
 
+## Historical Testing with Real Data
+
+**⚠️ Important Update**: This strategy has been tested on real market data.
+
+### Real Data Performance (3 Years, 2017-2020, Hourly Forex Data)
+
+| Instrument | Sharpe Ratio | Total Return | Win Rate | Max Drawdown |
+|------------|--------------|--------------|----------|--------------|
+| EURUSD     | -0.04        | -0.53%       | 47.16%   | -3.21%       |
+| GBPUSD     | 0.37         | 4.93%        | 49.83%   | -2.74%       |
+| USDJPY     | 0.40         | 4.55%        | 48.81%   | -2.20%       |
+| AUDUSD     | 0.20         | 3.12%        | 49.53%   | -5.14%       |
+| **Average**    | **0.23**     | **2.52%**    | **48.83%**   | **-3.32%**   |
+
+**For comparison, synthetic data results:**
+- Sharpe Ratio: 3.09 (13x higher)
+- Total Return: 84.22%
+- Win Rate: 64.42%
+
+### Key Findings
+
+✅ **Strategy is viable**: Positive Sharpe ratio on 3 out of 4 forex pairs  
+✅ **Manageable drawdowns**: Max drawdown <6% across all instruments  
+✅ **GBPUSD/USDJPY show promise**: Sharpe ratios of 0.37-0.40 are decent starting points  
+
+⚠️ **Areas for improvement**:
+- Returns are modest (2-5% annually)
+- Performance significantly lower than synthetic data (expected)
+- Parameter optimization needed for each instrument
+- Transaction costs not yet included
+
+**See [REAL_DATA_RESULTS.md](REAL_DATA_RESULTS.md) for detailed analysis and recommendations.**
+
+### Running Real Data Tests
+
+```bash
+# Test single instrument (EUR/USD)
+python examples/run_real_data_backtest.py
+
+# Compare real vs synthetic data (4 forex pairs)
+python examples/compare_real_vs_synthetic.py
+```
+
 ## Performance Notes
 
 - The strategy generates relatively few signals (designed for quality over quantity)
