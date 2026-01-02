@@ -18,6 +18,15 @@ from strategies.regime_detection import detect_full_regime
 from signals.vwap_atr_signal import generate_signals
 from backtest.intraday_backtest import run_intraday_backtest
 
+# Configuration constants
+FOREX_DATA_DIR = 'Financial-Algorithm Contents/Forex/Data'
+FOREX_PAIRS = {
+    'EURUSD': f'{FOREX_DATA_DIR}/EURUSD1H.csv',
+    'GBPUSD': f'{FOREX_DATA_DIR}/GBPUSD1H.csv',
+    'USDJPY': f'{FOREX_DATA_DIR}/USDJPY1H.csv',
+    'AUDUSD': f'{FOREX_DATA_DIR}/AUDUSD1H.csv'
+}
+
 
 def load_forex_data(csv_path: str, num_years: int = 3) -> pd.DataFrame:
     """Load forex data from CSV file."""
@@ -122,13 +131,31 @@ def generate_synthetic_data(num_years: int = 3, initial_price: float = 1.18) -> 
     return df
 
 
-def calculate_sharpe_ratio(returns: pd.Series, periods_per_year: int = 252 * 24) -> float:
-    """Calculate annualized Sharpe ratio."""
+def calculate_sharpe_ratio(returns: pd.Series, periods_per_year: int = 252 * 6.5) -> float:
+    """
+    Calculate annualized Sharpe ratio.
+    
+    Parameters
+    ----------
+    returns : pd.Series
+        Series of returns
+    periods_per_year : int
+        Number of trading periods per year
+        For hourly data: 252 days * 6.5 hours = 1,638 (equity market hours)
+        Note: Forex trades 24/5, but using equity hours for consistency
+        
+    Returns
+    -------
+    float
+        Annualized Sharpe ratio
+    """
     if len(returns) == 0 or returns.std() == 0:
         return 0.0
     
     mean_return = returns.mean()
     std_return = returns.std()
+    
+    # Annualize
     sharpe = (mean_return / std_return) * np.sqrt(periods_per_year)
     
     return sharpe
@@ -151,10 +178,10 @@ def run_strategy_test(df: pd.DataFrame, name: str) -> dict:
     
     results = run_intraday_backtest(df_valid, initial_capital=100000, position_size_pct=1.0)
     
-    # Calculate Sharpe
+    # Calculate Sharpe (using 252 * 6.5 for consistency with other scripts)
     equity_curve = results['equity_curve']
     returns = equity_curve['equity'].pct_change().dropna()
-    sharpe_ratio = calculate_sharpe_ratio(returns, periods_per_year=252 * 24)
+    sharpe_ratio = calculate_sharpe_ratio(returns, periods_per_year=252 * 6.5)
     
     # Compile metrics
     metrics = {
@@ -180,19 +207,12 @@ def main():
     print()
     
     # Test forex pairs
-    forex_pairs = [
-        ('EURUSD', 'Financial-Algorithm Contents/Forex/Data/EURUSD1H.csv'),
-        ('GBPUSD', 'Financial-Algorithm Contents/Forex/Data/GBPUSD1H.csv'),
-        ('USDJPY', 'Financial-Algorithm Contents/Forex/Data/USDJPY1H.csv'),
-        ('AUDUSD', 'Financial-Algorithm Contents/Forex/Data/AUDUSD1H.csv')
-    ]
-    
     results = []
     
     # Test real data
     print("Testing REAL data...")
     print("-" * 80)
-    for pair_name, csv_path in forex_pairs:
+    for pair_name, csv_path in FOREX_PAIRS.items():
         try:
             print(f"\n[{pair_name}] Loading data...")
             df = load_forex_data(csv_path, num_years=3)

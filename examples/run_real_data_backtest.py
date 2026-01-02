@@ -20,6 +20,10 @@ from strategies.regime_detection import detect_full_regime
 from signals.vwap_atr_signal import generate_signals
 from backtest.intraday_backtest import run_intraday_backtest
 
+# Configuration constants
+DEFAULT_FOREX_PAIR = 'EURUSD'
+DEFAULT_CSV_PATH = 'Financial-Algorithm Contents/Forex/Data/EURUSD1H.csv'
+
 
 def load_real_data_from_csv(csv_path: str, 
                             num_years: int = 3) -> pd.DataFrame:
@@ -126,7 +130,7 @@ def main():
     print()
     
     # Configuration
-    csv_path = 'Financial-Algorithm Contents/Forex/Data/EURUSD1H.csv'
+    csv_path = DEFAULT_CSV_PATH
     num_years = 3  # Use 3 years of data for consistency with synthetic test
     
     # Load real data from CSV
@@ -239,7 +243,7 @@ def main():
     print(f"SHARPE RATIO (REAL DATA): {sharpe_ratio:.4f}")
     print("=" * 80)
     print()
-    print(f"Data source: EUR/USD Hourly (Historical Forex Data)")
+    print(f"Data source: {DEFAULT_FOREX_PAIR} Hourly (Historical Forex Data)")
     print(f"Period: {num_years} years")
     print()
     
