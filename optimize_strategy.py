@@ -358,10 +358,11 @@ class IndicatorGenerator:
 class StrategyOptimizer:
     """Optimize trading strategies to achieve target Sharpe ratio."""
     
-    def __init__(self, tickers, initial_capital=100000, target_sharpe=2.5):
+    def __init__(self, tickers, initial_capital=100000, target_sharpe=2.5, max_iterations=None):
         self.tickers = tickers
         self.initial_capital = initial_capital
         self.target_sharpe = target_sharpe
+        self.max_iterations = max_iterations if max_iterations is not None else DEFAULT_MAX_ITERATIONS
         self.results_log = []
         self.best_result = None
         self.prices = None
@@ -668,7 +669,7 @@ class StrategyOptimizer:
         indicator_pairs = list(itertools.combinations(base_signals.keys(), 2))
         # Sample top combinations (too many to test all)
         import random
-        random.seed(42)
+        # Use deterministic sampling for reproducibility
         sampled_pairs = random.sample(indicator_pairs, min(50, len(indicator_pairs)))
         
         weight_combinations = [
@@ -735,8 +736,6 @@ class StrategyOptimizer:
                         result = self.test_configuration(config_name, combined)
                         if result:
                             print(f"{config_name}: Sharpe={result['sharpe_ratio']:.3f}")
-                if result:
-                    print(f"{config_name}: Sharpe={result['sharpe_ratio']:.3f}")
     
     def optimize_advanced_parameters(self):
         """Fine-tune parameters around best configurations."""
@@ -854,7 +853,7 @@ class StrategyOptimizer:
             self.load_data()
         
         iteration = 1
-        max_iterations = DEFAULT_MAX_ITERATIONS
+        max_iterations = self.max_iterations
         
         while True:
             print(f"\n{'#'*60}")
