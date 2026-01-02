@@ -20,6 +20,9 @@ import itertools
 import warnings
 warnings.filterwarnings('ignore')
 
+# Configuration constants
+DEFAULT_MAX_ITERATIONS = 10  # Maximum optimization iterations before stopping
+
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -83,7 +86,7 @@ class IndicatorGenerator:
             signal = pd.Series(0, index=prices.index)
             signal[prices[col] <= bb_low] = 1
             signal[prices[col] >= bb_high] = 0
-            signals[col] = signal.ffill().fillna(0)
+            signals[col] = signal.fillna(method='ffill').fillna(0)
         return signals.astype(int)
     
     @staticmethod
@@ -98,7 +101,7 @@ class IndicatorGenerator:
                 signal = pd.Series(0, index=prices_close.index)
                 signal[stoch < 20] = 1
                 signal[stoch > 80] = 0
-                signals[col] = signal.ffill().fillna(0)
+                signals[col] = signal.fillna(method='ffill').fillna(0)
             else:
                 # If we don't have high/low, use close approximation
                 signals[col] = 0
@@ -422,7 +425,7 @@ class StrategyOptimizer:
         self.load_data()
         
         iteration = 1
-        max_iterations = 10  # Default maximum to prevent infinite loops
+        max_iterations = DEFAULT_MAX_ITERATIONS
         
         while True:
             print(f"\n{'#'*60}")

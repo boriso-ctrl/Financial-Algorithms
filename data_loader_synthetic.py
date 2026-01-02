@@ -6,6 +6,10 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
+# Volume generation constants (for lognormal distribution)
+VOLUME_LOG_MEAN = 13.8  # Generates approximately 1 million shares per day
+VOLUME_LOG_STD = 0.5    # Standard deviation for realistic volume variation
+
 
 def generate_synthetic_prices(tickers, days=756, start_date=None, 
                               initial_price=100, volatility=0.02, 
@@ -104,9 +108,9 @@ def generate_synthetic_ohlcv(tickers, days=756, start_date=None,
         low_prices = np.minimum(open_prices, close) * (1 - np.abs(np.random.normal(0, volatility/2, len(close))))
         
         # Volume (random around 1M shares)
-        # Using lognormal(13.8, 0.5) to generate realistic volume around 1 million
-        # mean = exp(mu + sigma^2/2) ≈ 1,000,000
-        volume = np.random.lognormal(13.8, 0.5, len(close))
+        # Using lognormal to generate realistic volume around 1 million
+        # mean = exp(mu + sigma^2/2) ≈ 1,000,000 shares
+        volume = np.random.lognormal(VOLUME_LOG_MEAN, VOLUME_LOG_STD, len(close))
         
         result['open'][ticker] = open_prices
         result['high'][ticker] = high_prices

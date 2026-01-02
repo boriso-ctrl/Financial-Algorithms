@@ -18,6 +18,9 @@ import time
 from datetime import datetime
 import json
 
+# Configuration constants
+BASE_SEED = 42  # Base random seed for reproducible results
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from optimize_strategy import StrategyOptimizer
@@ -71,7 +74,7 @@ def run_continuous_optimization(target_sharpe=2.5, max_iterations=None,
         tickers = ticker_sets[(iteration - 1) % len(ticker_sets)]
         
         # Use different random seed for each iteration
-        seed = 42 + iteration
+        seed = BASE_SEED + iteration
         
         print("\n" + "#"*80)
         print(f"GLOBAL ITERATION {iteration}")
