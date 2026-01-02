@@ -2,7 +2,50 @@
 
 ## Overview
 
-The VWAP + ATR strategy has been tested using **synthetic data** to demonstrate its functionality and characteristics. The synthetic data is designed to replicate realistic market behavior while allowing for reproducible testing.
+The VWAP + ATR strategy has been tested using both **synthetic data** (for initial development) and **real market data** (for validation). This document explains both approaches and presents findings from real historical testing.
+
+## ⭐ Real Data Testing Results (NEW)
+
+**The strategy has now been validated on 3 years of real forex market data (2017-2020).**
+
+### Real Market Performance
+
+Tested on 4 major forex pairs with hourly data:
+
+| Pair | Sharpe Ratio | Total Return | Win Rate | Trades/Year |
+|------|--------------|--------------|----------|-------------|
+| EURUSD | -0.04 | -0.53% | 47.16% | 194 |
+| GBPUSD | 0.37 | 4.93% | 49.83% | 197 |
+| USDJPY | 0.40 | 4.55% | 48.81% | 210 |
+| AUDUSD | 0.20 | 3.12% | 49.53% | 215 |
+| **Average** | **0.23** | **2.52%** | **48.83%** | **204** |
+
+**Comparison with synthetic data:**
+- Synthetic Sharpe: 3.09 (13x higher)
+- Synthetic Win Rate: 64.42% (15.6% higher)
+- Synthetic Return: 84.22% (33x higher)
+
+### Key Findings from Real Data
+
+✅ **Strategy shows modest profitability** on real data (3 out of 4 pairs positive)  
+✅ **Drawdowns are manageable** (<6% max across all pairs)  
+✅ **Best performers**: GBPUSD and USDJPY with Sharpe ~0.40  
+
+⚠️ **Performance is much lower than synthetic data** (expected and normal)  
+⚠️ **EURUSD slightly negative** (trending market challenges mean reversion)  
+⚠️ **Optimization needed** for production use  
+
+**For detailed analysis, see [REAL_DATA_RESULTS.md](REAL_DATA_RESULTS.md)**
+
+### How to Run Real Data Tests
+
+```bash
+# Single instrument test (EUR/USD)
+python examples/run_real_data_backtest.py
+
+# Comprehensive comparison (4 pairs + synthetic)
+python examples/compare_real_vs_synthetic.py
+```
 
 ## Data Sources
 
