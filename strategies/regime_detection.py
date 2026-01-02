@@ -158,7 +158,12 @@ def get_rsi_regime(rsi: pd.Series) -> pd.Series:
     Instead, it identifies whether conditions favor:
     - Bullish regime: RSI >= 40 (uptrend bias)
     - Bearish regime: RSI <= 60 (downtrend bias)
-    - Neutral: 40 < RSI < 60
+    - Neutral zone: between thresholds can support both
+    
+    The thresholds overlap (40-60 range) to allow flexibility:
+    - RSI > 60: Strong bullish (only 1)
+    - 40 <= RSI <= 60: Neutral zone (supports both, returns 0)
+    - RSI < 40: Strong bearish (only -1)
     
     Parameters
     ----------
@@ -168,15 +173,18 @@ def get_rsi_regime(rsi: pd.Series) -> pd.Series:
     Returns
     -------
     pd.Series
-        RSI regime: 1 (bullish), -1 (bearish), 0 (neutral)
+        RSI regime: 1 (bullish), -1 (bearish), 0 (neutral/both)
     """
     rsi_regime = pd.Series(0, index=rsi.index, name='rsi_regime')
-    rsi_regime[rsi >= 40] = 1  # Bullish regime
-    rsi_regime[rsi <= 60] = -1  # Bearish regime (overlaps with bullish intentionally)
     
-    # In overlap zone (40-60), both can be true
-    # For strict separation, we could use neutral zone
-    # But the prompt suggests using these thresholds for regime support
+    # RSI < 40: Bearish regime only
+    rsi_regime[rsi < 40] = -1
+    
+    # 40 <= RSI <= 60: Neutral zone (can support both directions)
+    rsi_regime[(rsi >= 40) & (rsi <= 60)] = 0
+    
+    # RSI > 60: Bullish regime only
+    rsi_regime[rsi > 60] = 1
     
     return rsi_regime
 
