@@ -59,7 +59,7 @@ def load_daily_prices(tickers, start_date=None, end_date=None):
     
     # Clean the data
     prices = prices.dropna(how='all')  # Remove rows with all NaN
-    prices = prices.fillna(method='ffill').fillna(method='bfill')  # Forward/backward fill
+    prices = prices.ffill().bfill()  # Forward/backward fill
     
     return prices
 
@@ -115,7 +115,7 @@ def load_daily_ohlcv(tickers, start_date=None, end_date=None):
     # Clean the data
     for key in result.keys():
         result[key] = result[key].dropna(how='all')
-        result[key] = result[key].fillna(method='ffill').fillna(method='bfill')
+        result[key] = result[key].ffill().bfill()
     
     return result
 

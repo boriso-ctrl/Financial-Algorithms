@@ -25,6 +25,11 @@ def main():
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA']
     target_sharpe = 2.5
     
+    # Configuration
+    TRADING_DAYS_PER_YEAR = 252
+    YEARS_OF_DATA = 3
+    TOTAL_DAYS = YEARS_OF_DATA * TRADING_DAYS_PER_YEAR  # 756 days
+    
     print(f"Target Sharpe Ratio: {target_sharpe}")
     print(f"Tickers: {tickers}")
     print("="*80 + "\n")
@@ -35,7 +40,7 @@ def main():
     
     # Load data with the successful seed
     from data_loader_synthetic import generate_synthetic_prices
-    optimizer.prices = generate_synthetic_prices(tickers, days=756, seed=42)
+    optimizer.prices = generate_synthetic_prices(tickers, days=TOTAL_DAYS, seed=42)
     print(f"Generated synthetic data (seed=42): {len(optimizer.prices)} days\n")
     
     # Run optimization

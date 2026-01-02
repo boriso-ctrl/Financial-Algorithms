@@ -422,6 +422,8 @@ class StrategyOptimizer:
         self.load_data()
         
         iteration = 1
+        max_iterations = 10  # Default maximum to prevent infinite loops
+        
         while True:
             print(f"\n{'#'*60}")
             print(f"ITERATION {iteration}")
@@ -457,8 +459,8 @@ class StrategyOptimizer:
             iteration += 1
             
             # Safety break after reasonable attempts
-            if iteration > 10:
-                print("\nReached maximum iterations. Stopping optimization.")
+            if iteration > max_iterations:
+                print(f"\nReached maximum iterations ({max_iterations}). Stopping optimization.")
                 break
         
         # Print final summary

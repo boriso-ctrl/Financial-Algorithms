@@ -104,7 +104,9 @@ def generate_synthetic_ohlcv(tickers, days=756, start_date=None,
         low_prices = np.minimum(open_prices, close) * (1 - np.abs(np.random.normal(0, volatility/2, len(close))))
         
         # Volume (random around 1M shares)
-        volume = np.random.lognormal(13.8, 0.5, len(close))  # Mean ~1M
+        # Using lognormal(13.8, 0.5) to generate realistic volume around 1 million
+        # mean = exp(mu + sigma^2/2) ≈ 1,000,000
+        volume = np.random.lognormal(13.8, 0.5, len(close))
         
         result['open'][ticker] = open_prices
         result['high'][ticker] = high_prices

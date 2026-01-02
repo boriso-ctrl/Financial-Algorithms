@@ -84,10 +84,7 @@ def run_continuous_optimization(target_sharpe=2.5, max_iterations=None,
         optimizer = StrategyOptimizer(tickers, initial_capital=100000, 
                                      target_sharpe=target_sharpe)
         
-        # Load data with specific seed
-        optimizer.load_data(years=3)
-        
-        # Modify the data loader to use the seed
+        # Generate synthetic data with specific seed
         from data_loader_synthetic import generate_synthetic_prices
         optimizer.prices = generate_synthetic_prices(tickers, days=756, seed=seed)
         print(f"Generated data with seed {seed}")
