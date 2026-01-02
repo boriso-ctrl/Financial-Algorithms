@@ -1,3 +1,4 @@
+import warnings
 import simfin as sf
 import pandas as pd
 
@@ -27,10 +28,16 @@ def load_daily_prices(tickers: list[str]) -> pd.DataFrame:
     """
 
     # Load full daily price dataset (cached after first run)
-    df = sf.load_shareprices(
-        variant="daily",
-        market=MARKET
-    )
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=".*date_parser.*",
+            category=FutureWarning,
+        )
+        df = sf.load_shareprices(
+            variant="daily",
+            market=MARKET
+        )
 
     # Filter to desired tickers
     df = df.loc[tickers]
