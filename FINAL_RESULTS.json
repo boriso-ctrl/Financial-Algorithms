@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-03-12T00:25:32.701270",
+  "asset_count": 4,
+  "comparison_table": [
+    {
+      "asset": "AAPL",
+      "sharpe": 7.92,
+      "return_pct": 0.76,
+      "trades": 24,
+      "win_rate": 75.0,
+      "best_trade": 7.38,
+      "worst_trade": -9.38,
+      "final_equity": 100764.45
+    },
+    {
+      "asset": "SPY",
+      "sharpe": 24.46,
+      "return_pct": 0.85,
+      "trades": 19,
+      "win_rate": 89.5,
+      "best_trade": 3.65,
+      "worst_trade": -1.78,
+      "final_equity": 100845.17
+    },
+    {
+      "asset": "QQQ",
+      "sharpe": 3.14,
+      "return_pct": 0.35,
+      "trades": 27,
+      "win_rate": 59.3,
+      "best_trade": 3.66,
+      "worst_trade": -9.69,
+      "final_equity": 100351.14
+    },
+    {
+      "asset": "TSLA",
+      "sharpe": 2.56,
+      "return_pct": 0.8,
+      "trades": 33,
+      "win_rate": 72.7,
+      "best_trade": 11.33,
+      "worst_trade": -20.02,
+      "final_equity": 100797.31
+    }
+  ],
+  "cross_asset_statistics": {
+    "avg_sharpe": 9.52,
+    "median_sharpe": 7.92,
+    "best_sharpe": 24.46,
+    "worst_sharpe": 2.56,
+    "avg_return_pct": 0.69,
+    "total_trades": 103,
+    "avg_win_rate": 74.1
+  },
+  "assets_passing_criteria": [
+    "AAPL",
+    "SPY",
+    "QQQ",
+    "TSLA"
+  ]
+}

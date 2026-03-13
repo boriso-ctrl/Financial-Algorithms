@@ -1,15 +1,8 @@
-import os
-import sys
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
-
-from backtest.demo_blend import build_price_signal, build_volume_signal
-from backtest.signal_blender import blend_signals
-from backtest.simple_backtest import run_backtest
+from financial_algorithms.backtest import blend_signals, run_backtest
+from scripts.demo_blend import build_price_signal, build_volume_signal
 
 
 def _synthetic_prices(n: int = 60, tickers=None):

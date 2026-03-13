@@ -1,0 +1,11 @@
+{
+  "asset": "SPY",
+  "date_range": "2024-01-01 to 2026-03-12",
+  "timeframes_run": [
+    "5m",
+    "15m",
+    "1h",
+    "4h"
+  ],
+  "results": []
+}

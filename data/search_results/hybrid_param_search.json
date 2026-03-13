@@ -1,0 +1,1043 @@
+{
+  "timestamp": "2026-03-11T20:11:10.224425",
+  "parameters": {
+    "rsi_oversold": [
+      25,
+      30,
+      35,
+      40,
+      45
+    ],
+    "rsi_overbought": [
+      60,
+      65,
+      70,
+      75,
+      80
+    ],
+    "volume_ratio": [
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ]
+  },
+  "search_results": [
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.6,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.7,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.8,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.9,
+      "sharpe": -0.1518061170632569,
+      "total_return": -2.3133859615481926e-05,
+      "max_drawdown": -6.220083151434664e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 25,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.6,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.7,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.8,
+      "sharpe": -0.15494668474493167,
+      "total_return": -2.3902147044282172e-05,
+      "max_drawdown": -6.958631215049536e-05,
+      "win_rate": 0.25,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.9,
+      "sharpe": -0.1518061170632569,
+      "total_return": -2.3133859615481926e-05,
+      "max_drawdown": -6.220083151434664e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.6,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.7,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.8,
+      "sharpe": -0.26864615295707545,
+      "total_return": -4.0721468756382816e-05,
+      "max_drawdown": -5.679046339966589e-05,
+      "win_rate": 0.125,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 30,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.9,
+      "sharpe": -0.19366669502094333,
+      "total_return": -2.908881220384501e-05,
+      "max_drawdown": -5.107020994226332e-05,
+      "win_rate": 0.18181818181818182,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.6,
+      "sharpe": -0.0830800899666601,
+      "total_return": -1.2765693371911767e-05,
+      "max_drawdown": -6.111308400485674e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.7,
+      "sharpe": -0.0830800899666601,
+      "total_return": -1.2765693371911767e-05,
+      "max_drawdown": -6.111308400485674e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.8,
+      "sharpe": -0.0830800899666601,
+      "total_return": -1.2765693371911767e-05,
+      "max_drawdown": -6.111308400485674e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.9,
+      "sharpe": -0.07904522482502827,
+      "total_return": -1.1997405943111517e-05,
+      "max_drawdown": -5.3727623039058315e-05,
+      "win_rate": 0.2727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.6,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.7,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.8,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.9,
+      "sharpe": -0.12002671618229846,
+      "total_return": -1.79523585314746e-05,
+      "max_drawdown": -5.0408991187525404e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.6,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.7,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.8,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.9,
+      "sharpe": -0.12002671618229846,
+      "total_return": -1.79523585314746e-05,
+      "max_drawdown": -5.0408991187525404e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.6,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.7,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.8,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.9,
+      "sharpe": -0.12002671618229846,
+      "total_return": -1.79523585314746e-05,
+      "max_drawdown": -5.0408991187525404e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.6,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.7,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.8,
+      "sharpe": -0.19598902850397118,
+      "total_return": -2.958501508401241e-05,
+      "max_drawdown": -5.06535599256959e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 35,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.9,
+      "sharpe": -0.12002671618229846,
+      "total_return": -1.79523585314746e-05,
+      "max_drawdown": -5.0408991187525404e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.6,
+      "sharpe": -0.024470091179295182,
+      "total_return": -3.7076264778443145e-06,
+      "max_drawdown": -5.196899146937569e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.7,
+      "sharpe": -0.024470091179295182,
+      "total_return": -3.7076264778443145e-06,
+      "max_drawdown": -5.196899146937569e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.8,
+      "sharpe": -0.024470091179295182,
+      "total_return": -3.7076264778443145e-06,
+      "max_drawdown": -5.196899146937569e-05,
+      "win_rate": 0.2916666666666667,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.9,
+      "sharpe": 0.046602365786811144,
+      "total_return": 6.868793300964171e-06,
+      "max_drawdown": -4.7765786997739195e-05,
+      "win_rate": 0.2727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.6,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.7,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.8,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.9,
+      "sharpe": 0.0046942053544454,
+      "total_return": 6.780522502958774e-07,
+      "max_drawdown": -4.933205277464752e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.6,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.7,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.8,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.9,
+      "sharpe": 0.0046942053544454,
+      "total_return": 6.780522502958774e-07,
+      "max_drawdown": -4.933205277464752e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.6,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.7,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.8,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.9,
+      "sharpe": 0.0046942053544454,
+      "total_return": 6.780522502958774e-07,
+      "max_drawdown": -4.933205277464752e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.6,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.7,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.8,
+      "sharpe": -0.14488685329328763,
+      "total_return": -2.1740280459198402e-05,
+      "max_drawdown": -6.608151908225432e-05,
+      "win_rate": 0.16666666666666666,
+      "num_trades": 24
+    },
+    {
+      "rsi_oversold": 40,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.9,
+      "sharpe": 0.0046942053544454,
+      "total_return": 6.780522502958774e-07,
+      "max_drawdown": -4.933205277464752e-05,
+      "win_rate": 0.22727272727272727,
+      "num_trades": 22
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.6,
+      "sharpe": 0.4893557961835643,
+      "total_return": 8.046020899681025e-05,
+      "max_drawdown": -2.662034778634859e-05,
+      "win_rate": 0.35294117647058826,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.7,
+      "sharpe": 0.4893557961835643,
+      "total_return": 8.046020899681025e-05,
+      "max_drawdown": -2.662034778634859e-05,
+      "win_rate": 0.35294117647058826,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.8,
+      "sharpe": 0.4893557961835643,
+      "total_return": 8.046020899681025e-05,
+      "max_drawdown": -2.662034778634859e-05,
+      "win_rate": 0.35294117647058826,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 60,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6070696166137682,
+      "total_return": 9.97232209914364e-05,
+      "max_drawdown": -2.007338561286724e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.6,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.7,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.8,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 65,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6005636382980882,
+      "total_return": 9.86349835305009e-05,
+      "max_drawdown": -2.0073367158821876e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.6,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.7,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.8,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 70,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6005636382980882,
+      "total_return": 9.86349835305009e-05,
+      "max_drawdown": -2.0073367158821876e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.6,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.7,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.8,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 75,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6005636382980882,
+      "total_return": 9.86349835305009e-05,
+      "max_drawdown": -2.0073367158821876e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.6,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.7,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.8,
+      "sharpe": 0.37337829413708756,
+      "total_return": 6.175622078502783e-05,
+      "max_drawdown": -4.054614150656553e-05,
+      "win_rate": 0.3157894736842105,
+      "num_trades": 19
+    },
+    {
+      "rsi_oversold": 45,
+      "rsi_overbought": 80,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6005636382980882,
+      "total_return": 9.86349835305009e-05,
+      "max_drawdown": -2.0073367158821876e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17
+    }
+  ],
+  "metrics_summary": {
+    "best_sharpe": 0.6070696166137682,
+    "best_sharpe_config": {
+      "rsi_oversold": 45.0,
+      "rsi_overbought": 60.0,
+      "volume_ratio": 0.9,
+      "sharpe": 0.6070696166137682,
+      "total_return": 9.97232209914364e-05,
+      "max_drawdown": -2.007338561286724e-05,
+      "win_rate": 0.4117647058823529,
+      "num_trades": 17.0
+    },
+    "mean_sharpe": -0.05179136513086197,
+    "std_sharpe": 0.26511149662246886
+  },
+  "valid_configs": []
+}

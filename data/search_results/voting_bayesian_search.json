@@ -1,0 +1,417 @@
+{
+  "timestamp": "2026-03-11T20:21:48.468694",
+  "n_calls": 50,
+  "n_initial": 10,
+  "evaluations": [
+    {
+      "buy_threshold": 6.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.04339073000818309,
+      "sharpe": -0.12496105697927273,
+      "num_trades": 26
+    },
+    {
+      "buy_threshold": 5.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.022999247474540088,
+      "sharpe": -0.9051024764691113,
+      "num_trades": 40
+    },
+    {
+      "buy_threshold": 5.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.024286004537658223,
+      "sharpe": -0.9051021481356225,
+      "num_trades": 40
+    },
+    {
+      "buy_threshold": 6.0,
+      "weight_profile": "equal",
+      "max_position_size": 0.04165996316800474,
+      "sharpe": -0.5237087936851452,
+      "num_trades": 2
+    },
+    {
+      "buy_threshold": 7.0,
+      "weight_profile": "equal",
+      "max_position_size": 0.04976634677873654,
+      "sharpe": -0.5,
+      "num_trades": 0
+    },
+    {
+      "buy_threshold": 5.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.020211989156591524,
+      "sharpe": -0.3398420978463844,
+      "num_trades": 26
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.03199582915145767,
+      "sharpe": 0.38486802678679477,
+      "num_trades": 44
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.02698314021290913,
+      "sharpe": 0.5736884796221139,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.031473859738014885,
+      "sharpe": 0.38486796857595384,
+      "num_trades": 44
+    },
+    {
+      "buy_threshold": 7.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.04579821220208963,
+      "sharpe": -0.5486560247901908,
+      "num_trades": 8
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "equal",
+      "max_position_size": 0.020005547180629187,
+      "sharpe": 0.09136155310922074,
+      "num_trades": 50
+    },
+    {
+      "buy_threshold": 6.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.020003868559556885,
+      "sharpe": -0.8534479238784265,
+      "num_trades": 15
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.049969099191318506,
+      "sharpe": 0.18065528631227837,
+      "num_trades": 96
+    },
+    {
+      "buy_threshold": 4.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.03315673743368689,
+      "sharpe": 0.4204032910899789,
+      "num_trades": 36
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.020257779544983517,
+      "sharpe": 0.5736880516018276,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.020660390272414963,
+      "sharpe": 0.5736880772119921,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.020537589826846454,
+      "sharpe": 0.5736880694203222,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.02055807235370795,
+      "sharpe": 0.5736880707066798,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.02039194516980219,
+      "sharpe": 0.5736880601471429,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 4.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.020456351491641527,
+      "sharpe": 0.22697525364610352,
+      "num_trades": 46
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04996546254979815,
+      "sharpe": 0.5736899421929347,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04957831590030981,
+      "sharpe": 0.5736899175730941,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049931839887771244,
+      "sharpe": 0.5736899400613861,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049938280537851334,
+      "sharpe": 0.5736899404690026,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04997253618694245,
+      "sharpe": 0.5736899426591229,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.05,
+      "sharpe": 0.5736899443984712,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049986325809879356,
+      "sharpe": 0.573689943514424,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04997105117299206,
+      "sharpe": 0.5736899425596755,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04990467686238596,
+      "sharpe": 0.5736899383384402,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04985452673756621,
+      "sharpe": 0.5736899351445454,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04999582663681684,
+      "sharpe": 0.5736899441271486,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04996681290653609,
+      "sharpe": 0.5736899422913944,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 6.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.03165040119722365,
+      "sharpe": -0.1249630173960328,
+      "num_trades": 26
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04984867109260206,
+      "sharpe": 0.5736899347672937,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049979334360522945,
+      "sharpe": 0.5736899430709083,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049994388106591514,
+      "sharpe": 0.5736899440333246,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 5.0,
+      "weight_profile": "momentum_heavy",
+      "max_position_size": 0.04140979702914234,
+      "sharpe": -0.90509777908634,
+      "num_trades": 40
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049981643329401595,
+      "sharpe": 0.573689943223378,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049901266967391514,
+      "sharpe": 0.5736899381126574,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04983580922603065,
+      "sharpe": 0.5736899339580166,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04986276674404191,
+      "sharpe": 0.5736899356550775,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049903550451490086,
+      "sharpe": 0.5736899382633988,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04996010944454882,
+      "sharpe": 0.5736899418589404,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 4.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.049903807614774615,
+      "sharpe": 0.4204052590689603,
+      "num_trades": 36
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04999464233822409,
+      "sharpe": 0.5736899440704092,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049989024081501326,
+      "sharpe": 0.5736899437085751,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.049923853251438874,
+      "sharpe": 0.5736899395418456,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 6.0,
+      "weight_profile": "trend_heavy",
+      "max_position_size": 0.026183234826895083,
+      "sharpe": -0.21065313688100534,
+      "num_trades": 15
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04983189144471391,
+      "sharpe": 0.5771718299509131,
+      "num_trades": 64
+    },
+    {
+      "buy_threshold": 3.0,
+      "weight_profile": "confirmation_heavy",
+      "max_position_size": 0.04998598133008331,
+      "sharpe": 0.5736899435167443,
+      "num_trades": 64
+    }
+  ],
+  "best": {
+    "buy_threshold": 3.0,
+    "weight_profile": "confirmation_heavy",
+    "max_position_size": 0.04983189144471391,
+    "sharpe": 0.5771718299509131,
+    "num_trades": 64
+  },
+  "best_sharpe": 0.5771718299509131,
+  "all_sharpes": [
+    -0.12496105697927273,
+    -0.9051024764691113,
+    -0.9051021481356225,
+    -0.5237087936851452,
+    -0.5,
+    -0.3398420978463844,
+    0.38486802678679477,
+    0.5736884796221139,
+    0.38486796857595384,
+    -0.5486560247901908,
+    0.09136155310922074,
+    -0.8534479238784265,
+    0.18065528631227837,
+    0.4204032910899789,
+    0.5736880516018276,
+    0.5736880772119921,
+    0.5736880694203222,
+    0.5736880707066798,
+    0.5736880601471429,
+    0.22697525364610352,
+    0.5736899421929347,
+    0.5736899175730941,
+    0.5736899400613861,
+    0.5736899404690026,
+    0.5736899426591229,
+    0.5736899443984712,
+    0.573689943514424,
+    0.5736899425596755,
+    0.5736899383384402,
+    0.5736899351445454,
+    0.5736899441271486,
+    0.5736899422913944,
+    -0.1249630173960328,
+    0.5736899347672937,
+    0.5736899430709083,
+    0.5736899440333246,
+    -0.90509777908634,
+    0.573689943223378,
+    0.5736899381126574,
+    0.5736899339580166,
+    0.5736899356550775,
+    0.5736899382633988,
+    0.5736899418589404,
+    0.4204052590689603,
+    0.5736899440704092,
+    0.5736899437085751,
+    0.5736899395418456,
+    -0.21065313688100534,
+    0.5771718299509131,
+    0.5736899435167443
+  ]
+}

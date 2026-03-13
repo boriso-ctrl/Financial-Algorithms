@@ -2,19 +2,21 @@
 
 from typing import Callable, Dict, Any
 
-from strategies.price import (
-    ma_cross_strategy,
-    rsi_strategy,
-    bb_rsi_strategy,
-    rsi_obv_bb_strategy,
+from financial_algorithms.signals import sma_signal
+from financial_algorithms.signals.price import (
     adx_strategy,
+    bb_rsi_strategy,
     cci_adx_strategy,
-    wr_strategy,
+    ma_cross_strategy,
+    rsi_obv_bb_strategy,
+    rsi_strategy,
     vwsma_strategy,
-    multi_factor_combo,
-    all_indicator_combo,
+    wr_strategy,
 )
-from signals.sma_signal import sma_signal
+from financial_algorithms.strategies.price import (
+    all_indicator_combo,
+    multi_factor_combo,
+)
 
 
 class StrategyRegistry:

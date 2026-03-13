@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-03-11T20:35:57.807532",
+  "config": {
+    "buy_threshold": 3,
+    "max_position_size": 0.025,
+    "indicator_weights": {
+      "volume": 1.5,
+      "adx": 1.5,
+      "atr_trend": 1.5,
+      "sma_crossover": 0.9,
+      "rsi": 0.9,
+      "macd": 0.9,
+      "bollinger_bands": 0.9,
+      "stochastic": 0.9
+    }
+  },
+  "results": [
+    {
+      "period": "2023 (Large-Cap Tech)",
+      "assets": 3,
+      "sharpe": 0.874335279544764,
+      "num_trades": 45,
+      "total_return": 2.803759193426231e-05,
+      "max_drawdown": -8.579689763740408e-06,
+      "win_rate": 0.4444444444444444,
+      "avg_position": 0.02499999999999999
+    },
+    {
+      "period": "2023 (Index ETFs)",
+      "assets": 2,
+      "sharpe": 0.523071154821549,
+      "num_trades": 21,
+      "total_return": 1.2027229309169343e-05,
+      "max_drawdown": -7.951108809443723e-06,
+      "win_rate": 0.38095238095238093,
+      "avg_position": 0.025000000000000005
+    },
+    {
+      "period": "2024 (Large-Cap Tech)",
+      "assets": 3,
+      "sharpe": 0.22237675201014154,
+      "num_trades": 50,
+      "total_return": 6.820785521995276e-06,
+      "max_drawdown": -1.2054706965333102e-05,
+      "win_rate": 0.36,
+      "avg_position": 0.024999999999999994
+    },
+    {
+      "period": "2024 (Index ETFs)",
+      "assets": 2,
+      "sharpe": 1.0683734047555247,
+      "num_trades": 21,
+      "total_return": 2.6772354125860147e-05,
+      "max_drawdown": -5.581474946411235e-06,
+      "win_rate": 0.5238095238095238,
+      "avg_position": 0.025000000000000005
+    },
+    {
+      "period": "2025 (Large-Cap Tech)",
+      "assets": 3,
+      "sharpe": -0.2534092973702954,
+      "num_trades": 51,
+      "total_return": -1.1477222442044877e-05,
+      "max_drawdown": -3.00544509885367e-05,
+      "win_rate": 0.3137254901960784,
+      "avg_position": 0.024999999999999994
+    },
+    {
+      "period": "2025 (Index ETFs)",
+      "assets": 2,
+      "sharpe": 0.3356490467600387,
+      "num_trades": 23,
+      "total_return": 1.4934043884568383e-05,
+      "max_drawdown": -1.832944556107593e-05,
+      "win_rate": 0.34782608695652173,
+      "avg_position": 0.02500000000000001
+    }
+  ]
+}

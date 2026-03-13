@@ -1,0 +1,165 @@
+
+================================================================
+  V8 EXECUTION OPTIMIZER  |  QQQ + GBTC + XLK + NVDA  |  10yr
+  Tuning: trail_cushion, post_partial_mult, MACD periods,
+          max_hold_trend, max_hold_mr
+  Grid per asset: 2304  (invalid MACD pairs auto-skipped)
+  Total runs (max): 9216
+================================================================
+
+================================================================
+  Optimizing QQQ (NASDAQ 100 ETF)
+  V7 base: trail=3.5 ema=30 adx=18 rsi=9
+  Exec grid: 2304 combos  (invalid macd pairs skipped)
+================================================================
+  [300/2304] Best: Sharpe 1.35  CAGR 11.3%  DD 18.9%  Calmar 0.60  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 17, 'max_hold_trend': 60, 'max_hold_mr': 10}
+  [600/2304] Best: Sharpe 1.52  CAGR 13.4%  DD 18.6%  Calmar 0.72  config={'trail_cushion': 1.0, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 17, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [900/2304] Best: Sharpe 1.57  CAGR 13.2%  DD 18.5%  Calmar 0.71  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 17, 'max_hold_trend': 45, 'max_hold_mr': 25}
+  [1200/2304] Best: Sharpe 1.63  CAGR 14.5%  DD 20.0%  Calmar 0.72  config={'trail_cushion': 1.5, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [1500/2304] Best: Sharpe 1.63  CAGR 14.5%  DD 20.0%  Calmar 0.72  config={'trail_cushion': 1.5, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [1800/2304] Best: Sharpe 1.63  CAGR 14.5%  DD 20.0%  Calmar 0.72  config={'trail_cushion': 1.5, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [2100/2304] Best: Sharpe 1.63  CAGR 14.5%  DD 20.0%  Calmar 0.72  config={'trail_cushion': 1.5, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [2304/2304] Best: Sharpe 1.63  CAGR 14.5%  DD 20.0%  Calmar 0.72  config={'trail_cushion': 1.5, 'post_partial_mult': 1.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  Valid runs: 2048/2304
+
+================================================================
+  BEST EXEC CONFIG: QQQ (NASDAQ 100 ETF)
+================================================================
+  -- Numeric (V6) --
+  trail_atr=3.5  vol_target=0.22  tp_mult=3.0  partial_tp_mult=1.5
+  -- Signal (V7) --
+  rsi=9  rsi_os=38  ema_trend=30  adx=18  min_str=0.3
+  -- Execution (V8) --
+  trail_cushion    = 1.5
+  post_partial_mult= 1.5
+  macd             = 8/38/9
+  max_hold_trend   = 60d
+  max_hold_mr      = 25d
+  ---
+  Sharpe:   1.63  |  Sortino: 2.42
+  CAGR:     14.46%  |  Return:   295.5%
+  Max DD:   19.99%  |  Calmar:   0.72
+  Win Rate: 69.2%  |  PF:       2.01
+  Trades:   1124 (110/yr)  |  Hold: 18.0d
+
+================================================================
+  Optimizing GBTC (Bitcoin Trust)
+  V7 base: trail=3.5 ema=50 adx=27 rsi=9
+  Exec grid: 2304 combos  (invalid macd pairs skipped)
+================================================================
+  [300/2304] Best: Sharpe 1.34  CAGR 5.8%  DD 4.9%  Calmar 1.19  config={'trail_cushion': 0.5, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [600/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [900/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [1200/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [1500/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [1800/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [2100/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  [2304/2304] Best: Sharpe 1.32  CAGR 6.4%  DD 5.2%  Calmar 1.21  config={'trail_cushion': 0.5, 'post_partial_mult': 2.5, 'macd_fast': 8, 'macd_slow': 38, 'max_hold_trend': 30, 'max_hold_mr': 25}
+  Valid runs: 2048/2304
+
+================================================================
+  BEST EXEC CONFIG: GBTC (Bitcoin Trust)
+================================================================
+  -- Numeric (V6) --
+  trail_atr=3.5  vol_target=0.22  tp_mult=4.5  partial_tp_mult=1.0
+  -- Signal (V7) --
+  rsi=9  rsi_os=33  ema_trend=50  adx=27  min_str=0.3
+  -- Execution (V8) --
+  trail_cushion    = 0.5
+  post_partial_mult= 2.5
+  macd             = 8/38/9
+  max_hold_trend   = 30d
+  max_hold_mr      = 25d
+  ---
+  Sharpe:   1.32  |  Sortino: 2.84
+  CAGR:     6.36%  |  Return:   83.3%
+  Max DD:   5.24%  |  Calmar:   1.21
+  Win Rate: 62.5%  |  PF:       2.18
+  Trades:   957 (98/yr)  |  Hold: 11.7d
+
+================================================================
+  Optimizing XLK (Technology ETF)
+  V7 base: trail=3.0 ema=80 adx=22 rsi=14
+  Exec grid: 2304 combos  (invalid macd pairs skipped)
+================================================================
+  [300/2304] Best: Sharpe 1.86  CAGR 19.9%  DD 17.1%  Calmar 1.16  config={'trail_cushion': 0.5, 'post_partial_mult': 1.5, 'macd_fast': 19, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [600/2304] Best: Sharpe 1.86  CAGR 19.9%  DD 17.1%  Calmar 1.16  config={'trail_cushion': 0.5, 'post_partial_mult': 1.5, 'macd_fast': 19, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [900/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1200/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1500/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1800/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [2100/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [2304/2304] Best: Sharpe 1.92  CAGR 20.0%  DD 15.3%  Calmar 1.31  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 8, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  Valid runs: 2048/2304
+
+================================================================
+  BEST EXEC CONFIG: XLK (Technology ETF)
+================================================================
+  -- Numeric (V6) --
+  trail_atr=3.0  vol_target=0.22  tp_mult=4.5  partial_tp_mult=1.5
+  -- Signal (V7) --
+  rsi=14  rsi_os=38  ema_trend=80  adx=22  min_str=0.2
+  -- Execution (V8) --
+  trail_cushion    = 1.0
+  post_partial_mult= 2.0
+  macd             = 8/26/9
+  max_hold_trend   = 80d
+  max_hold_mr      = 25d
+  ---
+  Sharpe:   1.92  |  Sortino: 3.24
+  CAGR:     20.00%  |  Return:   540.0%
+  Max DD:   15.31%  |  Calmar:   1.31
+  Win Rate: 71.8%  |  PF:       2.15
+  Trades:   1197 (117/yr)  |  Hold: 16.0d
+
+================================================================
+  Optimizing NVDA (NVIDIA)
+  V7 base: trail=3.5 ema=50 adx=27 rsi=9
+  Exec grid: 2304 combos  (invalid macd pairs skipped)
+================================================================
+  [300/2304] Best: Sharpe 1.96  CAGR 10.8%  DD 4.3%  Calmar 2.50  config={'trail_cushion': 0.5, 'post_partial_mult': 2.0, 'macd_fast': 19, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [600/2304] Best: Sharpe 1.96  CAGR 10.8%  DD 4.3%  Calmar 2.50  config={'trail_cushion': 0.5, 'post_partial_mult': 2.0, 'macd_fast': 19, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [900/2304] Best: Sharpe 2.04  CAGR 11.5%  DD 4.5%  Calmar 2.58  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1200/2304] Best: Sharpe 2.04  CAGR 11.5%  DD 4.5%  Calmar 2.58  config={'trail_cushion': 1.0, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1500/2304] Best: Sharpe 2.07  CAGR 12.0%  DD 3.9%  Calmar 3.10  config={'trail_cushion': 1.5, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [1800/2304] Best: Sharpe 2.07  CAGR 12.0%  DD 3.9%  Calmar 3.10  config={'trail_cushion': 1.5, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 80, 'max_hold_mr': 25}
+  [2100/2304] Best: Sharpe 2.09  CAGR 12.4%  DD 3.9%  Calmar 3.21  config={'trail_cushion': 2.0, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  [2304/2304] Best: Sharpe 2.09  CAGR 12.4%  DD 3.9%  Calmar 3.21  config={'trail_cushion': 2.0, 'post_partial_mult': 2.0, 'macd_fast': 12, 'macd_slow': 26, 'max_hold_trend': 60, 'max_hold_mr': 25}
+  Valid runs: 2048/2304
+
+================================================================
+  BEST EXEC CONFIG: NVDA (NVIDIA)
+================================================================
+  -- Numeric (V6) --
+  trail_atr=3.5  vol_target=0.22  tp_mult=3.0  partial_tp_mult=1.5
+  -- Signal (V7) --
+  rsi=9  rsi_os=38  ema_trend=50  adx=27  min_str=0.25
+  -- Execution (V8) --
+  trail_cushion    = 2.0
+  post_partial_mult= 2.0
+  macd             = 12/26/9
+  max_hold_trend   = 60d
+  max_hold_mr      = 25d
+  ---
+  Sharpe:   2.09  |  Sortino: 4.89
+  CAGR:     12.45%  |  Return:   230.3%
+  Max DD:   3.88%  |  Calmar:   3.21
+  Win Rate: 73.2%  |  PF:       3.34
+  Trades:   939 (92/yr)  |  Hold: 18.9d
+
+
+================================================================================
+  V8 FINAL RESULTS  (V6 numeric + V7 signal + V8 execution, 10yr long-only)
+================================================================================
+  Ticker   CAGR%   Sharpe  Sortino  MaxDD%    WR%   Trd/yr   Calmar
+  --------------------------------------------------------------------------
+  QQQ       14.5     1.63     2.42    20.0   69.2      110     0.72
+  GBTC       6.4     1.32     2.84     5.2   62.5       98     1.21
+  XLK       20.0     1.92     3.24    15.3   71.8      117     1.31
+  NVDA      12.4     2.09     4.89     3.9   73.2       92     3.21
+  --------------------------------------------------------------------------
+
+Full configs saved -> intraday/results/v8_execution_configs.json
+
+INSTRUCTIONS: Pass 'full_config' kwargs to AggressiveHybridV6(**full_config)
+All V6 + V7 + V8 params are pre-merged per asset.

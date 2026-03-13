@@ -1,31 +1,25 @@
-"""Example: blend price and volume signals and run backtest.
+"""Blend price and volume signals, run a backtest, and export metrics/equity."""
 
-This script shows how to:
-- load prices
-- build two signals (price MA-cross, volume VWMA spread)
-- blend with weights
-- run backtest with frictions and export a report
+from __future__ import annotations
 
-Usage:
-    python scripts/demo_blend.py --tickers AAPL MSFT AMZN --years 3 --report-prefix demo
-"""
-
-import os
-import sys
 import argparse
 import json
+from pathlib import Path
+import sys
+
 import pandas as pd
 
-# Add repo root
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if SRC.exists():
+    src_str = str(SRC)
+    if src_str not in sys.path:
+        sys.path.insert(0, src_str)
 
-from data_loader import load_daily_prices
-from backtest.simple_backtest import run_backtest
-from backtest.signal_blender import blend_signals
-from strategies.price import ma_cross_strategy
-from strategies.volume import vwma_signal
+from financial_algorithms.data import load_daily_prices
+from financial_algorithms.backtest import blend_signals, run_backtest
+from financial_algorithms.signals.price.ma_cross import ma_cross_strategy
+from financial_algorithms.signals.volume.vwma import vwma_signal
 
 
 def build_price_signal(prices: pd.DataFrame, fast: int = 20, slow: int = 50) -> pd.DataFrame:

@@ -6,31 +6,29 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-from backtest.signal_blender import blend_signals
-from indicators.price.ma_cross import ma_cross_strategy
-from indicators.price.sar_stoch import sar_stoch_strategy
-from indicators.price.stoch_macd import stoch_macd_strategy
-from indicators.price.rsi import rsi_strategy
-from indicators.price.bb_rsi import bb_rsi_strategy
-from indicators.price.rsi_obv_bb import rsi_obv_bb_strategy
-from indicators.price.adx import adx_strategy
-from indicators.price.cci_adx import cci_adx_strategy
-from indicators.price.williams_r import wr_strategy
-from indicators.price.vwsma import vwsma_strategy
-from indicators.price.macd import macd_signal
-from indicators.price.atr_trend import atr_trend_signal
-from indicators.volume.volume_oscillator import volume_oscillator_signal
-from indicators.volume.on_balance_volume import on_balance_volume
-from indicators.volume.volume_price_trend import volume_price_trend_signal
-from indicators.volume.acc_dist_index import acc_dist_signal
-from indicators.volume.chaikin_money_flow import chaikin_money_flow_signal
-from indicators.volume.force_index import force_index_signal
-from indicators.volume.ease_of_movement import ease_of_movement_signal
-from indicators.volume.vwma import vwma_signal
-from indicators.volume.negative_volume_index import negative_volume_index_signal
-from indicators.volume.put_call_ratio import put_call_ratio
-
-
+from financial_algorithms.backtest import blend_signals
+from financial_algorithms.signals.price.bb_rsi import bb_rsi_strategy
+from financial_algorithms.signals.price.sar_stoch import sar_stoch_strategy
+from financial_algorithms.signals.price.vwsma import vwsma_strategy
+from financial_algorithms.signals.price.williams_r import wr_strategy
+from financial_algorithms.signals.price.ma_cross import ma_cross_strategy
+from financial_algorithms.signals.price.rsi import rsi_strategy
+from financial_algorithms.signals.price.stoch_macd import stoch_macd_strategy
+from financial_algorithms.signals.price.rsi_obv_bb import rsi_obv_bb_strategy
+from financial_algorithms.signals.price.adx import adx_strategy
+from financial_algorithms.signals.price.cci_adx import cci_adx_strategy
+from financial_algorithms.signals.price.macd import macd_signal
+from financial_algorithms.signals.price.atr_trend import atr_trend_signal
+from financial_algorithms.signals.volume.volume_oscillator import volume_oscillator_signal
+from financial_algorithms.signals.volume.put_call_ratio import put_call_ratio
+from financial_algorithms.signals.volume.on_balance_volume import on_balance_volume
+from financial_algorithms.signals.volume.volume_price_trend import volume_price_trend_signal
+from financial_algorithms.signals.volume.acc_dist_index import acc_dist_signal
+from financial_algorithms.signals.volume.chaikin_money_flow import chaikin_money_flow_signal
+from financial_algorithms.signals.volume.force_index import force_index_signal
+from financial_algorithms.signals.volume.ease_of_movement import ease_of_movement_signal
+from financial_algorithms.signals.volume.vwma import vwma_signal
+from financial_algorithms.signals.volume.negative_volume_index import negative_volume_index_signal
 DEFAULT_ALL_WEIGHTS: Dict[str, float] = {
     "ma_cross": 1.0,
     "sar_stoch": 1.0,

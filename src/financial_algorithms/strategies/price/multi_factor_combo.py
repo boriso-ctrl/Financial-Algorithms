@@ -6,17 +6,17 @@ from typing import Dict, Optional
 
 import pandas as pd
 
-from backtest.signal_blender import blend_signals
-from indicators.price.bb_rsi import bb_rsi_strategy
-from indicators.price.sar_stoch import sar_stoch_strategy
-from indicators.price.vwsma import vwsma_strategy
-from indicators.price.williams_r import wr_strategy
-from indicators.price.macd import macd_signal
-from indicators.price.atr_trend import atr_trend_signal
-from indicators.volume.volume_oscillator import volume_oscillator_signal
-from indicators.volume.put_call_ratio import put_call_ratio
-from indicators.volume.on_balance_volume import on_balance_volume
-from indicators.volume.volume_price_trend import volume_price_trend_signal
+from financial_algorithms.backtest import blend_signals
+from financial_algorithms.signals.price.bb_rsi import bb_rsi_strategy
+from financial_algorithms.signals.price.sar_stoch import sar_stoch_strategy
+from financial_algorithms.signals.price.vwsma import vwsma_strategy
+from financial_algorithms.signals.price.williams_r import wr_strategy
+from financial_algorithms.signals.price.macd import macd_signal
+from financial_algorithms.signals.price.atr_trend import atr_trend_signal
+from financial_algorithms.signals.volume.volume_oscillator import volume_oscillator_signal
+from financial_algorithms.signals.volume.put_call_ratio import put_call_ratio
+from financial_algorithms.signals.volume.on_balance_volume import on_balance_volume
+from financial_algorithms.signals.volume.volume_price_trend import volume_price_trend_signal
 
 
 DEFAULT_WEIGHTS: Dict[str, float] = {

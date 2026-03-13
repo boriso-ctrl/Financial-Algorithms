@@ -1,0 +1,288 @@
+{
+  "test_date": "2026-03-12T00:55:16.582519",
+  "asset": "SPY",
+  "start_date": "2023-01-01",
+  "end_date": "2025-12-31",
+  "total_return_pct": -0.22510243193256282,
+  "trade_count": 27,
+  "win_rate_pct": 48.148148148148145,
+  "sharpe_ratio": 4.302788030734689,
+  "avg_trade_return_pct": 1.1816221133324534,
+  "total_pl": -225.10243193256284,
+  "trades": [
+    {
+      "entry_date": "2023-03-16 00:00:00",
+      "entry_price": 380.7668151855469,
+      "exit_date": "2023-03-22 00:00:00",
+      "exit_price": 378.3602294921875,
+      "return_pct": -0.6320366159500141,
+      "pl": -63.203661595001414,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2023-04-13 00:00:00",
+      "entry_price": 398.9712829589844,
+      "exit_date": "2023-04-26 00:00:00",
+      "exit_price": 390.1807556152344,
+      "return_pct": -2.2032982621091795,
+      "pl": -264.2286836318001,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2023-04-27 00:00:00",
+      "entry_price": 397.948486328125,
+      "exit_date": "2023-06-14 00:00:00",
+      "exit_price": 421.84979248046875,
+      "return_pct": 6.006130686130097,
+      "pl": 359.1878802940269,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2023-06-15 00:00:00",
+      "entry_price": 427.0798034667969,
+      "exit_date": "2023-06-26 00:00:00",
+      "exit_price": 417.85760498046875,
+      "return_pct": -2.159361883064344,
+      "pl": -324.735635705705,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 4.0
+    },
+    {
+      "entry_date": "2023-06-27 00:00:00",
+      "entry_price": 422.4386901855469,
+      "exit_date": "2023-09-12 00:00:00",
+      "exit_price": 431.949462890625,
+      "return_pct": 2.2513971674565907,
+      "pl": 134.991879426979,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2023-11-20 00:00:00",
+      "entry_price": 441.5110778808594,
+      "exit_date": "2024-01-19 00:00:00",
+      "exit_price": 470.7915344238281,
+      "return_pct": 6.631873583672572,
+      "pl": 398.9111401269839,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-01-22 00:00:00",
+      "entry_price": 471.78692626953125,
+      "exit_date": "2024-03-01 00:00:00",
+      "exit_price": 500.4776306152344,
+      "return_pct": 6.081284314629813,
+      "pl": 460.04129621915,
+      "exit_reason": "TP2",
+      "entry_score": 4.0
+    },
+    {
+      "entry_date": "2024-03-04 00:00:00",
+      "entry_price": 499.94091796875,
+      "exit_date": "2024-04-18 00:00:00",
+      "exit_price": 488.98382568359375,
+      "return_pct": -2.1916774345406047,
+      "pl": -267.0889176955809,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-04-22 00:00:00",
+      "entry_price": 489.1795654296875,
+      "exit_date": "2024-05-15 00:00:00",
+      "exit_price": 518.6055297851562,
+      "return_pct": 6.015370721714725,
+      "pl": 365.56779510439696,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-05-20 00:00:00",
+      "entry_price": 518.8796997070312,
+      "exit_date": "2024-07-10 00:00:00",
+      "exit_price": 551.2529907226562,
+      "return_pct": 6.239074497210729,
+      "pl": 317.74863755724544,
+      "exit_reason": "TP2",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2024-07-12 00:00:00",
+      "entry_price": 549.94677734375,
+      "exit_date": "2024-07-24 00:00:00",
+      "exit_price": 531.523193359375,
+      "return_pct": -3.3500667234311563,
+      "pl": -411.4113308980481,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-07-25 00:00:00",
+      "entry_price": 528.7537841796875,
+      "exit_date": "2024-08-05 00:00:00",
+      "exit_price": 508.1009826660156,
+      "return_pct": -3.9059392351608007,
+      "pl": -398.12331440425436,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2024-08-06 00:00:00",
+      "entry_price": 512.785400390625,
+      "exit_date": "2024-08-16 00:00:00",
+      "exit_price": 544.3687133789062,
+      "return_pct": 6.159167746238875,
+      "pl": 375.2025329818696,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-08-19 00:00:00",
+      "entry_price": 549.5735473632812,
+      "exit_date": "2024-09-06 00:00:00",
+      "exit_price": 530.6688842773438,
+      "return_pct": -3.439878643475004,
+      "pl": -351.33822482209735,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2024-09-10 00:00:00",
+      "entry_price": 538.9476928710938,
+      "exit_date": "2024-10-14 00:00:00",
+      "exit_price": 575.6007080078125,
+      "return_pct": 6.800848323788161,
+      "pl": 415.3365252244152,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-10-17 00:00:00",
+      "entry_price": 573.6599731445312,
+      "exit_date": "2024-10-31 00:00:00",
+      "exit_price": 560.154541015625,
+      "return_pct": -2.3542573582179513,
+      "pl": -289.42602827806087,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-11-01 00:00:00",
+      "entry_price": 562.5186767578125,
+      "exit_date": "2024-12-04 00:00:00",
+      "exit_price": 598.59228515625,
+      "return_pct": 6.412873010075836,
+      "pl": 393.07699491131564,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-12-05 00:00:00",
+      "entry_price": 597.6072387695312,
+      "exit_date": "2024-12-18 00:00:00",
+      "exit_price": 577.5314331054688,
+      "return_pct": -3.359364539391864,
+      "pl": -414.2744485964898,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2024-12-20 00:00:00",
+      "entry_price": 584.2886352539062,
+      "exit_date": "2025-03-04 00:00:00",
+      "exit_price": 570.1644287109375,
+      "return_pct": -2.4173337783355975,
+      "pl": -148.45107839719097,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-03-05 00:00:00",
+      "entry_price": 576.29248046875,
+      "exit_date": "2025-03-10 00:00:00",
+      "exit_price": 554.0734252929688,
+      "return_pct": -3.855517107859626,
+      "pl": -473.7500884959425,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-03-14 00:00:00",
+      "entry_price": 556.2775268554688,
+      "exit_date": "2025-03-21 00:00:00",
+      "exit_price": 559.11083984375,
+      "return_pct": 0.5093344331735691,
+      "pl": 51.91280342340883,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2025-03-24 00:00:00",
+      "entry_price": 569.1235961914062,
+      "exit_date": "2025-03-28 00:00:00",
+      "exit_price": 550.8626708984375,
+      "return_pct": -3.208604495608943,
+      "pl": -392.6359159678089,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-04-09 00:00:00",
+      "entry_price": 543.8834838867188,
+      "exit_date": "2025-04-10 00:00:00",
+      "exit_price": 520.051025390625,
+      "return_pct": -4.38190516942736,
+      "pl": -534.1477558206828,
+      "exit_reason": "STOP_LOSS",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-04-11 00:00:00",
+      "entry_price": 529.3302612304688,
+      "exit_date": "2025-04-17 00:00:00",
+      "exit_price": 521.8651733398438,
+      "return_pct": -1.4102892725747118,
+      "pl": -171.00821196424954,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-04-23 00:00:00",
+      "entry_price": 530.79736328125,
+      "exit_date": "2025-05-07 00:00:00",
+      "exit_price": 556.3052978515625,
+      "return_pct": 4.805588033186363,
+      "pl": 290.86382152583155,
+      "exit_reason": "EMERGENCY_EXIT",
+      "entry_score": 3.0
+    },
+    {
+      "entry_date": "2025-05-14 00:00:00",
+      "entry_price": 582.5169677734375,
+      "exit_date": "2025-07-03 00:00:00",
+      "exit_price": 621.7738037109375,
+      "return_pct": 6.739174669461034,
+      "pl": 341.61369140115755,
+      "exit_reason": "TP2",
+      "entry_score": 2.0
+    },
+    {
+      "entry_date": "2025-07-09 00:00:00",
+      "entry_price": 620.5010986328125,
+      "exit_date": "2025-09-18 00:00:00",
+      "exit_price": 658.4832763671875,
+      "return_pct": 6.121210392385029,
+      "pl": 374.2658661435692,
+      "exit_reason": "TP2",
+      "entry_score": 3.0
+    }
+  ],
+  "trading_mode": "trend_following_single_position",
+  "position_size": "10-15% per signal",
+  "targets": "TP1=3% (50%), TP2=6% (50%)",
+  "benchmark_spy": 87.67
+}

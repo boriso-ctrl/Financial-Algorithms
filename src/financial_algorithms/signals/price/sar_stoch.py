@@ -60,57 +60,80 @@ def sar_stoch_strategy(df: pd.DataFrame) -> pd.DataFrame:
     df['Stoch%D'] = df['Stoch%K'].rolling(window=3).mean()
     df['KminusD'] = df['Stoch%K'] - df['Stoch%D']
 
-    sar = list(df['SAR'])
-    stoch = list(df['Stoch%K'])
-    kminusd = list(df['KminusD'])
-    ss_signal = [0] * len(df)
-    close = list(df['Close'])
+    n = len(df)
+    if n == 0:
+        df['SS_signal'] = []
+        return df
 
-    i = 51
-    while i < len(df):
-        if df['Trend'].iloc[i] == 'Uptrend':
+    sar = df['SAR'].to_numpy()
+    stoch = df['Stoch%K'].to_numpy()
+    kminusd = df['KminusD'].to_numpy()
+    close = df['Close'].to_numpy()
+    trend = df['Trend'].to_numpy()
+    ss_signal = [0] * n
+
+    if n <= 52:
+        df['SS_signal'] = ss_signal
+        return df
+
+    i = 51  # skip warmup rows required by SAR/Stoch windows
+    while i < n:
+        tr = trend[i]
+
+        if tr == 'Uptrend':
             if sar[i] < close[i]:
-                if (stoch[i] >= 20 and stoch[i - 1] <= 20) or (kminusd[i] > 0 and kminusd[i - 1] < 0):
+                long_trigger = (
+                    (stoch[i] >= 20 and stoch[i - 1] <= 20)
+                    or (kminusd[i] > 0 and kminusd[i - 1] < 0)
+                )
+                if long_trigger:
                     ss_signal[i] = 1
+                    cur_close = close[i]
                     count = i + 1
-                    if count < len(df):
-                        cur_close = close[i]
-                        new_close = close[count]
-                        slsar = (sar[i] - cur_close) / cur_close
-                        pend_ret = (new_close - cur_close) / cur_close
-                        while slsar < pend_ret and sar[count] < close[count] and count < len(df) - 1:
+                    while count < n - 1:
+                        if sar[count] >= close[count]:
+                            break
+                        slsar = (sar[count] - cur_close) / cur_close
+                        pend_ret = (close[count] - cur_close) / cur_close
+                        if slsar >= pend_ret:
+                            break
+                        ss_signal[count] = 1
+                        count += 1
+                    if count == n - 1 and sar[count] < close[count]:
+                        slsar_last = (sar[count] - cur_close) / cur_close
+                        pend_last = (close[count] - cur_close) / cur_close
+                        if slsar_last < pend_last:
                             ss_signal[count] = 1
-                            slsar = (sar[count] - cur_close) / cur_close
-                            count += 1
-                            new_close = close[count]
-                            pend_ret = (new_close - cur_close) / cur_close
-                        if count == len(df) - 1 and sar[count] < close[count] and (sar[count] - cur_close) / cur_close < pend_ret:
-                            ss_signal[count] = 1
-                    i = count
+                    i = max(count, i + 1)
                 else:
                     i += 1
             else:
                 i += 1
-
-        if df['Trend'].iloc[i] == 'Downtrend':
+        elif tr == 'Downtrend':
             if sar[i] > close[i]:
-                if (stoch[i] <= 80 and stoch[i - 1] >= 80) or (kminusd[i] < 0 and kminusd[i - 1] > 0):
+                short_trigger = (
+                    (stoch[i] <= 80 and stoch[i - 1] >= 80)
+                    or (kminusd[i] < 0 and kminusd[i - 1] > 0)
+                )
+                if short_trigger:
                     ss_signal[i] = -1
+                    cur_close = close[i]
                     count = i + 1
-                    if count < len(df):
-                        cur_close = close[i]
-                        new_close = close[count]
-                        slsar = (-1) * (sar[i] - cur_close) / cur_close
-                        pend_ret = (-1) * (new_close - cur_close) / cur_close
-                        while slsar < pend_ret and sar[count] > close[count] and count < len(df) - 1:
+                    while count < n - 1:
+                        if sar[count] <= close[count]:
+                            break
+                        slsar = -1 * (sar[count] - cur_close) / cur_close
+                        pend_ret = -1 * (close[count] - cur_close) / cur_close
+                        if slsar >= pend_ret:
+                            break
+                        ss_signal[count] = -1
+                        count += 1
+                    if count == n - 1 and sar[count] > close[count]:
+                        slsar_last = -1 * (sar[count] - cur_close) / cur_close
+                        pend_last = -1 * (close[count] - cur_close) / cur_close
+                        if slsar_last < pend_last:
                             ss_signal[count] = -1
-                            slsar = (-1) * (sar[count] - cur_close) / cur_close
-                            count += 1
-                            new_close = close[count]
-                            pend_ret = (-1) * (new_close - cur_close) / cur_close
-                        if count == len(df) - 1 and sar[count] > close[count] and (-1) * ((sar[count] - cur_close)) / cur_close < pend_ret:
-                            ss_signal[count] = -1
-                    i = count
+                    i = max(count, i + 1)
                 else:
                     i += 1
             else:

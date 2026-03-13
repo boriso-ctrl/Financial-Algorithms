@@ -1,0 +1,156 @@
+{
+  "timestamp": "2026-03-11T20:35:05.771055",
+  "config": {
+    "buy_threshold": 3,
+    "max_position_size": 0.025,
+    "indicator_weights": {
+      "volume": 1.5,
+      "adx": 1.5,
+      "atr_trend": 1.5,
+      "sma_crossover": 0.9,
+      "rsi": 0.9,
+      "macd": 0.9,
+      "bollinger_bands": 0.9,
+      "stochastic": 0.9
+    }
+  },
+  "results": [
+    {
+      "asset_name": "Baseline (AAPL/MSFT/AMZN)",
+      "by_ticker": {
+        "AAPL": {
+          "sharpe": -0.027454965204341233,
+          "trades": 16,
+          "max_drawdown": -2.7321234920827255e-05,
+          "win_rate": 0.3673469387755102,
+          "total_return": -1.3259155052791627e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        },
+        "MSFT": {
+          "sharpe": -0.027454965204341233,
+          "trades": 16,
+          "max_drawdown": -2.7321234920827255e-05,
+          "win_rate": 0.3673469387755102,
+          "total_return": -1.3259155052791627e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        },
+        "AMZN": {
+          "sharpe": -0.027454965204341233,
+          "trades": 16,
+          "max_drawdown": -2.7321234920827255e-05,
+          "win_rate": 0.3673469387755102,
+          "total_return": -1.3259155052791627e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        }
+      },
+      "combined": {
+        "sharpe": -0.0823648956130237,
+        "total_trades": 49,
+        "max_drawdown": -2.7321234920827255e-05,
+        "win_rate": 0.3673469387755102,
+        "total_return": -3.9777412416879085e-06,
+        "avg_position": 0.024999999999999998,
+        "num_assets": 3
+      }
+    },
+    {
+      "asset_name": "Index ETFs (SPY/QQQ)",
+      "by_ticker": {
+        "SPY": {
+          "sharpe": 0.17717092572754362,
+          "trades": 10,
+          "max_drawdown": -2.3087036314355437e-05,
+          "win_rate": 0.3,
+          "total_return": 7.779167435328915e-06,
+          "avg_position": 0.025000000000000005,
+          "bars": 252
+        },
+        "QQQ": {
+          "sharpe": 0.17717092572754362,
+          "trades": 10,
+          "max_drawdown": -2.3087036314355437e-05,
+          "win_rate": 0.3,
+          "total_return": 7.779167435328915e-06,
+          "avg_position": 0.025000000000000005,
+          "bars": 252
+        }
+      },
+      "combined": {
+        "sharpe": 0.35434185145508723,
+        "total_trades": 20,
+        "max_drawdown": -2.3087036314355437e-05,
+        "win_rate": 0.3,
+        "total_return": 1.5558395386033226e-05,
+        "avg_position": 0.025000000000000005,
+        "num_assets": 2
+      }
+    },
+    {
+      "asset_name": "Growth Stock (TSLA)",
+      "by_ticker": {
+        "TSLA": {
+          "sharpe": -0.7410168008057858,
+          "trades": 21,
+          "max_drawdown": -3.290501022318495e-05,
+          "win_rate": 0.3333333333333333,
+          "total_return": -2.756750106780448e-05,
+          "avg_position": 0.025000000000000005,
+          "bars": 252
+        }
+      },
+      "combined": {
+        "sharpe": -0.7410168008057858,
+        "total_trades": 21,
+        "max_drawdown": -3.290501022318495e-05,
+        "win_rate": 0.3333333333333333,
+        "total_return": -2.7567501067824197e-05,
+        "avg_position": 0.025000000000000005,
+        "num_assets": 1
+      }
+    },
+    {
+      "asset_name": "Mixed (SPY/QQQ/TSLA)",
+      "by_ticker": {
+        "SPY": {
+          "sharpe": -0.047608469540250505,
+          "trades": 13,
+          "max_drawdown": -4.032627798005896e-05,
+          "win_rate": 0.3170731707317073,
+          "total_return": -3.9951496789703e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        },
+        "QQQ": {
+          "sharpe": -0.047608469540250505,
+          "trades": 13,
+          "max_drawdown": -4.032627798005896e-05,
+          "win_rate": 0.3170731707317073,
+          "total_return": -3.9951496789703e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        },
+        "TSLA": {
+          "sharpe": -0.047608469540250505,
+          "trades": 13,
+          "max_drawdown": -4.032627798005896e-05,
+          "win_rate": 0.3170731707317073,
+          "total_return": -3.9951496789703e-06,
+          "avg_position": 0.024999999999999998,
+          "bars": 252
+        }
+      },
+      "combined": {
+        "sharpe": -0.14282540862075152,
+        "total_trades": 41,
+        "max_drawdown": -4.032627798005896e-05,
+        "win_rate": 0.3170731707317073,
+        "total_return": -1.1985401153215207e-05,
+        "avg_position": 0.024999999999999998,
+        "num_assets": 3
+      }
+    }
+  ]
+}

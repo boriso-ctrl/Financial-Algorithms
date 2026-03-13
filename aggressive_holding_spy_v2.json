@@ -1,0 +1,88 @@
+{
+  "test_date": "2026-03-12T00:56:53.489589",
+  "asset": "SPY",
+  "start_date": "2023-01-01",
+  "end_date": "2025-12-31",
+  "total_return_pct": 11.8629263965743,
+  "trade_count": 7,
+  "win_rate_pct": 71.42857142857143,
+  "sharpe_ratio": 11.515503144589681,
+  "avg_trade_return_pct": 8.47351885469593,
+  "trading_mode": "aggressive_holding_entry1.0_exit-2.5",
+  "entry_score": 1.0,
+  "exit_score": -2.5,
+  "position_size_pct": 20.0,
+  "trades": [
+    {
+      "entry_date": "2023-03-16 00:00:00",
+      "entry_price": 380.7668151855469,
+      "exit_date": "2023-03-22 00:00:00",
+      "exit_price": 378.36029052734375,
+      "return_pct": -0.6320205864133487,
+      "pl": -126.40411728266974,
+      "hold_days": 6,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2023-03-29 00:00:00",
+      "entry_price": 387.2762756347656,
+      "exit_date": "2023-09-21 00:00:00",
+      "exit_price": 419.28289794921875,
+      "return_pct": 8.264545062047148,
+      "pl": 1652.9090124094296,
+      "hold_days": 176,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2023-09-28 00:00:00",
+      "entry_price": 416.4934387207031,
+      "exit_date": "2023-10-17 00:00:00",
+      "exit_price": 423.782958984375,
+      "return_pct": 1.7502125090042928,
+      "pl": 350.04250180085853,
+      "hold_days": 19,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2023-11-03 00:00:00",
+      "entry_price": 422.4902648925781,
+      "exit_date": "2025-03-21 00:00:00",
+      "exit_price": 559.11083984375,
+      "return_pct": 32.33697585574164,
+      "pl": 6467.395171148327,
+      "hold_days": 504,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2025-03-24 00:00:00",
+      "entry_price": 569.1236572265625,
+      "exit_date": "2025-03-28 00:00:00",
+      "exit_price": 550.8626708984375,
+      "return_pct": -3.208614875915355,
+      "pl": -641.7229751830711,
+      "hold_days": 4,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2025-04-09 00:00:00",
+      "entry_price": 543.8834838867188,
+      "exit_date": "2025-05-09 00:00:00",
+      "exit_price": 559.4677124023438,
+      "return_pct": 2.865361603602384,
+      "pl": 573.0723207204768,
+      "hold_days": 30,
+      "exit_reason": "REVERSAL"
+    },
+    {
+      "entry_date": "2025-05-14 00:00:00",
+      "entry_price": 582.51708984375,
+      "exit_date": "2025-12-30 00:00:00",
+      "exit_price": 687.010009765625,
+      "return_pct": 17.938172414804757,
+      "pl": 3587.634482960951,
+      "hold_days": 230,
+      "exit_reason": "END"
+    }
+  ],
+  "benchmark_spy": 87.67
+}

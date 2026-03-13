@@ -1,0 +1,157 @@
+{
+  "asset": "AAPL",
+  "date_range": "2025-01-01 to 2026-03-12",
+  "timeframes_run": [
+    "4h"
+  ],
+  "results": [
+    {
+      "asset": "AAPL",
+      "timeframe": "4h",
+      "start_date": "2025-01-01",
+      "end_date": "2026-03-12",
+      "initial_equity": 100000,
+      "final_equity": 99532.21386999187,
+      "total_pl": -467.7861300081293,
+      "total_return_pct": -0.46778613000812935,
+      "trade_count": 10,
+      "win_rate_pct": 30.0,
+      "avg_trade_return_pct": -1.0015870561721592,
+      "sharpe_ratio": -4.070730468406543,
+      "best_trade_pct": 6.246383101851852,
+      "worst_trade_pct": -5.618942427231151,
+      "trades": [
+        {
+          "entry_date": "2025-02-13 14:30:00+00:00",
+          "entry_price": 241.02999877929688,
+          "entry_signal": 2.5,
+          "quantity": 16.595444634518987,
+          "position_value": 4000.0,
+          "exit_date": "2025-02-26 14:30:00+00:00",
+          "exit_price": 240.34030151367188,
+          "exit_reason": "Protective SL hit (Scenario A)",
+          "pl": -11.445832786258823,
+          "return_pct": -0.2861458196564705,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-04-29 13:30:00+00:00",
+          "entry_price": 210.36000061035156,
+          "entry_signal": 2.75,
+          "quantity": 19.0128453845029,
+          "position_value": 3999.54216668855,
+          "exit_date": "2025-05-09 17:30:00+00:00",
+          "exit_price": 198.5399932861328,
+          "exit_reason": "Sell signal (score -5.5)",
+          "pl": -224.73197169906294,
+          "return_pct": -5.618942427231151,
+          "scenario": "UNKNOWN"
+        },
+        {
+          "entry_date": "2025-06-30 17:30:00+00:00",
+          "entry_price": 205.1199951171875,
+          "entry_signal": 2.5,
+          "quantity": 19.454723980179196,
+          "position_value": 3990.5528878205873,
+          "exit_date": "2025-07-02 17:30:00+00:00",
+          "exit_price": 212.41000366210938,
+          "exit_reason": "TP2 (3%) reached",
+          "pl": 141.82510405460286,
+          "return_pct": 3.5540214111047566,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-07-03 13:30:00+00:00",
+          "entry_price": 214.10000610351562,
+          "entry_signal": 2.75,
+          "quantity": 18.66523016375174,
+          "position_value": 3996.2258919827714,
+          "exit_date": "2025-08-05 17:30:00+00:00",
+          "exit_price": 202.92999267578125,
+          "exit_reason": "Sell signal (score -7.5)",
+          "pl": -208.49087156085963,
+          "return_pct": -5.217194352780057,
+          "scenario": "UNKNOWN"
+        },
+        {
+          "entry_date": "2025-08-13 13:30:00+00:00",
+          "entry_price": 232.4550018310547,
+          "entry_signal": 2.75,
+          "quantity": 17.15551924332728,
+          "position_value": 3987.886257120337,
+          "exit_date": "2025-09-04 17:30:00+00:00",
+          "exit_price": 239.7100067138672,
+          "exit_reason": "TP2 (3%) reached",
+          "pl": 124.46337587752322,
+          "return_pct": 3.121036254614708,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-09-05 13:30:00+00:00",
+          "entry_price": 239.625,
+          "entry_signal": 2.5,
+          "quantity": 16.66297252855686,
+          "position_value": 3992.864792155438,
+          "exit_date": "2025-09-22 13:30:00+00:00",
+          "exit_price": 254.5928955078125,
+          "exit_reason": "TP2 (3%) reached",
+          "pl": 249.40963165698932,
+          "return_pct": 6.246383101851852,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-10-03 13:30:00+00:00",
+          "entry_price": 258.30999755859375,
+          "entry_signal": 2.5,
+          "quantity": 15.496268883335548,
+          "position_value": 4002.8411774217175,
+          "exit_date": "2025-10-14 13:30:00+00:00",
+          "exit_price": 247.79800415039062,
+          "exit_reason": "Sell signal (score -5.8)",
+          "pl": -162.89667635336647,
+          "return_pct": -4.069526347240446,
+          "scenario": "UNKNOWN"
+        },
+        {
+          "entry_date": "2025-10-28 13:30:00+00:00",
+          "entry_price": 269.4949951171875,
+          "entry_signal": 2.75,
+          "quantity": 14.828940732757639,
+          "position_value": 3996.325310367583,
+          "exit_date": "2025-11-17 14:30:00+00:00",
+          "exit_price": 267.7799987792969,
+          "exit_reason": "Protective SL hit (Scenario A)",
+          "pl": -25.431579051476472,
+          "return_pct": -0.6363740956097809,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-12-02 14:30:00+00:00",
+          "entry_price": 285.2149963378906,
+          "entry_signal": 2.75,
+          "quantity": 14.008057425116357,
+          "position_value": 3995.3080472055235,
+          "exit_date": "2025-12-16 18:30:00+00:00",
+          "exit_price": 274.4700012207031,
+          "exit_reason": "Sell signal (score -6.5)",
+          "pl": -150.51650863415736,
+          "return_pct": -3.7673317515387725,
+          "scenario": "UNKNOWN"
+        },
+        {
+          "entry_date": "2026-02-04 14:30:00+00:00",
+          "entry_price": 275.6000061035156,
+          "entry_signal": 3.5,
+          "quantity": 21.71237644328159,
+          "position_value": 5983.9310802902355,
+          "exit_date": "2026-02-23 18:30:00+00:00",
+          "exit_price": 266.3900146484375,
+          "exit_reason": "Sell signal (score -5.5)",
+          "pl": -199.97080151206302,
+          "return_pct": -3.341796535236231,
+          "scenario": "UNKNOWN"
+        }
+      ]
+    }
+  ]
+}

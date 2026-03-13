@@ -1,0 +1,322 @@
+{
+  "timestamp": "2026-03-11T20:39:04.381104",
+  "all_results": [
+    {
+      "ticker": "AAPL",
+      "threshold": 1,
+      "sharpe": -1.4393404918736847,
+      "trades": 41,
+      "return": -1.66212982176512e-05,
+      "win_rate": 0.3902439024390244
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 1,
+      "sharpe": 0.5715824078759694,
+      "trades": 37,
+      "return": 1.3994293213036144e-05,
+      "win_rate": 0.40540540540540543
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 1,
+      "sharpe": -1.2618551297293847,
+      "trades": 38,
+      "return": -2.098220214844332e-05,
+      "win_rate": 0.34210526315789475
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 1,
+      "sharpe": -0.9313230830946251,
+      "trades": 34,
+      "return": -1.588053588857292e-05,
+      "win_rate": 0.29411764705882354
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 1,
+      "sharpe": -1.141948962203384,
+      "trades": 48,
+      "return": -4.984204559368664e-05,
+      "win_rate": 0.2708333333333333
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 2,
+      "sharpe": -1.217960561342405,
+      "trades": 30,
+      "return": -1.3617247009387938e-05,
+      "win_rate": 0.43333333333333335
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 2,
+      "sharpe": 0.8785805251065949,
+      "trades": 20,
+      "return": 2.0747451782517602e-05,
+      "win_rate": 0.45
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 2,
+      "sharpe": -0.5513915079947639,
+      "trades": 20,
+      "return": -8.03692016619607e-06,
+      "win_rate": 0.45
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 2,
+      "sharpe": -0.6024100824801532,
+      "trades": 23,
+      "return": -1.1132409667770843e-05,
+      "win_rate": 0.2608695652173913
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 2,
+      "sharpe": -0.5272702710608108,
+      "trades": 33,
+      "return": -2.1888029480323894e-05,
+      "win_rate": 0.2727272727272727
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 2.5,
+      "sharpe": -1.2179612317657602,
+      "trades": 30,
+      "return": -1.3617256164288847e-05,
+      "win_rate": 0.43333333333333335
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 2.5,
+      "sharpe": 0.8785778769055478,
+      "trades": 20,
+      "return": 2.0747387695446378e-05,
+      "win_rate": 0.45
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 2.5,
+      "sharpe": -0.5513926253646069,
+      "trades": 20,
+      "return": -8.03693847672548e-06,
+      "win_rate": 0.45
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 2.5,
+      "sharpe": -0.6017631231242254,
+      "trades": 23,
+      "return": -1.1120434570184442e-05,
+      "win_rate": 0.2608695652173913
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 2.5,
+      "sharpe": -0.5272702710608108,
+      "trades": 33,
+      "return": -2.1888029480323894e-05,
+      "win_rate": 0.2727272727272727
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 3,
+      "sharpe": -0.5103837448893934,
+      "trades": 20,
+      "return": -4.858511352358618e-06,
+      "win_rate": 0.55
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 3,
+      "sharpe": 0.8493151919663959,
+      "trades": 12,
+      "return": 1.7317684936570003e-05,
+      "win_rate": 0.4166666666666667
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 3,
+      "sharpe": -1.3796644436699408,
+      "trades": 14,
+      "return": -2.5594802856358e-05,
+      "win_rate": 0.42857142857142855
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 3,
+      "sharpe": -1.1617022337046512,
+      "trades": 12,
+      "return": -2.019682617188664e-05,
+      "win_rate": 0.3333333333333333
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 3,
+      "sharpe": -0.5709127541280203,
+      "trades": 18,
+      "return": -1.8879039001622004e-05,
+      "win_rate": 0.3333333333333333
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 3.5,
+      "sharpe": -0.5103815594929535,
+      "trades": 20,
+      "return": -4.858488464233233e-06,
+      "win_rate": 0.55
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 3.5,
+      "sharpe": 0.8493147195176869,
+      "trades": 12,
+      "return": 1.7317675781232538e-05,
+      "win_rate": 0.4166666666666667
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 3.5,
+      "sharpe": -1.379661604518432,
+      "trades": 14,
+      "return": -2.559474792476976e-05,
+      "win_rate": 0.42857142857142855
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 3.5,
+      "sharpe": -1.1634244261519133,
+      "trades": 12,
+      "return": -2.0226818847586402e-05,
+      "win_rate": 0.3333333333333333
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 3.5,
+      "sharpe": -0.5709127541280203,
+      "trades": 18,
+      "return": -1.8879039001622004e-05,
+      "win_rate": 0.3333333333333333
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 4,
+      "sharpe": -0.5073370126825654,
+      "trades": 12,
+      "return": -4.479570007388247e-06,
+      "win_rate": 0.5
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 4,
+      "sharpe": -0.5026978267913154,
+      "trades": 8,
+      "return": -5.960247802722733e-06,
+      "win_rate": 0.125
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 4,
+      "sharpe": -1.7173898385129316,
+      "trades": 8,
+      "return": -1.550304565447732e-05,
+      "win_rate": 0.25
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 4,
+      "sharpe": -1.5867090144910514,
+      "trades": 8,
+      "return": -2.334167175285984e-05,
+      "win_rate": 0.25
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 4,
+      "sharpe": -0.8848410839576708,
+      "trades": 13,
+      "return": -2.3625022888300008e-05,
+      "win_rate": 0.3076923076923077
+    },
+    {
+      "ticker": "AAPL",
+      "threshold": 5,
+      "sharpe": -1.4868632063408753,
+      "trades": 6,
+      "return": -1.3245446777436883e-05,
+      "win_rate": 0.5
+    },
+    {
+      "ticker": "MSFT",
+      "threshold": 5,
+      "sharpe": -1.9784230751903709,
+      "trades": 5,
+      "return": -1.8063684082007966e-05,
+      "win_rate": 0.0
+    },
+    {
+      "ticker": "SPY",
+      "threshold": 5,
+      "sharpe": -0.905892724939188,
+      "trades": 2,
+      "return": -6.759832763782469e-06,
+      "win_rate": 0.5
+    },
+    {
+      "ticker": "QQQ",
+      "threshold": 5,
+      "sharpe": -0.8016610926982464,
+      "trades": 4,
+      "return": -5.512591552687809e-06,
+      "win_rate": 0.25
+    },
+    {
+      "ticker": "TSLA",
+      "threshold": 5,
+      "sharpe": -2.0158115436674473,
+      "trades": 8,
+      "return": -2.7833999633730856e-05,
+      "win_rate": 0.125
+    }
+  ],
+  "summary_by_threshold": {
+    "1": {
+      "avg_sharpe": -0.8405770518050218,
+      "avg_trades": 39.6,
+      "count": 5
+    },
+    "2": {
+      "avg_sharpe": -0.4040903795543076,
+      "avg_trades": 25.2,
+      "count": 5
+    },
+    "2.5": {
+      "avg_sharpe": -0.4039618748819711,
+      "avg_trades": 25.2,
+      "count": 5
+    },
+    "3": {
+      "avg_sharpe": -0.554669596885122,
+      "avg_trades": 15.2,
+      "count": 5
+    },
+    "3.5": {
+      "avg_sharpe": -0.5550131249547265,
+      "avg_trades": 15.2,
+      "count": 5
+    },
+    "4": {
+      "avg_sharpe": -1.0397949552871069,
+      "avg_trades": 9.8,
+      "count": 5
+    },
+    "5": {
+      "avg_sharpe": -1.4377303285672256,
+      "avg_trades": 5.0,
+      "count": 5
+    }
+  }
+}

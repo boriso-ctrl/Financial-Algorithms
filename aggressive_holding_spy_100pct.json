@@ -1,0 +1,28 @@
+{
+  "test_date": "2026-03-12T00:57:15.128536",
+  "asset": "SPY",
+  "start_date": "2023-01-01",
+  "end_date": "2025-12-31",
+  "total_return_pct": 80.42803034006825,
+  "trade_count": 1,
+  "win_rate_pct": 100.0,
+  "sharpe_ratio": 0,
+  "avg_trade_return_pct": 80.42803034006825,
+  "trading_mode": "aggressive_holding_entry0.5_exit-10.0",
+  "entry_score": 0.5,
+  "exit_score": -10.0,
+  "position_size_pct": 100.0,
+  "trades": [
+    {
+      "entry_date": "2023-03-16 00:00:00",
+      "entry_price": 380.76678466796875,
+      "exit_date": "2025-12-30 00:00:00",
+      "exit_price": 687.010009765625,
+      "return_pct": 80.42803034006825,
+      "pl": 80428.03034006825,
+      "hold_days": 1020,
+      "exit_reason": "END"
+    }
+  ],
+  "benchmark_spy": 87.67
+}

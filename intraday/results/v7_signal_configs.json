@@ -1,0 +1,222 @@
+{
+  "QQQ": {
+    "v6_numeric_params": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 3.0,
+      "partial_tp_mult": 1.5
+    },
+    "v7_signal_params": {
+      "rsi_period": 9,
+      "rsi_oversold": 38,
+      "atr_period": 14,
+      "ema_trend": 30,
+      "adx_thresh": 18,
+      "min_strength_up": 0.3
+    },
+    "full_config": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 3.0,
+      "partial_tp_mult": 1.5,
+      "rsi_period": 9,
+      "rsi_oversold": 38,
+      "atr_period": 14,
+      "ema_trend": 30,
+      "adx_thresh": 18,
+      "min_strength_up": 0.3
+    },
+    "metrics": {
+      "symbol": "QQQ",
+      "return_pct": 235.3,
+      "initial": 100000,
+      "final": 335304.07,
+      "years": 10.2,
+      "cagr": 12.62,
+      "trades": 960,
+      "wins": 660,
+      "win_rate": 68.8,
+      "sharpe": 1.43,
+      "sortino": 2.06,
+      "calmar": 0.68,
+      "trade_sharpe": 0.47,
+      "avg_win_pct": 3.08,
+      "avg_loss_pct": -3.87,
+      "max_dd": 18.61,
+      "profit_factor": 2.02,
+      "calmar_ratio": 0.68,
+      "best_trade": 5332.58,
+      "worst_trade": -4365.92,
+      "avg_hold_days": 20.3,
+      "long_trades": 960,
+      "short_trades": 0,
+      "long_wr": 68.8,
+      "short_wr": 0
+    }
+  },
+  "GBTC": {
+    "v6_numeric_params": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 4.5,
+      "partial_tp_mult": 1.0
+    },
+    "v7_signal_params": {
+      "rsi_period": 9,
+      "rsi_oversold": 33,
+      "atr_period": 14,
+      "ema_trend": 50,
+      "adx_thresh": 27,
+      "min_strength_up": 0.3
+    },
+    "full_config": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 4.5,
+      "partial_tp_mult": 1.0,
+      "rsi_period": 9,
+      "rsi_oversold": 33,
+      "atr_period": 14,
+      "ema_trend": 50,
+      "adx_thresh": 27,
+      "min_strength_up": 0.3
+    },
+    "metrics": {
+      "symbol": "GBTC",
+      "return_pct": 61.48,
+      "initial": 100000,
+      "final": 161483.49,
+      "years": 9.8,
+      "cagr": 4.99,
+      "trades": 875,
+      "wins": 555,
+      "win_rate": 63.4,
+      "sharpe": 1.11,
+      "sortino": 2.15,
+      "calmar": 0.78,
+      "trade_sharpe": 0.36,
+      "avg_win_pct": 14.36,
+      "avg_loss_pct": -19.81,
+      "max_dd": 6.41,
+      "profit_factor": 2.01,
+      "calmar_ratio": 0.78,
+      "best_trade": 1461.31,
+      "worst_trade": -1202.53,
+      "avg_hold_days": 14.5,
+      "long_trades": 875,
+      "short_trades": 0,
+      "long_wr": 63.4,
+      "short_wr": 0
+    }
+  },
+  "XLK": {
+    "v6_numeric_params": {
+      "trail_atr": 3.0,
+      "vol_target": 0.22,
+      "tp_mult": 4.5,
+      "partial_tp_mult": 1.5
+    },
+    "v7_signal_params": {
+      "rsi_period": 14,
+      "rsi_oversold": 38,
+      "atr_period": 14,
+      "ema_trend": 80,
+      "adx_thresh": 22,
+      "min_strength_up": 0.2
+    },
+    "full_config": {
+      "trail_atr": 3.0,
+      "vol_target": 0.22,
+      "tp_mult": 4.5,
+      "partial_tp_mult": 1.5,
+      "rsi_period": 14,
+      "rsi_oversold": 38,
+      "atr_period": 14,
+      "ema_trend": 80,
+      "adx_thresh": 22,
+      "min_strength_up": 0.2
+    },
+    "metrics": {
+      "symbol": "XLK",
+      "return_pct": 445.92,
+      "initial": 100000,
+      "final": 545922.99,
+      "years": 10.2,
+      "cagr": 18.14,
+      "trades": 1123,
+      "wins": 800,
+      "win_rate": 71.2,
+      "sharpe": 1.84,
+      "sortino": 3.1,
+      "calmar": 1.14,
+      "trade_sharpe": 0.49,
+      "avg_win_pct": 3.2,
+      "avg_loss_pct": -3.85,
+      "max_dd": 15.86,
+      "profit_factor": 2.06,
+      "calmar_ratio": 1.14,
+      "best_trade": 8600.6,
+      "worst_trade": -7281.81,
+      "avg_hold_days": 16.8,
+      "long_trades": 1123,
+      "short_trades": 0,
+      "long_wr": 71.2,
+      "short_wr": 0
+    }
+  },
+  "NVDA": {
+    "v6_numeric_params": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 3.0,
+      "partial_tp_mult": 1.5
+    },
+    "v7_signal_params": {
+      "rsi_period": 9,
+      "rsi_oversold": 38,
+      "atr_period": 20,
+      "ema_trend": 50,
+      "adx_thresh": 27,
+      "min_strength_up": 0.25
+    },
+    "full_config": {
+      "trail_atr": 3.5,
+      "vol_target": 0.22,
+      "tp_mult": 3.0,
+      "partial_tp_mult": 1.5,
+      "rsi_period": 9,
+      "rsi_oversold": 38,
+      "atr_period": 20,
+      "ema_trend": 50,
+      "adx_thresh": 27,
+      "min_strength_up": 0.25
+    },
+    "metrics": {
+      "symbol": "NVDA",
+      "return_pct": 197.09,
+      "initial": 100000,
+      "final": 297086.89,
+      "years": 10.2,
+      "cagr": 11.29,
+      "trades": 906,
+      "wins": 644,
+      "win_rate": 71.1,
+      "sharpe": 1.9,
+      "sortino": 4.63,
+      "calmar": 2.52,
+      "trade_sharpe": 0.53,
+      "avg_win_pct": 8.14,
+      "avg_loss_pct": -10.27,
+      "max_dd": 4.48,
+      "profit_factor": 2.86,
+      "calmar_ratio": 2.52,
+      "best_trade": 3084.34,
+      "worst_trade": -3039.51,
+      "avg_hold_days": 18.7,
+      "long_trades": 906,
+      "short_trades": 0,
+      "long_wr": 71.1,
+      "short_wr": 0
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "asset": "SPY",
+  "date_range": "2025-01-01 to 2026-03-12",
+  "timeframes_run": [
+    "4h"
+  ],
+  "results": [
+    {
+      "asset": "SPY",
+      "timeframe": "4h",
+      "start_date": "2025-01-01",
+      "end_date": "2026-03-12",
+      "initial_equity": 100000,
+      "final_equity": 100134.78406772079,
+      "total_pl": 134.78406772080314,
+      "total_return_pct": 0.13478406772080312,
+      "trade_count": 6,
+      "win_rate_pct": 66.66666666666666,
+      "avg_trade_return_pct": 0.5622307871922331,
+      "sharpe_ratio": 4.10386593622006,
+      "best_trade_pct": 3.5593147544388137,
+      "worst_trade_pct": -2.2347973121477906,
+      "trades": [
+        {
+          "entry_date": "2025-05-01 13:30:00+00:00",
+          "entry_price": 561.3400268554688,
+          "entry_signal": 2.75,
+          "quantity": 7.125805765905059,
+          "position_value": 4000.0,
+          "exit_date": "2025-05-12 13:30:00+00:00",
+          "exit_price": 581.3198852539062,
+          "exit_reason": "TP2 (3%) reached",
+          "pl": 142.37259017755255,
+          "return_pct": 3.5593147544388137,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-05-12 17:30:00+00:00",
+          "entry_price": 582.8300170898438,
+          "entry_signal": 2.75,
+          "quantity": 6.872835622997126,
+          "position_value": 4005.694903607102,
+          "exit_date": "2025-05-21 13:30:00+00:00",
+          "exit_price": 584.6900024414062,
+          "exit_reason": "Protective SL hit (Scenario A)",
+          "pl": 12.783373582471583,
+          "return_pct": 0.319129985934781,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-07-02 13:30:00+00:00",
+          "entry_price": 619.47998046875,
+          "entry_signal": 2.75,
+          "quantity": 6.467047144153024,
+          "position_value": 4006.2062385504005,
+          "exit_date": "2025-08-01 13:30:00+00:00",
+          "exit_price": 620.5700073242188,
+          "exit_reason": "Protective SL hit (Scenario A)",
+          "pl": 7.04925506270928,
+          "return_pct": 0.1759583666681117,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-08-22 13:30:00+00:00",
+          "entry_price": 646.1500244140625,
+          "entry_signal": 2.5,
+          "quantity": 6.200554139707797,
+          "position_value": 4006.488208752909,
+          "exit_date": "2025-09-22 13:30:00+00:00",
+          "exit_price": 666.510009765625,
+          "exit_reason": "TP2 (3%) reached",
+          "pl": 126.24319145602097,
+          "return_pct": 3.150968750643507,
+          "scenario": "WEAK_AT_TP1"
+        },
+        {
+          "entry_date": "2025-10-29 17:30:00+00:00",
+          "entry_price": 687.3099975585938,
+          "entry_signal": 2.75,
+          "quantity": 5.83657730959917,
+          "position_value": 4011.5379364111495,
+          "exit_date": "2025-11-14 18:30:00+00:00",
+          "exit_price": 671.9500122070312,
+          "exit_reason": "Sell signal (score -5.8)",
+          "pl": -89.64974197870532,
+          "return_pct": -2.2347973121477906,
+          "scenario": "UNKNOWN"
+        },
+        {
+          "entry_date": "2025-12-10 18:30:00+00:00",
+          "entry_price": 687.4600219726562,
+          "entry_signal": 2.5,
+          "quantity": 5.830087304904281,
+          "position_value": 4007.9519467320015,
+          "exit_date": "2025-12-18 18:30:00+00:00",
+          "exit_price": 676.47998046875,
+          "exit_reason": "Sell signal (score -5.8)",
+          "pl": -64.01460057924594,
+          "return_pct": -1.5971898223840253,
+          "scenario": "UNKNOWN"
+        }
+      ]
+    }
+  ]
+}

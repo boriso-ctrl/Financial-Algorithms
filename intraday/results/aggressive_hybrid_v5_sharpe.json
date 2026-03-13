@@ -1,0 +1,20 @@
+{
+  "symbol": "SPY",
+  "return_pct": 79.19,
+  "initial": 100000,
+  "final": 179187.4,
+  "cagr": 21.46,
+  "trades": 333,
+  "wins": 227,
+  "win_rate": 68.2,
+  "sharpe": 2.31,
+  "sortino": 3.99,
+  "trade_sharpe": 0.47,
+  "avg_win_pct": 2.53,
+  "avg_loss_pct": -2.09,
+  "max_dd": 14.69,
+  "profit_factor": 1.86,
+  "best_trade": 3115.02,
+  "worst_trade": -2462.09,
+  "avg_hold_days": 14.3
+}

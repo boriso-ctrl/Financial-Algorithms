@@ -1,0 +1,312 @@
+[
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.62%",
+      "CAGR": "24.20%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.72",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9870%",
+      "Avg Loss": "-1.0308%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,621.38"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.5,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.62%",
+      "CAGR": "24.20%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.72",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9870%",
+      "Avg Loss": "-1.0308%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,621.38"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 2.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.62%",
+      "CAGR": "24.20%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.72",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9870%",
+      "Avg Loss": "-1.0308%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,621.38"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.5,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.59%",
+      "CAGR": "24.19%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0310%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,593.88"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.5,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.5,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.59%",
+      "CAGR": "24.19%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0310%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,593.88"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 1.5,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 2.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.59%",
+      "CAGR": "24.19%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0310%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,593.88"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 2.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.54%",
+      "CAGR": "24.17%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0312%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,537.46"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 2.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.5,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.54%",
+      "CAGR": "24.17%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0312%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,537.46"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.0,
+      "williams_r": 2.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 2.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.54%",
+      "CAGR": "24.17%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.71",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9871%",
+      "Avg Loss": "-1.0312%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,537.46"
+    },
+    "_score": 1.2
+  },
+  {
+    "weights": {
+      "ma_cross": 1.0,
+      "sar_stoch": 1.0,
+      "rsi": 1.0,
+      "bb_rsi": 1.0,
+      "cci_adx": 1.5,
+      "williams_r": 1.0,
+      "atr_trend": 1.5,
+      "cmf": 2.0,
+      "force_index": 1.0,
+      "vwsma": 1.0
+    },
+    "metrics": {
+      "Total Return": "60.62%",
+      "CAGR": "24.20%",
+      "Sharpe Ratio": "1.20",
+      "Sortino Ratio": "1.72",
+      "Calmar Ratio": "1.39",
+      "Max Drawdown": "-17.39%",
+      "Win Rate": "56.22%",
+      "Avg Win": "0.9870%",
+      "Avg Loss": "-1.0308%",
+      "Avg Turnover": "0.24",
+      "Avg Gross Leverage": "0.90",
+      "Total Days": 498,
+      "Winning Days": 280,
+      "Final Equity": "$160,621.38"
+    },
+    "_score": 1.2
+  }
+]

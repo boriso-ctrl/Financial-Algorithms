@@ -1,0 +1,167 @@
+
+==============================================================
+  V7 SIGNAL OPTIMIZER  |  QQQ + GBTC + XLK + NVDA  |  10yr
+  Tuning indicator params per asset on top of V6 best configs
+  Total runs: 2916  (729 per asset)
+==============================================================
+
+==============================================================
+  Optimizing QQQ (NASDAQ 100 ETF)
+  V6 base: trail=3.5 vol=0.22 tp=3.0 ptp=1.5
+  Signal grid: 729 combos
+==============================================================
+  [100/729] Best: Sharpe 1.41  CAGR 12.3%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 28, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [200/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [300/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [400/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [500/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [600/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [700/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+  [729/729] Best: Sharpe 1.43  CAGR 12.6%  DD 18.6%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.3}
+
+==============================================================
+  BEST SIGNAL CONFIG: QQQ (NASDAQ 100 ETF)
+==============================================================
+  -- Numeric (V6, fixed) --
+  trail_atr       = 3.5
+  vol_target      = 0.22
+  tp_mult         = 3.0
+  partial_tp_mult = 1.5
+  -- Signal/indicator (V7, tuned) --
+  rsi_period      = 9
+  rsi_oversold    = 38
+  atr_period      = 14
+  ema_trend       = 30
+  adx_thresh      = 18
+  min_strength_up = 0.3
+  ---
+  Sharpe:   1.43  |  Sortino: 2.06
+  CAGR:     12.62%  |  Return:   235.3%
+  Max DD:   18.61%  |  Calmar:   0.68
+  Win Rate: 68.8%  |  PF:       2.02
+  Trades:   960 (94/yr)  |  Hold: 20.3d
+
+==============================================================
+  Optimizing GBTC (Bitcoin Trust)
+  V6 base: trail=3.5 vol=0.22 tp=4.5 ptp=1.0
+  Signal grid: 729 combos
+==============================================================
+  [100/729] Best: Sharpe 1.09  CAGR 4.9%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 28, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [200/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [300/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [400/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [500/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [600/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [700/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+  [729/729] Best: Sharpe 1.11  CAGR 5.0%  DD 6.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.3}
+
+==============================================================
+  BEST SIGNAL CONFIG: GBTC (Bitcoin Trust)
+==============================================================
+  -- Numeric (V6, fixed) --
+  trail_atr       = 3.5
+  vol_target      = 0.22
+  tp_mult         = 4.5
+  partial_tp_mult = 1.0
+  -- Signal/indicator (V7, tuned) --
+  rsi_period      = 9
+  rsi_oversold    = 33
+  atr_period      = 14
+  ema_trend       = 50
+  adx_thresh      = 27
+  min_strength_up = 0.3
+  ---
+  Sharpe:   1.11  |  Sortino: 2.15
+  CAGR:     4.99%  |  Return:   61.5%
+  Max DD:   6.41%  |  Calmar:   0.78
+  Win Rate: 63.4%  |  PF:       2.01
+  Trades:   875 (89/yr)  |  Hold: 14.5d
+
+==============================================================
+  Optimizing XLK (Technology ETF)
+  V6 base: trail=3.0 vol=0.22 tp=4.5 ptp=1.5
+  Signal grid: 729 combos
+==============================================================
+  [100/729] Best: Sharpe 1.75  CAGR 17.2%  DD 16.5%  config={'rsi_period': 9, 'rsi_oversold': 28, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [200/729] Best: Sharpe 1.80  CAGR 17.6%  DD 16.4%  config={'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [300/729] Best: Sharpe 1.83  CAGR 18.2%  DD 16.3%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [400/729] Best: Sharpe 1.83  CAGR 18.2%  DD 16.3%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [500/729] Best: Sharpe 1.84  CAGR 18.1%  DD 15.9%  config={'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [600/729] Best: Sharpe 1.84  CAGR 18.1%  DD 15.9%  config={'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [700/729] Best: Sharpe 1.84  CAGR 18.1%  DD 15.9%  config={'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+  [729/729] Best: Sharpe 1.84  CAGR 18.1%  DD 15.9%  config={'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.2}
+
+==============================================================
+  BEST SIGNAL CONFIG: XLK (Technology ETF)
+==============================================================
+  -- Numeric (V6, fixed) --
+  trail_atr       = 3.0
+  vol_target      = 0.22
+  tp_mult         = 4.5
+  partial_tp_mult = 1.5
+  -- Signal/indicator (V7, tuned) --
+  rsi_period      = 14
+  rsi_oversold    = 38
+  atr_period      = 14
+  ema_trend       = 80
+  adx_thresh      = 22
+  min_strength_up = 0.2
+  ---
+  Sharpe:   1.84  |  Sortino: 3.10
+  CAGR:     18.14%  |  Return:   445.9%
+  Max DD:   15.86%  |  Calmar:   1.14
+  Win Rate: 71.2%  |  PF:       2.06
+  Trades:   1123 (110/yr)  |  Hold: 16.8d
+
+==============================================================
+  Optimizing NVDA (NVIDIA)
+  V6 base: trail=3.5 vol=0.22 tp=3.0 ptp=1.5
+  Signal grid: 729 combos
+==============================================================
+  [100/729] Best: Sharpe 1.84  CAGR 13.0%  DD 7.1%  config={'rsi_period': 9, 'rsi_oversold': 28, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 18, 'min_strength_up': 0.2}
+  [200/729] Best: Sharpe 1.86  CAGR 13.1%  DD 7.4%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14, 'ema_trend': 50, 'adx_thresh': 18, 'min_strength_up': 0.2}
+  [300/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+  [400/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+  [500/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+  [600/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+  [700/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+  [729/729] Best: Sharpe 1.90  CAGR 11.3%  DD 4.5%  config={'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20, 'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25}
+
+==============================================================
+  BEST SIGNAL CONFIG: NVDA (NVIDIA)
+==============================================================
+  -- Numeric (V6, fixed) --
+  trail_atr       = 3.5
+  vol_target      = 0.22
+  tp_mult         = 3.0
+  partial_tp_mult = 1.5
+  -- Signal/indicator (V7, tuned) --
+  rsi_period      = 9
+  rsi_oversold    = 38
+  atr_period      = 20
+  ema_trend       = 50
+  adx_thresh      = 27
+  min_strength_up = 0.25
+  ---
+  Sharpe:   1.90  |  Sortino: 4.63
+  CAGR:     11.29%  |  Return:   197.1%
+  Max DD:   4.48%  |  Calmar:   2.52
+  Win Rate: 71.1%  |  PF:       2.86
+  Trades:   906 (89/yr)  |  Hold: 18.7d
+
+
+============================================================================
+  V7 OPTIMIZED RESULTS  (V6 numeric + V7 signal params, 10yr long-only)
+============================================================================
+  Ticker   CAGR%   Sharpe  Sortino  MaxDD%    WR%   Trd/yr   Calmar
+  ----------------------------------------------------------------------
+  QQQ       12.6     1.43     2.06    18.6   68.8       94     0.68
+  GBTC       5.0     1.11     2.15     6.4   63.4       89     0.78
+  XLK       18.1     1.84     3.10    15.9   71.2      110     1.14
+  NVDA      11.3     1.90     4.63     4.5   71.1       89     2.52
+  ----------------------------------------------------------------------
+
+Full configs saved -> intraday/results/v7_signal_configs.json
+
+INSTRUCTIONS: Use 'full_config' for each asset in your runner.
+Both V6 numeric params AND V7 signal params are pre-combined.

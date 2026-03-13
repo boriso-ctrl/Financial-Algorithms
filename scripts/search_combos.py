@@ -20,40 +20,44 @@ import json
 import os
 import random
 import sys
-from typing import Dict, List, Optional
+from multiprocessing import Pool, cpu_count
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if SRC.exists():
+    src_str = str(SRC)
+    if src_str not in sys.path:
+        sys.path.insert(0, src_str)
 
 import numpy as np
 import pandas as pd
 
-from data_loader import load_daily_prices
-from backtest.simple_backtest import run_backtest
-from backtest.signal_blender import blend_signals
-from indicators.price.ma_cross import ma_cross_strategy
-from indicators.price.sar_stoch import sar_stoch_strategy
-from indicators.price.stoch_macd import stoch_macd_strategy
-from indicators.price.rsi import rsi_strategy
-from indicators.price.bb_rsi import bb_rsi_strategy
-from indicators.price.rsi_obv_bb import rsi_obv_bb_strategy
-from indicators.price.adx import adx_strategy
-from indicators.price.cci_adx import cci_adx_strategy
-from indicators.price.williams_r import wr_strategy
-from indicators.price.vwsma import vwsma_strategy
-from indicators.price.macd import macd_signal
-from indicators.price.atr_trend import atr_trend_signal
-from indicators.volume.volume_oscillator import volume_oscillator_signal
-from indicators.volume.on_balance_volume import on_balance_volume
-from indicators.volume.volume_price_trend import volume_price_trend_signal
-from indicators.volume.acc_dist_index import acc_dist_signal
-from indicators.volume.chaikin_money_flow import chaikin_money_flow_signal
-from indicators.volume.force_index import force_index_signal
-from indicators.volume.ease_of_movement import ease_of_movement_signal
-from indicators.volume.vwma import vwma_signal
-from indicators.volume.negative_volume_index import negative_volume_index_signal
-from indicators.volume.put_call_ratio import put_call_ratio
+from financial_algorithms.data import load_daily_prices
+from financial_algorithms.backtest import run_backtest, blend_signals
+from financial_algorithms.signals.price.ma_cross import ma_cross_strategy
+from financial_algorithms.signals.price.sar_stoch import sar_stoch_strategy
+from financial_algorithms.signals.price.stoch_macd import stoch_macd_strategy
+from financial_algorithms.signals.price.rsi import rsi_strategy
+from financial_algorithms.signals.price.bb_rsi import bb_rsi_strategy
+from financial_algorithms.signals.price.rsi_obv_bb import rsi_obv_bb_strategy
+from financial_algorithms.signals.price.adx import adx_strategy
+from financial_algorithms.signals.price.cci_adx import cci_adx_strategy
+from financial_algorithms.signals.price.williams_r import wr_strategy
+from financial_algorithms.signals.price.vwsma import vwsma_strategy
+from financial_algorithms.signals.price.macd import macd_signal
+from financial_algorithms.signals.price.atr_trend import atr_trend_signal
+from financial_algorithms.signals.volume.volume_oscillator import volume_oscillator_signal
+from financial_algorithms.signals.volume.on_balance_volume import on_balance_volume
+from financial_algorithms.signals.volume.volume_price_trend import volume_price_trend_signal
+from financial_algorithms.signals.volume.acc_dist_index import acc_dist_signal
+from financial_algorithms.signals.volume.chaikin_money_flow import chaikin_money_flow_signal
+from financial_algorithms.signals.volume.force_index import force_index_signal
+from financial_algorithms.signals.volume.ease_of_movement import ease_of_movement_signal
+from financial_algorithms.signals.volume.vwma import vwma_signal
+from financial_algorithms.signals.volume.negative_volume_index import negative_volume_index_signal
+from financial_algorithms.signals.volume.put_call_ratio import put_call_ratio
 
 # Placeholder PCR: returns zeros; kept so weight search can disable/enable later when data exists.
 def _put_call_ratio_placeholder(index: pd.Index) -> pd.Series:
@@ -61,7 +65,7 @@ def _put_call_ratio_placeholder(index: pd.Index) -> pd.Series:
 
 
 DEFAULT_COMPONENTS = [
-    "bbrsi",
+    "bb_rsi",
     "sar_stoch",
     "vwsma",
     "williams_r",
@@ -251,6 +255,14 @@ def generate_weight_sets(weight_grid: List[float], components: List[str], max_co
     return weight_dicts
 
 
+def _evaluate_combo_worker(task: Tuple) -> Dict:
+    """Worker function for multiprocessing pool. Evaluates a single weight combo."""
+    wmap, prices, comp_signals, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty = task
+    res = evaluate_combo(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate)
+    res["_score"] = _score(res, sparsity_penalty, dd_penalty)
+    return res
+
+
 def evaluate_combo(prices: pd.DataFrame, comp_signals: Dict[str, pd.DataFrame], weights: Dict[str, float], max_signal_abs: float, allow_short: bool, cost_bps: float, slippage_bps: float, risk_free_rate: float) -> Dict:
     active_signals = {k: v for k, v in comp_signals.items() if abs(weights.get(k, 0)) > 1e-9}
     active_weights = {k: weights[k] for k in active_signals.keys()}
@@ -272,24 +284,95 @@ def evaluate_combo(prices: pd.DataFrame, comp_signals: Dict[str, pd.DataFrame], 
     }
 
 
-def _score(res: Dict, sparsity_penalty: float) -> float:
-    try:
-        sharpe = float(res["metrics"].get("Sharpe Ratio", float("-inf")))
-    except Exception:
-        sharpe = float("-inf")
+def _score(res: Dict, sparsity_penalty: float, dd_penalty: float) -> float:
+    """Score combines Sharpe minus sparsity and drawdown penalties."""
+    def _to_float(val, default=float("-inf")):
+        try:
+            return float(val)
+        except Exception:
+            try:
+                return float(str(val).replace("%", "")) / 100.0
+            except Exception:
+                return default
+
+    metrics = res.get("metrics", {})
+    sharpe = _to_float(metrics.get("Sharpe Ratio"))
+    max_dd = abs(_to_float(metrics.get("Max Drawdown"), 0.0))
     active = len(res.get("weights", {}))
-    return sharpe - sparsity_penalty * max(active - 1, 0)
+    return sharpe - sparsity_penalty * max(active - 1, 0) - dd_penalty * max_dd
 
 
-def _run_stage(prices: pd.DataFrame, comp_signals: Dict[str, pd.DataFrame], weight_sets: List[Dict[str, float]], max_signal_abs: float, allow_short: bool, cost_bps: float, slippage_bps: float, risk_free_rate: float, sparsity_penalty: float) -> List[Dict]:
-    results = []
-    for idx, wmap in enumerate(weight_sets, 1):
-        res = evaluate_combo(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate)
-        res["_score"] = _score(res, sparsity_penalty)
-        results.append(res)
-        if idx % 50 == 0:
-            print(f"  Tested {idx}/{len(weight_sets)} combos...")
-    return results
+def _run_stage(prices: pd.DataFrame, comp_signals: Dict[str, pd.DataFrame], weight_sets: List[Dict[str, float]], max_signal_abs: float, allow_short: bool, cost_bps: float, slippage_bps: float, risk_free_rate: float, sparsity_penalty: float, dd_penalty: float, num_workers: Optional[int] = None, use_ray: bool = False) -> List[Dict]:
+    """Run backtest stage with optional parallelization (multiprocessing or Ray).
+    
+    Args:
+        num_workers: Number of worker processes. If None or 1, runs sequentially.
+                     If > 1, uses multiprocessing.Pool for parallel evaluation.
+        use_ray: If True, use Ray distributed computing (requires ray package).
+    """
+    if num_workers is None:
+        num_workers = 0  # Will use sequential execution
+    
+    if use_ray:
+        # Ray distributed execution
+        try:
+            import ray
+        except ImportError:
+            print("Ray not installed. Falling back to multiprocessing. Install with: pip install ray")
+            use_ray = False
+        
+        if use_ray and not ray.is_initialized():
+            ray.init(num_cpus=num_workers or cpu_count(), ignore_reinit_error=True)
+            print(f"  Ray initialized with {num_workers or cpu_count()} CPUs")
+    
+    if use_ray and 'ray' in sys.modules:
+        # Ray parallel execution
+        import ray
+        
+        @ray.remote
+        def evaluate_combo_ray(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty):
+            res = evaluate_combo(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate)
+            res["_score"] = _score(res, sparsity_penalty, dd_penalty)
+            return res
+        
+        # Submit all tasks to Ray
+        futures = [
+            evaluate_combo_ray.remote(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty)
+            for wmap in weight_sets
+        ]
+        
+        results = []
+        for idx, res in enumerate(ray.get(futures), 1):
+            results.append(res)
+            if idx % 50 == 0:
+                print(f"  Tested {idx}/{len(weight_sets)} combos (Ray)...")
+        return results
+    
+    elif num_workers <= 1:
+        # Sequential execution (legacy behavior)
+        results = []
+        for idx, wmap in enumerate(weight_sets, 1):
+            res = evaluate_combo(prices, comp_signals, wmap, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate)
+            res["_score"] = _score(res, sparsity_penalty, dd_penalty)
+            results.append(res)
+            if idx % 50 == 0:
+                print(f"  Tested {idx}/{len(weight_sets)} combos...")
+        return results
+    else:
+        # Parallel execution using multiprocessing
+        print(f"  Using {num_workers} worker processes...")
+        tasks = [
+            (wmap, prices, comp_signals, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty)
+            for wmap in weight_sets
+        ]
+        
+        results = []
+        with Pool(processes=num_workers) as pool:
+            for idx, res in enumerate(pool.imap_unordered(_evaluate_combo_worker, tasks), 1):
+                results.append(res)
+                if idx % 50 == 0:
+                    print(f"  Tested {idx}/{len(weight_sets)} combos...")
+        return results
 
 
 def _neighbors(weight_grid: List[float], base_weights: Dict[str, float], components: List[str], radius: int = 1) -> List[Dict[str, float]]:
@@ -316,14 +399,14 @@ def _neighbors(weight_grid: List[float], base_weights: Dict[str, float], compone
     return combos
 
 
-def search(prices: pd.DataFrame, weight_grid: List[float], components: List[str], max_combos: int, allow_short: bool, cost_bps: float, slippage_bps: float, risk_free_rate: float, max_signal_abs: float, top_n: int, max_active: Optional[int], sparsity_penalty: float, refine_top_k: int, refine_max_combos: int, refine_radius: int, sampling_method: Optional[str], sample_size: Optional[int], seed: Optional[int]) -> List[Dict]:
+def search(prices: pd.DataFrame, weight_grid: List[float], components: List[str], max_combos: int, allow_short: bool, cost_bps: float, slippage_bps: float, risk_free_rate: float, max_signal_abs: float, top_n: int, max_active: Optional[int], sparsity_penalty: float, dd_penalty: float, refine_top_k: int, refine_max_combos: int, refine_radius: int, sampling_method: Optional[str], sample_size: Optional[int], seed: Optional[int], num_workers: Optional[int] = None, use_ray: bool = False) -> List[Dict]:
     comp_signals_full = build_component_signals(prices, components)
     comp_signals = {k: v for k, v in comp_signals_full.items() if k in components}
 
     weight_sets = generate_weight_sets(weight_grid, components, max_combos, max_active, sampling_method, sample_size, seed)
 
     print(f"Stage 1: evaluating {len(weight_sets)} combos (cap {max_combos}{' sampled' if sampling_method else ''})...")
-    results_stage1 = _run_stage(prices, comp_signals, weight_sets, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty)
+    results_stage1 = _run_stage(prices, comp_signals, weight_sets, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty, num_workers=num_workers, use_ray=use_ray)
 
     all_results = list(results_stage1)
     evaluated_keys = {tuple(wmap.get(c, 0.0) for c in components) for wmap in weight_sets}
@@ -353,7 +436,7 @@ def search(prices: pd.DataFrame, weight_grid: List[float], components: List[str]
 
         if uniq_neighbors:
             print(f"Stage 2 (refine): evaluating {len(uniq_neighbors)} neighbor combos around top-{refine_top_k}...")
-            results_stage2 = _run_stage(prices, comp_signals, uniq_neighbors, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty)
+            results_stage2 = _run_stage(prices, comp_signals, uniq_neighbors, max_signal_abs, allow_short, cost_bps, slippage_bps, risk_free_rate, sparsity_penalty, dd_penalty, num_workers=num_workers, use_ray=use_ray)
             all_results.extend(results_stage2)
 
     # Rank by score (Sharpe minus sparsity penalty)
@@ -381,6 +464,7 @@ def main():
     parser.add_argument("--components", nargs="+", default=None, help="Optional subset of components to include")
     parser.add_argument("--max-active", type=int, default=None, help="Maximum non-zero weights to allow (sparsity cap)")
     parser.add_argument("--sparsity-penalty", type=float, default=0.0, help="Penalty per extra active weight when ranking")
+    parser.add_argument("--dd-penalty", type=float, default=0.0, help="Penalty multiplier on |Max Drawdown| when ranking")
     parser.add_argument("--sampling-method", type=str, default=None, choices=["random", "lhs", "sobol"], help="Optional sampling method instead of grid enumeration")
     parser.add_argument("--sample-size", type=int, default=None, help="Number of samples to draw when sampling-method is set")
     parser.add_argument("--seed", type=int, default=None, help="Random seed for reproducibility")
@@ -394,7 +478,13 @@ def main():
     parser.add_argument("--risk-free-rate", type=float, default=0.0, help="Annual risk-free rate")
     parser.add_argument("--max-signal-abs", type=float, default=5.0, help="Signal clip")
     parser.add_argument("--report-json", type=str, help="Optional path to write full top-N results as JSON")
+    parser.add_argument("--num-workers", type=int, default=None, help=f"Number of worker processes for parallel evaluation (default: {cpu_count()} = CPU count). Set to 1 for sequential.")
+    parser.add_argument("--use-ray", action="store_true", help="Use Ray distributed computing instead of multiprocessing (requires Ray).")
     args = parser.parse_args()
+    
+    # Default to CPU count if not specified
+    if args.num_workers is None:
+        args.num_workers = min(cpu_count(), 8)  # Cap at 8 to avoid overload
 
     print("Loading prices...")
     prices = load_daily_prices(args.tickers)
@@ -414,6 +504,8 @@ def main():
     print(f"Max combos (stage1): {args.max_combos}; refine-top-k: {args.refine_top_k}; refine-max: {args.refine_max_combos}")
     if args.max_active:
         print(f"Sparsity cap: {args.max_active} active weights; penalty: {args.sparsity_penalty}")
+    if args.dd_penalty:
+        print(f"Drawdown penalty: {args.dd_penalty} * |MaxDD|")
     if args.sampling_method:
         print(f"Sampling: {args.sampling_method} with sample-size={args.sample_size or args.max_combos} seed={args.seed}")
 
@@ -430,12 +522,15 @@ def main():
         top_n=args.top_n,
         max_active=args.max_active,
         sparsity_penalty=args.sparsity_penalty,
+        dd_penalty=args.dd_penalty,
         refine_top_k=args.refine_top_k,
         refine_max_combos=args.refine_max_combos,
         refine_radius=args.refine_radius,
         sampling_method=args.sampling_method,
         sample_size=args.sample_size,
         seed=args.seed,
+        num_workers=args.num_workers,
+        use_ray=args.use_ray,
     )
 
     print("\nTop combos (by score: Sharpe minus sparsity_penalty * active_excess):")
