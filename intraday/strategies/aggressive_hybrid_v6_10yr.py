@@ -89,7 +89,10 @@ class AggressiveHybridV6:
                  # V10: 24/7 leading EMA — use BTC-USD (or other) as signal source
                  # while executing on self.ticker (e.g. GBTC)
                  signal_ticker=None,        # e.g. 'BTC-USD'
-                 signal_ema_period=None):   # EMA period on signal ticker (None = ema_trend)
+                 signal_ema_period=None,    # EMA period on signal ticker (None = ema_trend)
+                 # Intraday SL/TP simulation — resolves hit-order within daily bars
+                 # '1h' recommended for GBTC/ETFs; None = daily OHLC only (default)
+                 sl_tp_tf=None):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -138,6 +141,8 @@ class AggressiveHybridV6:
         self.signal_ticker     = signal_ticker
         self.signal_ema_period = signal_ema_period
         self._signal_emas      = None  # populated by _fetch_signal_emas()
+        self.sl_tp_tf          = sl_tp_tf
+        self._intraday_bars: dict = {}   # date -> [(H, L), ...] for SL/TP sequencing
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -181,6 +186,10 @@ class AggressiveHybridV6:
             if self.use_onchain:
                 self._fetch_onchain_data()
 
+            # Intraday SL/TP simulation bars
+            if self.sl_tp_tf:
+                self._fetch_intraday_sl_tp()
+
             return True
         except Exception as e:
             logger.error(f"Data fetch error: {e}")
@@ -215,6 +224,37 @@ class AggressiveHybridV6:
         except Exception as e:
             logger.warning(f"Signal EMA fetch failed for {self.signal_ticker}: {e}")
             self._signal_emas = None
+
+    def _fetch_intraday_sl_tp(self):
+        """Fetch intraday candles to resolve SL/TP hit order within a daily bar.
+        yfinance provides 1h data for ~730 days; older dates fall back to daily."""
+        try:
+            raw = yf.download(self.ticker, start=self.start, end=self.end,
+                              interval=self.sl_tp_tf, progress=False, auto_adjust=True)
+            src = self._flatten_multiindex(raw, self.ticker)
+            bars: dict = {}
+            for ts, row in src.iterrows():
+                d = ts.date()
+                if d not in bars:
+                    bars[d] = []
+                bars[d].append((float(row['High']), float(row['Low'])))
+            self._intraday_bars = bars
+            logger.info(f"Intraday {self.sl_tp_tf} for SL/TP: {len(bars)} days loaded")
+        except Exception as e:
+            logger.warning(f"Intraday SL/TP fetch failed ({self.sl_tp_tf}): {e}")
+            self._intraday_bars = {}
+
+    def _get_hl_sequence(self, date, daily_high, daily_low):
+        """Return an ordered (H, L) sequence for exit resolution.
+        With intraday bars loaded: returns them chronologically so SL vs TP
+        priority is determined bar-by-bar (resolves ambiguity on volatile days).
+        Without intraday data: returns a single (daily_high, daily_low) tuple
+        so the backtest loop runs identically to the pre-intraday behaviour."""
+        if not self._intraday_bars:
+            return ((daily_high, daily_low),)
+        d = date.date() if hasattr(date, 'date') else date
+        bars = self._intraday_bars.get(d)
+        return bars if bars else ((daily_high, daily_low),)
 
     def _fetch_onchain_data(self):
         """Fetch MVRV (CoinMetrics, free, 2011+) and Fear & Greed (alternative.me, 2018+)."""
@@ -708,82 +748,87 @@ class AggressiveHybridV6:
                                      else self.max_hold_mr))
 
                 if pos['side'] == 1:  # Long
-                    # Delayed trail — activates after gaining ≥ trail_cushion×ATR (V8 tunable)
-                    if not pos['trail_active']:
-                        if high >= pos['entry'] + self.trail_cushion * atr:
-                            pos['trail_active'] = True
-
-                    if pos['trail_active']:
-                        new_trail = high - pos['trail_atr'] * atr
-                        if new_trail > pos['sl']:
-                            pos['sl'] = new_trail
-
-                    # SL breach against intraday LOW
-                    if low <= pos['sl']:
-                        exit_price  = pos['sl']
-                        exit_reason = 'TrailSL'
-                    # TP against HIGH
-                    elif high >= pos['tp']:
-                        exit_price  = pos['tp']
-                        exit_reason = 'TP'
-                    # Partial TP
-                    elif not pos['partial_taken'] and high >= pos['partial_tp']:
-                        partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))  # V9: tunable
-                        if partial_qty > 0:
-                            p_price     = pos['partial_tp']
-                            partial_pnl = (p_price - pos['entry']) * partial_qty
-                            self.equity += partial_pnl
-                            self.closed_trades.append({
-                                'entry_date':  pos['date'], 'exit_date': date,
-                                'entry_price': pos['entry'], 'exit_price': p_price,
-                                'qty': partial_qty, 'side': 'LONG', 'pnl': partial_pnl,
-                                'pnl_pct': (partial_pnl/(pos['entry']*partial_qty))*100,
-                                'hold_days': (date-pos['date']).days,
-                                'reason': pos['reason'], 'exit_reason': 'PartialTP',
-                            })
-                            pos['qty']          -= partial_qty
-                            pos['partial_taken'] = True
-                            pos['tp']            = pos['entry'] + pos['trail_atr'] * atr * self.post_partial_mult
-                            pos['sl']            = pos['entry']   # break-even
-                    elif (date - pos['date']).days > max_hold:
+                    for bar_h, bar_l in self._get_hl_sequence(date, high, low):
+                        # Delayed trail activation
+                        if not pos['trail_active']:
+                            if bar_h >= pos['entry'] + self.trail_cushion * atr:
+                                pos['trail_active'] = True
+                        if pos['trail_active']:
+                            new_trail = bar_h - pos['trail_atr'] * atr
+                            if new_trail > pos['sl']:
+                                pos['sl'] = new_trail
+                        # SL hit
+                        if bar_l <= pos['sl']:
+                            exit_price  = pos['sl']
+                            exit_reason = 'TrailSL'
+                            break
+                        # Full TP
+                        elif bar_h >= pos['tp']:
+                            exit_price  = pos['tp']
+                            exit_reason = 'TP'
+                            break
+                        # Partial TP — no break, continue remaining bars
+                        elif not pos['partial_taken'] and bar_h >= pos['partial_tp']:
+                            partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))
+                            if partial_qty > 0:
+                                p_price     = pos['partial_tp']
+                                partial_pnl = (p_price - pos['entry']) * partial_qty
+                                self.equity += partial_pnl
+                                self.closed_trades.append({
+                                    'entry_date':  pos['date'], 'exit_date': date,
+                                    'entry_price': pos['entry'], 'exit_price': p_price,
+                                    'qty': partial_qty, 'side': 'LONG', 'pnl': partial_pnl,
+                                    'pnl_pct': (partial_pnl/(pos['entry']*partial_qty))*100,
+                                    'hold_days': (date-pos['date']).days,
+                                    'reason': pos['reason'], 'exit_reason': 'PartialTP',
+                                })
+                                pos['qty']          -= partial_qty
+                                pos['partial_taken'] = True
+                                pos['tp']            = pos['entry'] + pos['trail_atr'] * atr * self.post_partial_mult
+                                pos['sl']            = pos['entry']   # break-even
+                    if exit_price is None and (date - pos['date']).days > max_hold:
                         exit_price  = close
                         exit_reason = 'Max_Hold'
 
                 else:  # Short
-                    if not pos['trail_active']:
-                        if low <= pos['entry'] - self.trail_cushion * atr:
-                            pos['trail_active'] = True
-
-                    if pos['trail_active']:
-                        new_trail = low + pos['trail_atr'] * atr
-                        if new_trail < pos['sl']:
-                            pos['sl'] = new_trail
-
-                    if high >= pos['sl']:
-                        exit_price  = pos['sl']
-                        exit_reason = 'TrailSL'
-                    elif low <= pos['tp']:
-                        exit_price  = pos['tp']
-                        exit_reason = 'TP'
-                    elif not pos['partial_taken'] and low <= pos['partial_tp']:
-                        partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))  # V9: tunable
-                        if partial_qty > 0:
-                            p_price     = pos['partial_tp']
-                            partial_pnl = (pos['entry'] - p_price) * partial_qty
-                            self.equity += partial_pnl
-                            self.closed_trades.append({
-                                'entry_date':  pos['date'], 'exit_date': date,
-                                'entry_price': pos['entry'], 'exit_price': p_price,
-                                'qty': partial_qty, 'side': 'SHORT', 'pnl': partial_pnl,
-                                'pnl_pct': (partial_pnl/(pos['entry']*partial_qty))*100,
-                                'hold_days': (date-pos['date']).days,
-                                'reason': pos['reason'], 'exit_reason': 'PartialTP',
-                            })
-                            pos['qty']          -= partial_qty
-                            pos['partial_taken'] = True
-                            pos['tp']            = pos['entry'] - pos['trail_atr'] * atr * self.post_partial_mult
-                            pos['sl']            = pos['entry']
-                    elif (date - pos['date']).days > max_hold:
+                    for bar_h, bar_l in self._get_hl_sequence(date, high, low):
+                        if not pos['trail_active']:
+                            if bar_l <= pos['entry'] - self.trail_cushion * atr:
+                                pos['trail_active'] = True
+                        if pos['trail_active']:
+                            new_trail = bar_l + pos['trail_atr'] * atr
+                            if new_trail < pos['sl']:
+                                pos['sl'] = new_trail
+                        # SL hit
+                        if bar_h >= pos['sl']:
+                            exit_price  = pos['sl']
+                            exit_reason = 'TrailSL'
+                            break
+                        # Full TP
+                        elif bar_l <= pos['tp']:
+                            exit_price  = pos['tp']
+                            exit_reason = 'TP'
+                            break
+                        # Partial TP — no break, continue remaining bars
+                        elif not pos['partial_taken'] and bar_l <= pos['partial_tp']:
+                            partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))
+                            if partial_qty > 0:
+                                p_price     = pos['partial_tp']
+                                partial_pnl = (pos['entry'] - p_price) * partial_qty
+                                self.equity += partial_pnl
+                                self.closed_trades.append({
+                                    'entry_date':  pos['date'], 'exit_date': date,
+                                    'entry_price': pos['entry'], 'exit_price': p_price,
+                                    'qty': partial_qty, 'side': 'SHORT', 'pnl': partial_pnl,
+                                    'pnl_pct': (partial_pnl/(pos['entry']*partial_qty))*100,
+                                    'hold_days': (date-pos['date']).days,
+                                    'reason': pos['reason'], 'exit_reason': 'PartialTP',
+                                })
+                                pos['qty']          -= partial_qty
+                                pos['partial_taken'] = True
+                                pos['tp']            = pos['entry'] - pos['trail_atr'] * atr * self.post_partial_mult
+                                pos['sl']            = pos['entry']
+                    if exit_price is None and (date - pos['date']).days > max_hold:
                         exit_price  = close
                         exit_reason = 'Max_Hold'
 
