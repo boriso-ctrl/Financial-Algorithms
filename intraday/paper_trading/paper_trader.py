@@ -87,6 +87,8 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 0.5, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 30, 'max_hold_mr': 25,
+        # V9 additions (Sharpe 1.32→1.35, CAGR 6.4%→8.47%)
+        'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
     },
     'XLK': {
         'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,
@@ -95,6 +97,8 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 1.0, 'post_partial_mult': 2.0,
         'macd_fast': 8, 'macd_slow': 26,
         'max_hold_trend': 80, 'max_hold_mr': 25,
+        # V9 additions (CAGR 20.0%→20.29%)
+        'vol_regime_scale': 1.1,
     },
     'NVDA': {
         'trail_atr': 3.5, 'vol_target': 0.22, 'tp_mult': 3.0, 'partial_tp_mult': 1.5,
@@ -103,6 +107,8 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 2.0, 'post_partial_mult': 2.0,
         'macd_fast': 12, 'macd_slow': 26,
         'max_hold_trend': 60, 'max_hold_mr': 25,
+        # V9 additions (Sharpe 2.09→2.16, CAGR 12.4%→12.71%)
+        'enable_bb_signal': True, 'partial_qty_pct': 0.67, 'vol_regime_scale': 1.1,
     },
 }
 

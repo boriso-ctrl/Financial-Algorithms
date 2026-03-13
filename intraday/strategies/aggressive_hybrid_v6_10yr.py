@@ -71,7 +71,12 @@ class AggressiveHybridV6:
                  # V8: execution structure params
                  trail_cushion=1.0, post_partial_mult=2.5,
                  macd_fast=12, macd_slow=26, macd_sig=9,
-                 max_hold_trend=60, max_hold_mr=25):
+                 max_hold_trend=60, max_hold_mr=25,
+                 # V9: signal enhancers + entry-quality filters
+                 di_filter=False, obv_filter=False,
+                 enable_stoch_rsi=False, enable_bb_signal=False,
+                 partial_qty_pct=0.50, vol_regime_scale=1.0,
+                 min_vol_ratio=0.0, reentry_cooldown=0):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -99,6 +104,15 @@ class AggressiveHybridV6:
         self.macd_sig         = macd_sig
         self.max_hold_trend   = max_hold_trend
         self.max_hold_mr      = max_hold_mr
+        # V9 new params
+        self.di_filter        = di_filter
+        self.obv_filter       = obv_filter
+        self.enable_stoch_rsi = enable_stoch_rsi
+        self.enable_bb_signal = enable_bb_signal
+        self.partial_qty_pct  = partial_qty_pct
+        self.vol_regime_scale = vol_regime_scale
+        self.min_vol_ratio    = min_vol_ratio
+        self.reentry_cooldown = reentry_cooldown
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -189,6 +203,24 @@ class AggressiveHybridV6:
         denom     = np.clip(plus_di + minus_di, 0.0001, None)
         dx        = 100 * (plus_di - minus_di).abs() / denom
         df['ADX'] = dx.rolling(self.atr_period).mean()
+
+        # V9: store DI+/DI- for directional gating
+        df['Plus_DI']  = plus_di.fillna(0)
+        df['Minus_DI'] = minus_di.fillna(0)
+
+        # V9: OBV 5-day slope (positive = accumulation)
+        _obv = (np.sign(df['Close'].diff()) * df['Volume']).cumsum()
+        df['OBV_Slope'] = (_obv - _obv.shift(5)).fillna(0)
+
+        # V9: Stochastic RSI_K (0=oversold, 1=overbought)
+        _rsi_min = df['RSI'].rolling(14).min()
+        _rsi_max = df['RSI'].rolling(14).max()
+        df['StochRSI_K'] = ((df['RSI'] - _rsi_min) / (_rsi_max - _rsi_min + 1e-10)).fillna(0.5)
+
+        # V9: Bollinger Band %B (0=at lower band, 1=at upper band)
+        _bb_std = df['Close'].rolling(20).std()
+        _bb_mid = df['Close'].rolling(20).mean()
+        df['BB_PCT'] = ((df['Close'] - (_bb_mid - 2*_bb_std)) / (4*_bb_std + 1e-10)).fillna(0.5)
 
         # Volume
         df['Vol_Avg']   = df['Volume'].rolling(20).mean()
@@ -286,6 +318,14 @@ class AggressiveHybridV6:
         if three_lower and row['Close'] > prev['Close'] and row['RSI'] < 58:
             signals.append('pullback_3day');     mr_strength += 0.30
 
+        # V9: Stochastic RSI oversold — more sensitive than plain RSI
+        if self.enable_stoch_rsi and row['StochRSI_K'] < 0.20 and row['Close'] > prev['Close']:
+            signals.append('stoch_rsi_oversold'); mr_strength += 0.30
+
+        # V9: Bollinger Band lower-band bounce — price near lower BB with uptick
+        if self.enable_bb_signal and row['BB_PCT'] < 0.25 and row['Close'] > prev['Close']:
+            signals.append('bb_lower_bounce');    mr_strength += 0.25
+
         # If MR strength exceeds trend strength, classify as MR
         if mr_strength > strength:
             strength = mr_strength
@@ -373,6 +413,7 @@ class AggressiveHybridV6:
 
         pending_entries = []
         peak_equity     = self.equity
+        last_stop_bar   = -999   # V9: reentry cooldown tracker
 
         for idx in range(200, len(self.data)):
             date         = self.data.index[idx]
@@ -387,7 +428,12 @@ class AggressiveHybridV6:
             ema50        = float(self.data['EMA50'].iloc[idx])
             ema200       = float(self.data['EMA200'].iloc[idx])
             ema50_slope  = float(self.data['EMA50_Slope'].iloc[idx])
-            realized_vol = float(self.data['Realized_Vol'].iloc[idx])
+            realized_vol  = float(self.data['Realized_Vol'].iloc[idx])
+            # V9: directional + volume indicators for entry gates
+            plus_di_val   = float(self.data['Plus_DI'].iloc[idx])
+            minus_di_val  = float(self.data['Minus_DI'].iloc[idx])
+            obv_slope_val = float(self.data['OBV_Slope'].iloc[idx])
+            vol_ratio_val = float(self.data['Vol_Ratio'].iloc[idx])
 
             # ── Three-regime classification ────────────────────────────
             # Confirmed uptrend:   price > EMA200 AND EMA50 > EMA200
@@ -403,9 +449,11 @@ class AggressiveHybridV6:
             # ── Volatility scaling ─────────────────────────────────────
             # Strong uptrend: allow gentle upscaling (1.2×)
             # Other: cap at 1.0× (protect against over-sizing in volatile regime)
+            # V9: regime-adaptive vol target (uptrend → scale up slightly)
+            _vol_tgt = VOL_TARGET * (self.vol_regime_scale if trend_regime == 'up' else 1.0)
             max_vol_scale = 1.2 if (trend_regime == 'up' and adx > 28 and vix < 20) else 1.0
             vol_scale = float(np.clip(
-                VOL_TARGET / max(realized_vol, 0.05), 0.4, max_vol_scale
+                _vol_tgt / max(realized_vol, 0.05), 0.4, max_vol_scale
             ))
 
             # ── Drawdown state ─────────────────────────────────────────
@@ -475,7 +523,7 @@ class AggressiveHybridV6:
                         exit_reason = 'TP'
                     # Partial TP
                     elif not pos['partial_taken'] and high >= pos['partial_tp']:
-                        partial_qty = pos['qty'] // 2
+                        partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))  # V9: tunable
                         if partial_qty > 0:
                             p_price     = pos['partial_tp']
                             partial_pnl = (p_price - pos['entry']) * partial_qty
@@ -513,7 +561,7 @@ class AggressiveHybridV6:
                         exit_price  = pos['tp']
                         exit_reason = 'TP'
                     elif not pos['partial_taken'] and low <= pos['partial_tp']:
-                        partial_qty = pos['qty'] // 2
+                        partial_qty = max(1, int(pos['qty'] * self.partial_qty_pct))  # V9: tunable
                         if partial_qty > 0:
                             p_price     = pos['partial_tp']
                             partial_pnl = (pos['entry'] - p_price) * partial_qty
@@ -549,6 +597,9 @@ class AggressiveHybridV6:
                         'reason': pos['reason'], 'exit_reason': exit_reason,
                     })
                     self.positions.remove(pos)
+                    # V9: track stop-outs for reentry cooldown
+                    if exit_reason == 'TrailSL' and self.reentry_cooldown > 0:
+                        last_stop_bar = idx
 
             self.equity_curve.append(self.equity)
 
@@ -586,7 +637,13 @@ class AggressiveHybridV6:
             # ── LONG entries — CONFIRMED UPTREND ONLY ─────────────────
             # Require: Close > EMA200 AND EMA50 > EMA200 (trend_regime == 'up')
             # EMA50 must also be rising to prevent longs in dying bounces
-            if trend_regime == 'up' and long_vix_ok and ema50_slope > -0.01:
+            # V9: directional quality gates (only apply if enabled)
+            _di_ok   = (not self.di_filter)  or (plus_di_val > minus_di_val)
+            _obv_ok  = (not self.obv_filter) or (obv_slope_val > 0)
+            _vol_ok  = (vol_ratio_val >= self.min_vol_ratio)
+            _cool_ok = (idx - last_stop_bar) >= self.reentry_cooldown
+
+            if trend_regime == 'up' and long_vix_ok and ema50_slope > -0.01 and _di_ok and _obv_ok and _vol_ok and _cool_ok:
                 buy_sigs, buy_str, buy_type = self.generate_buy_signals(idx)
                 if len(buy_sigs) >= 1 and buy_str >= min_strength:
                     if adx > self.adx_thresh + 3 and vix < 20:
