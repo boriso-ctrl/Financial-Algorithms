@@ -75,21 +75,34 @@ ASSET_CONFIGS: dict[str, dict] = {
         # V7 signal
         'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 14,
         'ema_trend': 30, 'adx_thresh': 18, 'min_strength_up': 0.30,
+        # V8 execution
+        'trail_cushion': 1.5, 'post_partial_mult': 1.5,
+        'macd_fast': 8, 'macd_slow': 38,
+        'max_hold_trend': 60, 'max_hold_mr': 25,
     },
     'GBTC': {
         'trail_atr': 3.5, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.0,
         'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14,
         'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.30,
+        'trail_cushion': 0.5, 'post_partial_mult': 2.5,
+        'macd_fast': 8, 'macd_slow': 38,
+        'max_hold_trend': 30, 'max_hold_mr': 25,
     },
     'XLK': {
         'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,
         'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14,
         'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.20,
+        'trail_cushion': 1.0, 'post_partial_mult': 2.0,
+        'macd_fast': 8, 'macd_slow': 26,
+        'max_hold_trend': 80, 'max_hold_mr': 25,
     },
     'NVDA': {
         'trail_atr': 3.5, 'vol_target': 0.22, 'tp_mult': 3.0, 'partial_tp_mult': 1.5,
         'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20,
         'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25,
+        'trail_cushion': 2.0, 'post_partial_mult': 2.0,
+        'macd_fast': 12, 'macd_slow': 26,
+        'max_hold_trend': 60, 'max_hold_mr': 25,
     },
 }
 
