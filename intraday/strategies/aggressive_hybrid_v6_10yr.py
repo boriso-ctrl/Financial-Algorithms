@@ -76,7 +76,9 @@ class AggressiveHybridV6:
                  di_filter=False, obv_filter=False,
                  enable_stoch_rsi=False, enable_bb_signal=False,
                  partial_qty_pct=0.50, vol_regime_scale=1.0,
-                 min_vol_ratio=0.0, reentry_cooldown=0):
+                 min_vol_ratio=0.0, reentry_cooldown=0,
+                 # V10: short-selling
+                 allow_shorts=False, max_hold_short=None):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -113,6 +115,9 @@ class AggressiveHybridV6:
         self.vol_regime_scale = vol_regime_scale
         self.min_vol_ratio    = min_vol_ratio
         self.reentry_cooldown = reentry_cooldown
+        # V10: short-selling
+        self.allow_shorts   = allow_shorts
+        self.max_hold_short = max_hold_short if max_hold_short is not None else max_hold_trend
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -409,7 +414,7 @@ class AggressiveHybridV6:
         VOL_TARGET    = self.vol_target
         DD_REDUCE     = self.dd_reduce
         DD_HALT       = self.dd_halt
-        ALLOW_SHORTS  = False  # long-only by default; enable for bear-market capture
+        ALLOW_SHORTS  = self.allow_shorts  # V10: controllable via param
 
         pending_entries = []
         peak_equity     = self.equity
@@ -498,9 +503,11 @@ class AggressiveHybridV6:
             for pos in list(self.positions):
                 exit_price  = None
                 exit_reason = ''
-                max_hold    = (self.max_hold_trend
-                               if pos.get('sig_type', 'trend') == 'trend'
-                               else self.max_hold_mr)
+                _is_short   = pos['side'] == -1
+                max_hold    = (self.max_hold_short if _is_short
+                               else (self.max_hold_trend
+                                     if pos.get('sig_type', 'trend') == 'trend'
+                                     else self.max_hold_mr))
 
                 if pos['side'] == 1:  # Long
                     # Delayed trail — activates after gaining ≥ trail_cushion×ATR (V8 tunable)

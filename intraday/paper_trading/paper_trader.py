@@ -87,9 +87,10 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 0.5, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 90, 'max_hold_mr': 25,
-        # V9 crypto full-retune (Sharpe 1.38->1.43, CAGR 13.36%->13.55%)
-        # ema_trend 50->100 (Bitcoin ~100-day cycle), vol_target 0.50->0.60, trail_atr 3.5->4.0
+        # V10: long+short crypto-tuned (Sharpe 1.43->1.44, CAGR 13.55%->13.89%)
+        # 791 longs + 137 shorts (captures 2018/2022 crash bias) short_wr=54%
         'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
+        'allow_shorts': True, 'max_hold_short': 60,
     },
     'XLK': {
         'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,
