@@ -81,13 +81,14 @@ ASSET_CONFIGS: dict[str, dict] = {
         'max_hold_trend': 60, 'max_hold_mr': 25,
     },
     'GBTC': {
-        'trail_atr': 3.5, 'vol_target': 0.50, 'tp_mult': 3.0, 'partial_tp_mult': 1.0,
+        'trail_atr': 4.0, 'vol_target': 0.60, 'tp_mult': 3.0, 'partial_tp_mult': 1.0,
         'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14,
-        'ema_trend': 50, 'adx_thresh': 32, 'min_strength_up': 0.30,
+        'ema_trend': 100, 'adx_thresh': 32, 'min_strength_up': 0.30,
         'trail_cushion': 0.5, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 90, 'max_hold_mr': 25,
-        # V9 crypto-tuned (Sharpe 1.35->1.38, CAGR 8.47%->13.36% via vol_target/max_hold fix)
+        # V9 crypto full-retune (Sharpe 1.38->1.43, CAGR 13.36%->13.55%)
+        # ema_trend 50->100 (Bitcoin ~100-day cycle), vol_target 0.50->0.60, trail_atr 3.5->4.0
         'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
     },
     'XLK': {
