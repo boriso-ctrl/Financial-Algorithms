@@ -92,7 +92,11 @@ class AggressiveHybridV6:
                  signal_ema_period=None,    # EMA period on signal ticker (None = ema_trend)
                  # Intraday SL/TP simulation — resolves hit-order within daily bars
                  # '1h' recommended for GBTC/ETFs; None = daily OHLC only (default)
-                 sl_tp_tf=None):
+                 sl_tp_tf=None,
+                 # Entry day filter: set of weekday ints (0=Mon … 6=Sun)
+                 # None = trade every day; {5,6} = weekends only; {0,1,2,3,4} = weekdays only
+                 # Exits always execute regardless of day.
+                 entry_days=None):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -143,6 +147,7 @@ class AggressiveHybridV6:
         self._signal_emas      = None  # populated by _fetch_signal_emas()
         self.sl_tp_tf          = sl_tp_tf
         self._intraday_bars: dict = {}   # date -> [(H, L), ...] for SL/TP sequencing
+        self.entry_days        = set(entry_days) if entry_days is not None else None
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -852,6 +857,12 @@ class AggressiveHybridV6:
                         last_stop_bar = idx
 
             self.equity_curve.append(self.equity)
+
+            # ── Entry day filter ────────────────────────────────────────
+            # Exits always run; only skip signal generation on non-allowed days.
+            # date.dayofweek: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun
+            if self.entry_days is not None and date.dayofweek not in self.entry_days:
+                continue
 
             # ── 3. Generate signals on close → queue for tomorrow ──────
 
