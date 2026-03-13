@@ -39,11 +39,12 @@ def cci_adx_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
     cci = list(df['CCI'])
     adx = list(df['ADX'])
     close = list(df['Close'])
+    trend = list(df['Trend'])
 
     i = 51
     while i < len(df):
         if adx[i] < 25:
-            if df['Trend'][i] != 'Downtrend':
+            if trend[i] != 'Downtrend':
                 if cci[i] < 100 and cci[i - 1] > 100:
                     cdx_signal[i] = 1
                     count = i + 1

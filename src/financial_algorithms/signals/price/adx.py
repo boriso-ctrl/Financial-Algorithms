@@ -41,10 +41,11 @@ def adx_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
     adx_signal = [0] * len(df)
     adx = list(df['ADX'])
     close = list(df['Close'])
+    trend = list(df['Trend'])
 
     i = 51
     while i < len(df):
-        if df['Trend'].iloc[i] == 'Uptrend':
+        if trend[i] == 'Uptrend':
             if adx[i] > 25:
                 adx_signal[i] = 1
                 count = i + 1
@@ -62,7 +63,7 @@ def adx_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
                 i = count
             else:
                 i += 1
-        elif df['Trend'].iloc[i] == 'Downtrend':
+        elif trend[i] == 'Downtrend':
             if adx[i] > 25:
                 adx_signal[i] = -1
                 count = i + 1

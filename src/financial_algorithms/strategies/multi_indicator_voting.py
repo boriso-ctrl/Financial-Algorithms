@@ -73,10 +73,11 @@ class HybridVotingStrategy:
         """
         fast_ma = close.ewm(span=10).mean()
         slow_ma = close.ewm(span=20).mean()
-        
-        if fast_ma.iloc[-1] > slow_ma.iloc[-1]:
+        fast_val = fast_ma.iloc[-1]
+        slow_val = slow_ma.iloc[-1]
+        if fast_val > slow_val:
             return 1
-        elif fast_ma.iloc[-1] < slow_ma.iloc[-1]:
+        elif fast_val < slow_val:
             return -1
         else:
             return 0
@@ -84,17 +85,20 @@ class HybridVotingStrategy:
     # =========================================================================
     # INDICATOR 2: RSI (Momentum, Extremes)
     # =========================================================================
-    def calculate_rsi(self, close: pd.Series, period: int = 14) -> float:
-        """Calculate 14-period RSI."""
+    def _rsi_series(self, close: pd.Series, period: int = 14) -> pd.Series:
+        """Compute the full RSI Series (shared by calculate_rsi and indicator_rsi)."""
         delta = close.diff()
         gain = delta.clip(lower=0)
         loss = -delta.clip(upper=0)
-        avg_gain = gain.ewm(alpha=1/period, adjust=False).mean()
-        avg_loss = loss.ewm(alpha=1/period, adjust=False).mean()
+        avg_gain = gain.ewm(alpha=1 / period, adjust=False).mean()
+        avg_loss = loss.ewm(alpha=1 / period, adjust=False).mean()
         rs = avg_gain / avg_loss.replace(0, np.nan)
-        rsi = 100 - (100 / (1 + rs))
-        return rsi.iloc[-1]
-    
+        return 100 - (100 / (1 + rs))
+
+    def calculate_rsi(self, close: pd.Series, period: int = 14) -> float:
+        """Calculate 14-period RSI."""
+        return self._rsi_series(close, period).iloc[-1]
+
     def indicator_rsi(self, close: pd.Series) -> int:
         """
         RSI momentum indicator
@@ -102,17 +106,18 @@ class HybridVotingStrategy:
         -1: Bearish (RSI falling AND 40-60 zone)
          0: Neutral or extreme (RSI < 30 or > 70)
         """
-        rsi = self.calculate_rsi(close)
-        rsi_prev = self.calculate_rsi(close.iloc[:-1]) if len(close) > 1 else rsi
-        
+        rsi = self._rsi_series(close)
+        rsi_curr = rsi.iloc[-1]
+        rsi_prev = rsi.iloc[-2] if len(rsi) > 1 else rsi_curr
+
         # Extremes = neutral
-        if rsi < 30 or rsi > 70:
+        if rsi_curr < 30 or rsi_curr > 70:
             return 0
-        
+
         # Momentum direction
-        if rsi > rsi_prev:
+        if rsi_curr > rsi_prev:
             return 1  # Rising momentum
-        elif rsi < rsi_prev:
+        elif rsi_curr < rsi_prev:
             return -1  # Falling momentum
         else:
             return 0
@@ -131,10 +136,11 @@ class HybridVotingStrategy:
         ema26 = close.ewm(span=26).mean()
         macd = ema12 - ema26
         signal = macd.ewm(span=9).mean()
-        
-        if macd.iloc[-1] > signal.iloc[-1]:
+        macd_val = macd.iloc[-1]
+        signal_val = signal.iloc[-1]
+        if macd_val > signal_val:
             return 1
-        elif macd.iloc[-1] < signal.iloc[-1]:
+        elif macd_val < signal_val:
             return -1
         else:
             return 0
@@ -153,10 +159,10 @@ class HybridVotingStrategy:
         std = close.rolling(20).std()
         upper = sma + 2 * std
         lower = sma - 2 * std
-        
-        if close.iloc[-1] > upper.iloc[-1]:
+        close_val = close.iloc[-1]
+        if close_val > upper.iloc[-1]:
             return 1
-        elif close.iloc[-1] < lower.iloc[-1]:
+        elif close_val < lower.iloc[-1]:
             return -1
         else:
             return 0
@@ -184,31 +190,38 @@ class HybridVotingStrategy:
     # =========================================================================
     # INDICATOR 6: ADX (Trend Strength)
     # =========================================================================
-    def calculate_adx(self, high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> float:
-        """Simplified ADX calculation."""
+    def _adx_components(
+        self, high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14
+    ) -> tuple[float, float, float]:
+        """Compute ADX, +DI, and -DI in one pass (avoids duplicate calculations)."""
         tr = pd.concat([
             high - low,
             (high - close.shift()).abs(),
             (low - close.shift()).abs(),
         ], axis=1).max(axis=1)
-        
+
         atr = tr.rolling(period).mean()
-        
-        plus_dm = high.diff()
-        minus_dm = -low.diff()
-        plus_dm = plus_dm.where(plus_dm > minus_dm, 0).where(plus_dm > 0, 0)
-        minus_dm = minus_dm.where(minus_dm > plus_dm, 0).where(minus_dm > 0, 0)
-        
+
+        hd = high.diff()
+        ld = -low.diff()
+        plus_dm = hd.where(hd > ld, 0).where(hd > 0, 0)
+        minus_dm = ld.where(ld > hd, 0).where(ld > 0, 0)
+
         plus_di = 100 * plus_dm.rolling(period).mean() / atr
         minus_di = 100 * minus_dm.rolling(period).mean() / atr
-        
+
         di_sum = plus_di + minus_di
         di_diff = (plus_di - minus_di).abs()
         dx = 100 * di_diff / di_sum.replace(0, np.nan)
         adx = dx.rolling(period).mean()
-        
-        return adx.iloc[-1]
-    
+
+        return adx.iloc[-1], plus_di.iloc[-1], minus_di.iloc[-1]
+
+    def calculate_adx(self, high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> float:
+        """Simplified ADX calculation."""
+        adx_val, _, _ = self._adx_components(high, low, close, period)
+        return adx_val
+
     def indicator_adx(self, high: pd.Series, low: pd.Series, close: pd.Series) -> int:
         """
         ADX trend strength
@@ -216,28 +229,14 @@ class HybridVotingStrategy:
         -1: Strong downtrend (ADX > 25 and -DI > +DI)
          0: Weak trend (ADX < 25)
         """
-        adx = self.calculate_adx(high, low, close)
-        
+        adx, plus_di_val, minus_di_val = self._adx_components(high, low, close)
+
         if adx < 25:
             return 0  # Weak trend
-        
-        # Determine direction
-        tr = pd.concat([
-            high - low,
-            (high - close.shift()).abs(),
-            (low - close.shift()).abs(),
-        ], axis=1).max(axis=1)
-        atr = tr.rolling(14).mean()
-        
-        plus_dm = high.diff().where(high.diff() > -low.diff(), 0).where(high.diff() > 0, 0)
-        minus_dm = -low.diff().where(-low.diff() > high.diff(), 0).where(-low.diff() > 0, 0)
-        
-        plus_di = 100 * plus_dm.rolling(14).mean() / atr
-        minus_di = 100 * minus_dm.rolling(14).mean() / atr
-        
-        if plus_di.iloc[-1] > minus_di.iloc[-1]:
+
+        if plus_di_val > minus_di_val:
             return 1
-        elif plus_di.iloc[-1] < minus_di.iloc[-1]:
+        elif plus_di_val < minus_di_val:
             return -1
         else:
             return 0
