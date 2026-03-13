@@ -83,16 +83,18 @@ ASSET_CONFIGS: dict[str, dict] = {
     'GBTC': {
         'trail_atr': 4.0, 'vol_target': 0.60, 'tp_mult': 3.0, 'partial_tp_mult': 1.0,
         'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14,
-        'ema_trend': 100, 'adx_thresh': 32, 'min_strength_up': 0.30,
+        'ema_trend': 145, 'adx_thresh': 32, 'min_strength_up': 0.30,
         'trail_cushion': 0.5, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 90, 'max_hold_mr': 25,
-        # V10: on-chain signals (Sharpe 1.44->1.47, CAGR 13.89%->14.19%, 981 trades)
-        # 285/750 grid combos beat baseline; mvrv_long=2.0 key driver (+51 trades)
+        # V10: on-chain signals + BTC-USD 24/7 regime leading (ema=180)
+        # BTC-USD crossover states drive regime gate; GBTC native EMAs for entries
+        # Result: Sharpe 1.660, CAGR 17.94%, 924 trades, MaxDD 6.9% (vs 1.47/14.19% V10)
         'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
         'allow_shorts': True, 'max_hold_short': 60,
         'use_onchain': True, 'mvrv_long_thresh': 2.0, 'mvrv_short_thresh': 3.5,
         'fg_fear_thresh': 25, 'fg_greed_thresh': 75,
+        'signal_ticker': 'BTC-USD', 'signal_ema_period': 180,
     },
     'XLK': {
         'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,

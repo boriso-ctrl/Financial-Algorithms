@@ -85,7 +85,11 @@ class AggressiveHybridV6:
                  mvrv_long_thresh=1.5,   # MVRV below this = on-chain oversold (buy boost)
                  mvrv_short_thresh=3.5,  # MVRV above this = on-chain overbought (short filter)
                  fg_fear_thresh=25,      # F&G below this = extreme fear (buy boost)
-                 fg_greed_thresh=75):    # F&G above this = extreme greed (short filter)
+                 fg_greed_thresh=75,     # F&G above this = extreme greed (short filter)
+                 # V10: 24/7 leading EMA — use BTC-USD (or other) as signal source
+                 # while executing on self.ticker (e.g. GBTC)
+                 signal_ticker=None,        # e.g. 'BTC-USD'
+                 signal_ema_period=None):   # EMA period on signal ticker (None = ema_trend)
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -131,6 +135,9 @@ class AggressiveHybridV6:
         self.mvrv_short_thresh = mvrv_short_thresh
         self.fg_fear_thresh    = fg_fear_thresh
         self.fg_greed_thresh   = fg_greed_thresh
+        self.signal_ticker     = signal_ticker
+        self.signal_ema_period = signal_ema_period
+        self._signal_emas      = None  # populated by _fetch_signal_emas()
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -141,31 +148,34 @@ class AggressiveHybridV6:
     # ------------------------------------------------------------------
     # DATA
     # ------------------------------------------------------------------
+    @staticmethod
+    def _flatten_multiindex(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+        """Flatten a MultiIndex columns DataFrame returned by yfinance."""
+        if not isinstance(df.columns, pd.MultiIndex):
+            return df
+        names = df.columns.names
+        ticker_level = names.index('Ticker') if 'Ticker' in names else 1
+        try:
+            return df.xs(ticker, level=ticker_level, axis=1)
+        except KeyError:
+            df.columns = df.columns.get_level_values(0)
+            return df
+
     def fetch_data(self):
         try:
             raw = yf.download(self.ticker, start=self.start, end=self.end,
                               progress=False, auto_adjust=True)
-            if isinstance(raw.columns, pd.MultiIndex):
-                names = raw.columns.names
-                tl = names.index('Ticker') if 'Ticker' in names else 1
-                try:
-                    raw = raw.xs(self.ticker, level=tl, axis=1)
-                except KeyError:
-                    raw.columns = raw.columns.get_level_values(0)
-            self.data = raw
+            self.data = self._flatten_multiindex(raw, self.ticker)
 
             vix_raw = yf.download('^VIX', start=self.start, end=self.end,
                                   progress=False, auto_adjust=True)
-            if isinstance(vix_raw.columns, pd.MultiIndex):
-                names = vix_raw.columns.names
-                tl = names.index('Ticker') if 'Ticker' in names else 1
-                try:
-                    vix_raw = vix_raw.xs('^VIX', level=tl, axis=1)
-                except KeyError:
-                    vix_raw.columns = vix_raw.columns.get_level_values(0)
-            self.vix = vix_raw
+            self.vix = self._flatten_multiindex(vix_raw, '^VIX')
 
             logger.info(f"Loaded {len(self.data)} bars of {self.ticker}")
+
+            # V10: 24/7 leading EMA signal source
+            if self.signal_ticker:
+                self._fetch_signal_emas()
 
             # V10: on-chain data fetch (MVRV + Fear & Greed)
             if self.use_onchain:
@@ -175,6 +185,36 @@ class AggressiveHybridV6:
         except Exception as e:
             logger.error(f"Data fetch error: {e}")
             return False
+
+    def _fetch_signal_emas(self):
+        """Fetch signal_ticker (e.g. BTC-USD) and pre-compute regime states.
+        Stores BTC-USD LT_Trend (1/-1), EMA50, EMA200, and slope% — all within BTC\'s
+        own price scale so crossover comparisons remain valid. These feed Lead_* columns
+        directly; GBTC\'s native EMA columns are NOT overridden."""
+        period = self.signal_ema_period if self.signal_ema_period else self.ema_trend
+        try:
+            raw = yf.download(self.signal_ticker, start=self.start, end=self.end,
+                              progress=False, auto_adjust=True)
+            src = self._flatten_multiindex(raw, self.signal_ticker)
+            src = src[['Close']].copy()
+            src['EMA200'] = src['Close'].ewm(span=200,    adjust=False).mean()
+            src['EMA50']  = src['Close'].ewm(span=period, adjust=False).mean()
+            # Regime computed within BTC-USD\'s own price scale (valid comparisons)
+            src['LT_Trend']  = np.where(src['Close'] > src['EMA200'], 1.0, -1.0)
+            src['Slope_Pct'] = (
+                (src['EMA50'] - src['EMA50'].shift(3))
+                / src['EMA50'].shift(3).clip(lower=1e-6) * 100
+            ).fillna(0.0)
+            # Align to trading-ticker calendar (forward-fill weekends/holidays)
+            aligned = src[['LT_Trend', 'EMA50', 'EMA200', 'Slope_Pct']].reindex(
+                self.data.index, method='ffill'
+            ).fillna({'LT_Trend': 1.0, 'EMA50': 0.0, 'EMA200': 1.0, 'Slope_Pct': 0.0})
+            self._signal_emas = aligned
+            logger.info(f"Signal regime from {self.signal_ticker} ({len(src)} bars, "
+                        f"ema_period={period}) -> aligned to {len(self.data)} {self.ticker} bars")
+        except Exception as e:
+            logger.warning(f"Signal EMA fetch failed for {self.signal_ticker}: {e}")
+            self._signal_emas = None
 
     def _fetch_onchain_data(self):
         """Fetch MVRV (CoinMetrics, free, 2011+) and Fear & Greed (alternative.me, 2018+)."""
@@ -229,11 +269,11 @@ class AggressiveHybridV6:
     def prepare_indicators(self):
         df = self.data.copy()
 
-        # Trend structure
-        df['EMA200'] = df['Close'].ewm(span=200,           adjust=False).mean()
-        df['EMA50']  = df['Close'].ewm(span=self.ema_trend, adjust=False).mean()  # tunable medium-term EMA
-        df['EMA20']  = df['Close'].ewm(span=20,            adjust=False).mean()
-        df['EMA9']   = df['Close'].ewm(span=9,   adjust=False).mean()
+        # Trend structure — native (may be overridden by signal_ticker below)
+        df['EMA200'] = df['Close'].ewm(span=200,            adjust=False).mean()
+        df['EMA50']  = df['Close'].ewm(span=self.ema_trend, adjust=False).mean()
+        df['EMA20']  = df['Close'].ewm(span=20,             adjust=False).mean()
+        df['EMA9']   = df['Close'].ewm(span=9,              adjust=False).mean()
 
         # Long-term trend: price vs EMA200
         df['LT_Trend'] = np.where(df['Close'] > df['EMA200'], 1, -1)
@@ -329,6 +369,25 @@ class AggressiveHybridV6:
             (ema50_above_200 == 1) &
             (ema50_above_200.shift(10).fillna(0) == 0)
         ).astype(int)
+
+        # ── Lead_* regime columns ─────────────────────────────────────────────
+        # When signal_ticker is set: BTC-USD\'s own EMA50/EMA200/LT_Trend feed
+        # Lead_* (all in BTC\'s price scale, so EMA50>EMA200 comparison is valid).
+        # GBTC\'s native EMA columns stay intact for buy/sell signal generation.
+        # When no signal_ticker: mirrors native GBTC regime.
+        if self._signal_emas is not None:
+            sig = self._signal_emas.reindex(df.index).ffill()
+            df['Lead_LT']        = sig['LT_Trend'].fillna(1.0)
+            df['Lead_EMA50']     = sig['EMA50'].fillna(0.0)
+            df['Lead_EMA200']    = sig['EMA200'].fillna(1.0)
+            df['Lead_Slope_Pct'] = sig['Slope_Pct'].fillna(0.0)
+        else:
+            df['Lead_LT']       = df['LT_Trend'].astype(float)
+            df['Lead_EMA50']    = df['EMA50']
+            df['Lead_EMA200']   = df['EMA200']
+            df['Lead_Slope_Pct'] = (
+                (df['EMA50'] - df['EMA50'].shift(3)) / df['EMA50'].shift(3).clip(lower=1e-6) * 100
+            ).fillna(0.0)
 
         self.data = df
 
@@ -523,37 +582,69 @@ class AggressiveHybridV6:
         DD_HALT       = self.dd_halt
         ALLOW_SHORTS  = self.allow_shorts  # V10: controllable via param
 
+        # Pre-extract hot-path columns as numpy arrays (major speedup vs per-bar .iloc)
+        _open  = self.data['Open'].to_numpy(dtype=float)
+        _high  = self.data['High'].to_numpy(dtype=float)
+        _low   = self.data['Low'].to_numpy(dtype=float)
+        _close = self.data['Close'].to_numpy(dtype=float)
+        _atr   = self.data['ATR'].to_numpy(dtype=float)
+        _vix   = self.data['VIX'].to_numpy(dtype=float)
+        _adx   = self.data['ADX'].to_numpy(dtype=float)
+        _lt    = self.data['LT_Trend'].to_numpy(dtype=float)
+        _ema50 = self.data['EMA50'].to_numpy(dtype=float)
+        _ema200= self.data['EMA200'].to_numpy(dtype=float)
+        _ema50s= self.data['EMA50_Slope'].to_numpy(dtype=float)
+        _rvol  = self.data['Realized_Vol'].to_numpy(dtype=float)
+        _pdi   = self.data['Plus_DI'].to_numpy(dtype=float)
+        _mdi   = self.data['Minus_DI'].to_numpy(dtype=float)
+        _obvs  = self.data['OBV_Slope'].to_numpy(dtype=float)
+        _volr  = self.data['Vol_Ratio'].to_numpy(dtype=float)
+        _dates = self.data.index
+        # BTC-leading regime arrays (same as native when lead_ema_df is None)
+        _lead_lt   = self.data['Lead_LT'].to_numpy(dtype=float)
+        _lead_ema50= self.data['Lead_EMA50'].to_numpy(dtype=float)
+        _lead_ema200=self.data['Lead_EMA200'].to_numpy(dtype=float)
+        _lead_slp  = self.data['Lead_Slope_Pct'].to_numpy(dtype=float)
+
         pending_entries = []
         peak_equity     = self.equity
         last_stop_bar   = -999   # V9: reentry cooldown tracker
 
         for idx in range(200, len(self.data)):
-            date         = self.data.index[idx]
-            open_        = float(self.data['Open'].iloc[idx])
-            high         = float(self.data['High'].iloc[idx])
-            low          = float(self.data['Low'].iloc[idx])
-            close        = float(self.data['Close'].iloc[idx])
-            atr          = float(self.data['ATR'].iloc[idx])
-            vix          = float(self.data['VIX'].iloc[idx])
-            adx          = float(self.data['ADX'].iloc[idx])
-            lt           = float(self.data['LT_Trend'].iloc[idx])
-            ema50        = float(self.data['EMA50'].iloc[idx])
-            ema200       = float(self.data['EMA200'].iloc[idx])
-            ema50_slope  = float(self.data['EMA50_Slope'].iloc[idx])
-            realized_vol  = float(self.data['Realized_Vol'].iloc[idx])
+            date         = _dates[idx]
+            open_        = _open[idx]
+            high         = _high[idx]
+            low          = _low[idx]
+            close        = _close[idx]
+            atr          = _atr[idx]
+            vix          = _vix[idx]
+            adx          = _adx[idx]
+            lt           = _lt[idx]
+            ema50        = _ema50[idx]
+            ema200       = _ema200[idx]
+            ema50_slope  = _ema50s[idx]
+            realized_vol = _rvol[idx]
             # V9: directional + volume indicators for entry gates
-            plus_di_val   = float(self.data['Plus_DI'].iloc[idx])
-            minus_di_val  = float(self.data['Minus_DI'].iloc[idx])
-            obv_slope_val = float(self.data['OBV_Slope'].iloc[idx])
-            vol_ratio_val = float(self.data['Vol_Ratio'].iloc[idx])
+            plus_di_val   = _pdi[idx]
+            minus_di_val  = _mdi[idx]
+            obv_slope_val = _obvs[idx]
+            vol_ratio_val = _volr[idx]
 
             # ── Three-regime classification ────────────────────────────
+            # Uses BTC-leading EMA if lead_ema_df is set, otherwise native EMAs.
+            # lead_lt / lead_ema50 / lead_ema200 are scale-matched to each other
+            # (both from BTC-USD), so ema50 > ema200 comparison is valid.
+            lead_lt        = _lead_lt[idx]
+            lead_ema50     = _lead_ema50[idx]
+            lead_ema200    = _lead_ema200[idx]
+            lead_slope_pct = _lead_slp[idx]   # % per 3 days; threshold: > -0.05%
+
             # Confirmed uptrend:   price > EMA200 AND EMA50 > EMA200
             # Confirmed downtrend: price < EMA200 AND EMA50 < EMA200
             # Transitional:        mixed signals (bear rallies, recoveries)
-            if lt >= 0 and ema50 > ema200:
+            if lead_lt >= 0 and lead_ema50 > lead_ema200:
                 trend_regime = 'up'
-            elif lt < 0 and ema50 < ema200:
+            elif lead_lt < 0 and lead_ema50 < lead_ema200:
                 trend_regime = 'down'
             else:
                 trend_regime = 'transition'
@@ -706,7 +797,7 @@ class AggressiveHybridV6:
                         'qty': pos['qty'],
                         'side': 'LONG' if pos['side'] == 1 else 'SHORT',
                         'pnl': pnl,
-                        'pnl_pct': (pnl/(pos['entry']*pos['qty']))*100,
+                        'pnl_pct': (pnl/(pos['entry']*pos['qty']+1e-10))*100,
                         'hold_days': (date-pos['date']).days,
                         'reason': pos['reason'], 'exit_reason': exit_reason,
                     })
@@ -757,7 +848,7 @@ class AggressiveHybridV6:
             _vol_ok  = (vol_ratio_val >= self.min_vol_ratio)
             _cool_ok = (idx - last_stop_bar) >= self.reentry_cooldown
 
-            if trend_regime == 'up' and long_vix_ok and ema50_slope > -0.01 and _di_ok and _obv_ok and _vol_ok and _cool_ok:
+            if trend_regime == 'up' and long_vix_ok and lead_slope_pct > -0.05 and _di_ok and _obv_ok and _vol_ok and _cool_ok:
                 buy_sigs, buy_str, buy_type = self.generate_buy_signals(idx)
                 if len(buy_sigs) >= 1 and buy_str >= min_strength:
                     if adx > self.adx_thresh + 3 and vix < 20:
@@ -814,7 +905,7 @@ class AggressiveHybridV6:
                 'qty': pos['qty'],
                 'side': 'LONG' if pos['side'] == 1 else 'SHORT',
                 'pnl': pnl,
-                'pnl_pct': (pnl/(pos['entry']*pos['qty']))*100,
+                'pnl_pct': (pnl/(pos['entry']*pos['qty']+1e-10))*100,
                 'hold_days': (last_date - pos['date']).days,
                 'reason': pos['reason'], 'exit_reason': 'EOB',
             })
@@ -852,13 +943,10 @@ class AggressiveHybridV6:
         else:
             trade_sharpe = 0.0
 
-        # Drawdown
-        peak   = 100_000
-        max_dd = 0.0
-        for e in self.equity_curve:
-            peak  = max(peak, e)
-            dd    = ((peak - e) / peak) * 100
-            max_dd = max(max_dd, dd)
+        # Drawdown (vectorised — ~50× faster than Python loop)
+        eq_arr = np.array(self.equity_curve, dtype=float)
+        peak_arr = np.maximum.accumulate(eq_arr)
+        max_dd = float(((peak_arr - eq_arr) / peak_arr * 100).max())
 
         # Profit factor
         gross_wins = trades[trades['pnl'] > 0]['pnl'].sum()
