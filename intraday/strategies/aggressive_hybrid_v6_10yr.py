@@ -53,6 +53,7 @@ import pandas as pd
 import yfinance as yf
 import json
 import logging
+import urllib.request
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -78,7 +79,13 @@ class AggressiveHybridV6:
                  partial_qty_pct=0.50, vol_regime_scale=1.0,
                  min_vol_ratio=0.0, reentry_cooldown=0,
                  # V10: short-selling
-                 allow_shorts=False, max_hold_short=None):
+                 allow_shorts=False, max_hold_short=None,
+                 # V10: on-chain signals (MVRV + Fear & Greed)
+                 use_onchain=False,
+                 mvrv_long_thresh=1.5,   # MVRV below this = on-chain oversold (buy boost)
+                 mvrv_short_thresh=3.5,  # MVRV above this = on-chain overbought (short filter)
+                 fg_fear_thresh=25,      # F&G below this = extreme fear (buy boost)
+                 fg_greed_thresh=75):    # F&G above this = extreme greed (short filter)
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -118,6 +125,12 @@ class AggressiveHybridV6:
         # V10: short-selling
         self.allow_shorts   = allow_shorts
         self.max_hold_short = max_hold_short if max_hold_short is not None else max_hold_trend
+        # V10: on-chain
+        self.use_onchain       = use_onchain
+        self.mvrv_long_thresh  = mvrv_long_thresh
+        self.mvrv_short_thresh = mvrv_short_thresh
+        self.fg_fear_thresh    = fg_fear_thresh
+        self.fg_greed_thresh   = fg_greed_thresh
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -153,10 +166,62 @@ class AggressiveHybridV6:
             self.vix = vix_raw
 
             logger.info(f"Loaded {len(self.data)} bars of {self.ticker}")
+
+            # V10: on-chain data fetch (MVRV + Fear & Greed)
+            if self.use_onchain:
+                self._fetch_onchain_data()
+
             return True
         except Exception as e:
             logger.error(f"Data fetch error: {e}")
             return False
+
+    def _fetch_onchain_data(self):
+        """Fetch MVRV (CoinMetrics, free, 2011+) and Fear & Greed (alternative.me, 2018+)."""
+        import json as _json
+
+        # ── MVRV (Market Value / Realized Value) ──────────────────────────────
+        try:
+            start_str = self.start[:10]
+            end_str   = self.end[:10]
+            url = (f"https://community-api.coinmetrics.io/v4/timeseries/asset-metrics"
+                   f"?assets=btc&metrics=CapMVRVCur&frequency=1d&page_size=10000"
+                   f"&start_time={start_str}&end_time={end_str}")
+            with urllib.request.urlopen(url, timeout=15) as r:
+                raw = _json.loads(r.read())
+            mvrv_data = {
+                row['time'][:10]: float(row['CapMVRVCur'])
+                for row in raw['data']
+                if row.get('CapMVRVCur') is not None
+            }
+            mvrv_series = pd.Series(mvrv_data)
+            mvrv_series.index = pd.to_datetime(mvrv_series.index)
+            self._mvrv = mvrv_series.reindex(self.data.index).ffill().fillna(1.5)
+            logger.info(f"On-chain MVRV loaded: {len(mvrv_data)} days")
+        except Exception as e:
+            logger.warning(f"MVRV fetch failed, using neutral 1.5: {e}")
+            self._mvrv = pd.Series(1.5, index=self.data.index)
+
+        # ── Fear & Greed Index ────────────────────────────────────────────────
+        try:
+            url2 = "https://api.alternative.me/fng/?limit=5000&format=json&date_format=us"
+            with urllib.request.urlopen(url2, timeout=10) as r:
+                raw2 = _json.loads(r.read())
+            fg_data = {}
+            for item in raw2['data']:
+                try:
+                    # date_format=us gives MM-DD-YYYY
+                    ts = item['timestamp']
+                    dt = pd.to_datetime(ts, format='%m-%d-%Y')
+                    fg_data[dt] = int(item['value'])
+                except Exception:
+                    pass
+            fg_series = pd.Series(fg_data).sort_index()
+            self._fg = fg_series.reindex(self.data.index).ffill().fillna(50)
+            logger.info(f"Fear & Greed loaded: {len(fg_data)} days")
+        except Exception as e:
+            logger.warning(f"Fear & Greed fetch failed, using neutral 50: {e}")
+            self._fg = pd.Series(50, index=self.data.index)
 
     # ------------------------------------------------------------------
     # INDICATORS
@@ -238,6 +303,14 @@ class AggressiveHybridV6:
 
         # VIX
         df['VIX'] = self.vix['Close'].reindex(df.index).ffill().fillna(20)
+
+        # V10: on-chain signals
+        if self.use_onchain and hasattr(self, '_mvrv'):
+            df['MVRV'] = self._mvrv.reindex(df.index).ffill().fillna(1.5)
+            df['FG']   = self._fg.reindex(df.index).ffill().fillna(50)
+        else:
+            df['MVRV'] = 1.5   # neutral — on-chain disabled
+            df['FG']   = 50
 
         # Realized volatility (20-day, annualised) for vol targeting
         df['Daily_Ret']    = df['Close'].pct_change()
@@ -331,6 +404,22 @@ class AggressiveHybridV6:
         if self.enable_bb_signal and row['BB_PCT'] < 0.25 and row['Close'] > prev['Close']:
             signals.append('bb_lower_bounce');    mr_strength += 0.25
 
+        # V10: On-chain signals (MVRV + Fear & Greed)
+        if self.use_onchain:
+            mvrv = row['MVRV']
+            fg   = row['FG']
+            # MVRV below long_thresh = price trading below realized cap = strong buy zone
+            if mvrv < self.mvrv_long_thresh:
+                signals.append('mvrv_undervalued');  mr_strength += 0.40
+            # Extreme Fear = contrarian buy signal
+            if fg < self.fg_fear_thresh:
+                signals.append('fg_extreme_fear');   mr_strength += 0.25
+            # MVRV very high = suppress long entries (block overbought accumulation)
+            if mvrv > self.mvrv_short_thresh:
+                # Reduce long strength when on-chain says overvalued
+                strength   *= 0.60
+                mr_strength *= 0.60
+
         # If MR strength exceeds trend strength, classify as MR
         if mr_strength > strength:
             strength = mr_strength
@@ -394,6 +483,19 @@ class AggressiveHybridV6:
         if prev['Close'] > prev['EMA20'] and row['Close'] < row['EMA20']:
             signals.append('ma_breakdown');       mr_strength += 0.25
 
+        # V10: on-chain short boosts
+        if self.use_onchain:
+            mvrv = row['MVRV']
+            fg   = row['FG']
+            # MVRV above short_thresh = on-chain says overvalued — boost shorts
+            if mvrv > self.mvrv_short_thresh:
+                signals.append('mvrv_overvalued'); strength += 0.35
+            # Extreme Greed = contrarian short signal
+            if fg > self.fg_greed_thresh:
+                signals.append('fg_extreme_greed'); strength += 0.20
+            # NOTE: intentionally no short suppression for low MVRV —
+            # Bitcoin's biggest crashes happen as MVRV falls through the floor
+
         if mr_strength > strength:
             strength = mr_strength
             sig_type = 'mr'
@@ -409,6 +511,11 @@ class AggressiveHybridV6:
     # ------------------------------------------------------------------
     def backtest(self):
         logger.info("Starting V6 10yr-robust backtest (no lookahead)...")
+        # Reset state so backtest() can be called repeatedly on the same instance
+        self.equity        = 100_000
+        self.positions     = []
+        self.closed_trades = []
+        self.equity_curve  = [100_000]
         self.prepare_indicators()
 
         VOL_TARGET    = self.vol_target

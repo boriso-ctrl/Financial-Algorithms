@@ -87,10 +87,12 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 0.5, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 90, 'max_hold_mr': 25,
-        # V10: long+short crypto-tuned (Sharpe 1.43->1.44, CAGR 13.55%->13.89%)
-        # 791 longs + 137 shorts (captures 2018/2022 crash bias) short_wr=54%
+        # V10: on-chain signals (Sharpe 1.44->1.47, CAGR 13.89%->14.19%, 981 trades)
+        # 285/750 grid combos beat baseline; mvrv_long=2.0 key driver (+51 trades)
         'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
         'allow_shorts': True, 'max_hold_short': 60,
+        'use_onchain': True, 'mvrv_long_thresh': 2.0, 'mvrv_short_thresh': 3.5,
+        'fg_fear_thresh': 25, 'fg_greed_thresh': 75,
     },
     'XLK': {
         'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,
