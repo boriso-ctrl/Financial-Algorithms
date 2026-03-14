@@ -60,9 +60,12 @@ def compute_metrics(equity_series: pd.Series, label: str) -> dict:
     years = (equity_series.index[-1] - equity_series.index[0]).days / 365.25
     cagr  = (equity_series.iloc[-1] / equity_series.iloc[0]) ** (1 / years) - 1
     sh    = (rets.mean() / rets.std()) * np.sqrt(252) if rets.std() > 0 else 0
-    down  = rets[rets < 0]
-    ds    = down.std() * np.sqrt(252) if len(down) > 0 else 1e-9
-    so    = (rets.mean() * 252) / ds
+    # RMS semideviation (target=0): matches main strategy's _metrics() formula.
+    # Using std(negative_rets) understates downside by excluding zero-return days
+    # and applying Bessel correction — avoid that inconsistency.
+    downside_sq = np.minimum(rets.values, 0) ** 2
+    ds          = np.sqrt(downside_sq.mean()) * np.sqrt(252)
+    so          = (rets.mean() * 252) / ds if ds > 0 else 0.0
     roll  = equity_series.expanding().max()
     mdd   = ((equity_series - roll) / roll).min() * 100
     final = float(equity_series.iloc[-1])

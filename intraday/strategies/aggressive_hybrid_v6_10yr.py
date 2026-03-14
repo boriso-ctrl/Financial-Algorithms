@@ -380,8 +380,10 @@ class AggressiveHybridV6:
         df['OBV_Slope'] = (_obv - _obv.shift(5)).fillna(0)
 
         # V9: Stochastic RSI_K (0=oversold, 1=overbought)
-        _rsi_min = df['RSI'].rolling(14).min()
-        _rsi_max = df['RSI'].rolling(14).max()
+        # Lookback must match rsi_period — using a different period (e.g. 14) on a
+        # 9-period RSI produces a non-standard StochRSI and misleading oversold thresholds.
+        _rsi_min = df['RSI'].rolling(self.rsi_period).min()
+        _rsi_max = df['RSI'].rolling(self.rsi_period).max()
         df['StochRSI_K'] = ((df['RSI'] - _rsi_min) / (_rsi_max - _rsi_min + 1e-10)).fillna(0.5)
 
         # V9: Bollinger Band %B (0=at lower band, 1=at upper band)
@@ -650,7 +652,6 @@ class AggressiveHybridV6:
         _lt    = self.data['LT_Trend'].to_numpy(dtype=float)
         _ema50 = self.data['EMA50'].to_numpy(dtype=float)
         _ema200= self.data['EMA200'].to_numpy(dtype=float)
-        _ema50s= self.data['EMA50_Slope'].to_numpy(dtype=float)
         _rvol  = self.data['Realized_Vol'].to_numpy(dtype=float)
         _pdi   = self.data['Plus_DI'].to_numpy(dtype=float)
         _mdi   = self.data['Minus_DI'].to_numpy(dtype=float)
@@ -679,7 +680,6 @@ class AggressiveHybridV6:
             lt           = _lt[idx]
             ema50        = _ema50[idx]
             ema200       = _ema200[idx]
-            ema50_slope  = _ema50s[idx]
             realized_vol = _rvol[idx]
             # V9: directional + volume indicators for entry gates
             plus_di_val   = _pdi[idx]

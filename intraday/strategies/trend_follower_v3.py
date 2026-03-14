@@ -108,11 +108,11 @@ class TrendFollowingTrader:
         
         # Volume
         df['Vol_Avg'] = df['Volume'].rolling(20).mean()
-        df['Vol_Ratio'] = df['Volume'] / df['Vol_Avg']
+        df['Vol_Ratio'] = df['Volume'] / (df['Vol_Avg'] + 1e-10)
         
         # VIX
         df['VIX'] = self.vix['Close']
-        df['VIX'] = df['VIX'].fillna(method='ffill').fillna(20)
+        df['VIX'] = df['VIX'].ffill().fillna(20)
         
         self.data = df
     
@@ -343,7 +343,7 @@ class TrendFollowingTrader:
             'return_pct': ret,
             'initial': 100000,
             'final': self.equity,
-            'cagr': (((self.equity/100000)**(1/3))-1)*100,
+            'cagr': (((self.equity/100000)**(1/max(len(self.equity_curve)/252, 0.5)))-1)*100,
             'trades': total,
             'wins': wins,
             'win_rate': (wins / total) * 100 if total > 0 else 0,
