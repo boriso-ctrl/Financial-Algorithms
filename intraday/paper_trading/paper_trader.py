@@ -116,6 +116,25 @@ ASSET_CONFIGS: dict[str, dict] = {
         # V9 additions (Sharpe 2.09→2.16, CAGR 12.4%→12.71%)
         'enable_bb_signal': True, 'partial_qty_pct': 0.67, 'vol_regime_scale': 1.1,
     },
+    # ── BTC-USD weekend strategy (Config G, hold=90) ────────────────────────
+    # Backtest: Combined portfolio CAGR 25.38%, Sharpe 1.632, MaxDD -12.4%, $848k
+    # Entry restricted to Fri+Sat bars only (entry_days={4,5}).
+    # BTC-USD trades 24/7; Alpaca symbol is 'BTC/USD' (slash), yfinance is 'BTC-USD'.
+    'BTC/USD': {
+        'yf_ticker': 'BTC-USD',   # Yahoo Finance ticker for data fetch
+        'is_crypto': True,        # enables fractional qty + GTC TIF for entries
+        'entry_days': {4, 5},     # Friday=4, Saturday=5 only
+        'trail_atr': 4.0, 'vol_target': 0.60, 'tp_mult': 3.0, 'partial_tp_mult': 1.0,
+        'rsi_period': 9, 'rsi_oversold': 33, 'atr_period': 14,
+        'ema_trend': 145, 'adx_thresh': 32, 'min_strength_up': 0.25,
+        'trail_cushion': 0.5, 'post_partial_mult': 2.0,
+        'macd_fast': 8, 'macd_slow': 38,
+        'max_hold_trend': 90, 'max_hold_mr': 25,
+        'enable_bb_signal': True, 'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
+        'allow_shorts': True, 'max_hold_short': 60,
+        'use_onchain': True, 'mvrv_long_thresh': 2.0, 'mvrv_short_thresh': 3.5,
+        'fg_fear_thresh': 25, 'fg_greed_thresh': 75,
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -177,11 +196,18 @@ def fetch_and_prepare(ticker: str, cfg: dict) -> AggressiveHybridV6 | None:
     end   = datetime.now()
     start = end - timedelta(days=390)   # extra buffer for indicator warmup
 
+    # Crypto: Alpaca uses 'BTC/USD' but yfinance requires 'BTC-USD'
+    yf_ticker = cfg.get('yf_ticker', ticker)
+
+    # Strip non-strategy keys before passing to AggressiveHybridV6
+    strategy_cfg = {k: v for k, v in cfg.items()
+                    if k not in ('yf_ticker', 'is_crypto', 'entry_days')}
+
     trader = AggressiveHybridV6(
-        ticker=ticker,
+        ticker=yf_ticker,
         start=start.strftime('%Y-%m-%d'),
         end=end.strftime('%Y-%m-%d'),
-        **cfg,
+        **strategy_cfg,
     )
     if not trader.fetch_data():
         logger.error(f"{ticker}: data fetch failed")
@@ -268,39 +294,45 @@ def round_price(price: float, tick: float = 0.01) -> float:
 def submit_bracket_entry(
     client: TradingClient,
     ticker: str,
-    qty: int,
+    qty: float,
     tp_price: float,
     sl_price: float,
     dry_run: bool,
+    is_crypto: bool = False,
 ) -> str | None:
     """
     Submit a market buy with take-profit limit and stop-loss stop as separate
-    orders in an OCA group (Alpaca doesn't support full bracket for all assets,
-    so we use two orders: a limit TP and a stop SL, managed manually).
+    orders (managed manually — Alpaca doesn't support full bracket for all assets).
+    Crypto orders use GTC time-in-force and support fractional qty.
     Returns the market order ID.
     """
-    logger.info(f"  ENTRY  {ticker}  qty={qty}  TP={tp_price:.2f}  SL={sl_price:.2f}")
+    qty_str = f"{qty:.6f}" if is_crypto else str(int(qty))
+    logger.info(f"  ENTRY  {ticker}  qty={qty_str}  TP={tp_price:.2f}  SL={sl_price:.2f}")
 
     if dry_run:
         logger.info("  [DRY RUN] Order NOT submitted")
         return 'DRY_RUN'
 
+    tif = TimeInForce.GTC if is_crypto else TimeInForce.DAY
+
     try:
         # Market buy
         market_req = MarketOrderRequest(
             symbol=ticker,
-            qty=qty,
+            qty=round(qty, 8) if is_crypto else int(qty),
             side=OrderSide.BUY,
-            time_in_force=TimeInForce.DAY,
+            time_in_force=tif,
         )
         order = client.submit_order(market_req)
         order_id = str(order.id)
         logger.info(f"  Market order submitted: {order_id}")
 
+        fill_qty = round(qty, 8) if is_crypto else int(qty)
+
         # Stop-loss order (GTC)
         sl_req = StopOrderRequest(
             symbol=ticker,
-            qty=qty,
+            qty=fill_qty,
             side=OrderSide.SELL,
             time_in_force=TimeInForce.GTC,
             stop_price=round_price(sl_price),
@@ -311,7 +343,7 @@ def submit_bracket_entry(
         # Take-profit limit order (GTC)
         tp_req = LimitOrderRequest(
             symbol=ticker,
-            qty=qty,
+            qty=fill_qty,
             side=OrderSide.SELL,
             time_in_force=TimeInForce.GTC,
             limit_price=round_price(tp_price),
@@ -485,6 +517,12 @@ def run(dry_run: bool = False):
             sigs     = bar['buy_signals']
             strength = bar['buy_strength']
             sig_type = bar['buy_type']
+            is_crypto = cfg.get('is_crypto', False)
+
+            # entry_days gate: e.g. BTC-USD only enters on Fri/Sat bars
+            bar_date     = pd.Timestamp(bar['date'])
+            entry_days   = cfg.get('entry_days')
+            day_ok       = (entry_days is None) or (bar_date.dayofweek in entry_days)
 
             long_ok = (
                 regime == 'up'
@@ -493,7 +531,12 @@ def run(dry_run: bool = False):
                 and len(sigs) >= 1
                 and strength >= cfg.get('min_strength_up', 0.25)
                 and current_dd < cfg.get('dd_halt', 0.20)
+                and day_ok
             )
+
+            if not day_ok:
+                day_name = bar_date.strftime('%A')
+                print(f"  {ticker}: no entry — entry_days gate ({day_name} not in allowed days)")
 
             if long_ok:
                 risk_amount = calc_risk_amount(
@@ -505,21 +548,29 @@ def run(dry_run: bool = False):
                     adx_thresh=cfg.get('adx_thresh', 25),
                     dd_reduce=cfg.get('dd_reduce', 0.12),
                 )
-                sl_price = close - cfg['trail_atr'] * atr
-                tp_price = close + cfg['tp_mult'] * atr
-                qty      = max(1, int(risk_amount / max(close - sl_price, 0.01)))
+                sl_price  = close - cfg['trail_atr'] * atr
+                tp_price  = close + cfg['tp_mult'] * atr
+                sl_dist   = max(close - sl_price, 0.01)
+                raw_qty   = risk_amount / sl_dist
 
-                # Cap to available cash (safety)
-                max_qty = int((cash * 0.95) / close)
-                qty = min(qty, max_qty)
+                if is_crypto:
+                    # Fractional crypto: round to 6 decimal places, cap by cash
+                    qty = round(raw_qty, 6)
+                    max_qty = (cash * 0.95) / close
+                    qty = round(min(qty, max_qty), 6)
+                else:
+                    qty = max(1, int(raw_qty))
+                    max_qty = int((cash * 0.95) / close)
+                    qty = min(qty, max_qty)
 
                 if qty > 0:
+                    qty_str = f"{qty:.6f}" if is_crypto else str(qty)
                     print(f"  SIGNAL  {ticker}  sigs={sigs}  str={strength:.2f}")
-                    print(f"          qty={qty}  SL={sl_price:.2f}  TP={tp_price:.2f}  "
+                    print(f"          qty={qty_str}  SL={sl_price:.2f}  TP={tp_price:.2f}  "
                           f"risk=${risk_amount:.0f}")
 
                     order_id = submit_bracket_entry(
-                        client, ticker, qty, tp_price, sl_price, dry_run
+                        client, ticker, qty, tp_price, sl_price, dry_run, is_crypto
                     )
                     if order_id:
                         new_state[ticker] = {
@@ -533,7 +584,7 @@ def run(dry_run: bool = False):
                         }
                 else:
                     print(f"  {ticker}: signal fired but qty=0 (insufficient cash)")
-            else:
+            elif not long_ok and day_ok:
                 reason = []
                 if regime != 'up':    reason.append(f"regime={regime}")
                 if vix > 45:          reason.append(f"VIX={vix:.0f}>45")

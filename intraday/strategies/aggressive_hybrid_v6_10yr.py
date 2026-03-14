@@ -96,7 +96,13 @@ class AggressiveHybridV6:
                  # Entry day filter: set of weekday ints (0=Mon … 6=Sun)
                  # None = trade every day; {5,6} = weekends only; {0,1,2,3,4} = weekdays only
                  # Exits always execute regardless of day.
-                 entry_days=None):
+                 entry_days=None,
+                 # Handoff params: if set and a position was opened on a weekend day
+                 # (dayofweek >= 4), on the first weekday bar recompute TP and trail_atr
+                 # using these values. Allows weekend trades to continue with weekday-scale
+                 # exits. Dict with keys: 'trail_atr', 'tp_mult', 'max_hold_trend',
+                 # 'max_hold_mr', 'max_hold_short'. Missing keys fall back to instance vals.
+                 handoff_params=None):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -148,6 +154,7 @@ class AggressiveHybridV6:
         self.sl_tp_tf          = sl_tp_tf
         self._intraday_bars: dict = {}   # date -> [(H, L), ...] for SL/TP sequencing
         self.entry_days        = set(entry_days) if entry_days is not None else None
+        self.handoff_params    = handoff_params  # None or dict of exit params for weekday handoff
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -727,18 +734,20 @@ class AggressiveHybridV6:
                     qty        = int(risk / max(sl - entry, 0.01))
                 if qty > 0:
                     self.positions.append({
-                        'date':          date,
-                        'entry':         entry,
-                        'qty':           qty,
-                        'sl':            sl,
-                        'tp':            tp,
-                        'partial_tp':    partial_tp,
-                        'partial_taken': False,
-                        'trail_atr':     tAtr,
-                        'trail_active':  False,   # V6: delayed trail
-                        'side':          order['side'],
-                        'reason':        order['reason'],
-                        'sig_type':      order['sig_type'],
+                        'date':           date,
+                        'entry':          entry,
+                        'qty':            qty,
+                        'sl':             sl,
+                        'tp':             tp,
+                        'partial_tp':     partial_tp,
+                        'partial_taken':  False,
+                        'trail_atr':      tAtr,
+                        'trail_active':   False,   # V6: delayed trail
+                        'side':           order['side'],
+                        'reason':         order['reason'],
+                        'sig_type':       order['sig_type'],
+                        'entry_dayofweek': date.dayofweek,  # for handoff detection
+                        'handoff_done':   False,
                     })
             pending_entries = []
 
@@ -747,10 +756,35 @@ class AggressiveHybridV6:
                 exit_price  = None
                 exit_reason = ''
                 _is_short   = pos['side'] == -1
-                max_hold    = (self.max_hold_short if _is_short
-                               else (self.max_hold_trend
-                                     if pos.get('sig_type', 'trend') == 'trend'
-                                     else self.max_hold_mr))
+
+                # ── Weekday handoff: recompute exits with GBTC-scale params ──
+                # Fires once on the first weekday bar after a weekend-opened position.
+                if (self.handoff_params
+                        and not pos.get('handoff_done', True)
+                        and date.dayofweek < 5              # it's now a weekday
+                        and pos.get('entry_dayofweek', 0) >= 4):  # opened Fri or later
+                    hp = self.handoff_params
+                    new_trail = hp.get('trail_atr', self.trail_atr)
+                    new_tp    = hp.get('tp_mult',   self.tp_mult)
+                    if pos['side'] == 1:
+                        pos['tp'] = pos['entry'] + new_tp * atr
+                    else:
+                        pos['tp'] = pos['entry'] - new_tp * atr
+                    pos['trail_atr'] = new_trail
+                    # Override max_hold for the rest of this position's life
+                    if _is_short:
+                        pos['max_hold_override'] = hp.get('max_hold_short', self.max_hold_short)
+                    elif pos.get('sig_type', 'trend') == 'trend':
+                        pos['max_hold_override'] = hp.get('max_hold_trend', self.max_hold_trend)
+                    else:
+                        pos['max_hold_override'] = hp.get('max_hold_mr', self.max_hold_mr)
+                    pos['handoff_done'] = True
+
+                max_hold    = pos.get('max_hold_override',
+                              self.max_hold_short if _is_short
+                              else (self.max_hold_trend
+                                    if pos.get('sig_type', 'trend') == 'trend'
+                                    else self.max_hold_mr))
 
                 if pos['side'] == 1:  # Long
                     for bar_h, bar_l in self._get_hl_sequence(date, high, low):
