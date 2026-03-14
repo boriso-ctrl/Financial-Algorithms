@@ -102,7 +102,11 @@ class AggressiveHybridV6:
                  # using these values. Allows weekend trades to continue with weekday-scale
                  # exits. Dict with keys: 'trail_atr', 'tp_mult', 'max_hold_trend',
                  # 'max_hold_mr', 'max_hold_short'. Missing keys fall back to instance vals.
-                 handoff_params=None):
+                 handoff_params=None,
+                 # Allow long entries in 'transition' regime (mixed signals).
+                 # Capped at max_pos=1 and requires min_strength_bear conviction.
+                 # Useful for catching early recoveries from bear markets.
+                 allow_transition_longs=False):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -153,8 +157,9 @@ class AggressiveHybridV6:
         self._signal_emas      = None  # populated by _fetch_signal_emas()
         self.sl_tp_tf          = sl_tp_tf
         self._intraday_bars: dict = {}   # date -> [(H, L), ...] for SL/TP sequencing
-        self.entry_days        = set(entry_days) if entry_days is not None else None
-        self.handoff_params    = handoff_params  # None or dict of exit params for weekday handoff
+        self.entry_days            = set(entry_days) if entry_days is not None else None
+        self.handoff_params        = handoff_params  # None or dict of exit params for weekday handoff
+        self.allow_transition_longs = allow_transition_longs
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -956,6 +961,27 @@ class AggressiveHybridV6:
                         'reason':            ' + '.join(buy_sigs[:2]),
                         'sig_type':          buy_type,
                         'max_pos_at_entry':  max_pos,
+                    })
+
+            # ── TRANSITION LONG entries (optional) ────────────────────
+            # Catch early recoveries: 1 position max, high-conviction MR only
+            elif (self.allow_transition_longs
+                  and trend_regime == 'transition'
+                  and long_vix_ok
+                  and lead_slope_pct > -0.05
+                  and _di_ok and _obv_ok and _vol_ok and _cool_ok
+                  and len(self.positions) == 0):  # only when flat
+                buy_sigs, buy_str, buy_type = self.generate_buy_signals(idx)
+                if len(buy_sigs) >= 1 and buy_str >= self.min_strength_bear:
+                    risk_amount = self.equity * 0.008 * vol_scale  # reduced size in transition
+                    if current_dd >= DD_REDUCE:
+                        risk_amount *= 0.50
+                    pending_entries.append({
+                        'side':              1,
+                        'risk_amount':       risk_amount,
+                        'reason':            'TRANSITION:' + ' + '.join(buy_sigs[:2]),
+                        'sig_type':          buy_type,
+                        'max_pos_at_entry':  1,  # cap at 1 in transition
                     })
 
             # ── SHORT entries — CONFIRMED DOWNTREND ONLY ──────────────

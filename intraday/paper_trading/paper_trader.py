@@ -79,6 +79,9 @@ ASSET_CONFIGS: dict[str, dict] = {
         'trail_cushion': 1.5, 'post_partial_mult': 1.5,
         'macd_fast': 8, 'macd_slow': 38,
         'max_hold_trend': 60, 'max_hold_mr': 25,
+        # Finalize sweep: +transition_longs -> Sh=1.59 So=2.31 CAGR=14.29% DD=19.1% T=1036
+        'allow_transition_longs': True,
+        'vol_regime_scale': 1.1,
     },
     'GBTC': {
         'trail_atr': 4.0, 'vol_target': 0.60, 'tp_mult': 3.0, 'partial_tp_mult': 1.0,
@@ -97,24 +100,30 @@ ASSET_CONFIGS: dict[str, dict] = {
         'signal_ticker': 'BTC-USD', 'signal_ema_period': 180,
     },
     'XLK': {
-        'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 4.5, 'partial_tp_mult': 1.5,
+        'trail_atr': 3.0, 'vol_target': 0.22, 'tp_mult': 5.0, 'partial_tp_mult': 1.5,
         'rsi_period': 14, 'rsi_oversold': 38, 'atr_period': 14,
-        'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.20,
-        'trail_cushion': 1.0, 'post_partial_mult': 2.0,
+        'ema_trend': 80, 'adx_thresh': 22, 'min_strength_up': 0.15,
+        'trail_cushion': 1.0, 'post_partial_mult': 2.5,
         'macd_fast': 8, 'macd_slow': 26,
         'max_hold_trend': 80, 'max_hold_mr': 25,
-        # V9 additions (CAGR 20.0%→20.29%)
+        # Finalize sweep: adx=22 str=0.15 tp=5.0 ppm=2.5 pq=0.33 +transition
+        # -> Sh=1.940 So=3.830 CAGR=23.00% DD=15.3% T=1050 (vs base 1.94/3.22/20.97%)
+        'partial_qty_pct': 0.33,
+        'allow_transition_longs': True,
         'vol_regime_scale': 1.1,
     },
     'NVDA': {
-        'trail_atr': 3.5, 'vol_target': 0.22, 'tp_mult': 3.0, 'partial_tp_mult': 1.5,
+        'trail_atr': 4.0, 'vol_target': 0.28, 'tp_mult': 3.5, 'partial_tp_mult': 1.5,
         'rsi_period': 9, 'rsi_oversold': 38, 'atr_period': 20,
-        'ema_trend': 50, 'adx_thresh': 27, 'min_strength_up': 0.25,
-        'trail_cushion': 2.0, 'post_partial_mult': 2.0,
+        'ema_trend': 30, 'adx_thresh': 27, 'min_strength_up': 0.25,
+        'trail_cushion': 2.0, 'post_partial_mult': 2.5,
         'macd_fast': 12, 'macd_slow': 26,
         'max_hold_trend': 60, 'max_hold_mr': 25,
-        # V9 additions (Sharpe 2.09→2.16, CAGR 12.4%→12.71%)
-        'enable_bb_signal': True, 'partial_qty_pct': 0.67, 'vol_regime_scale': 1.1,
+        # Finalize sweep: vol=0.28 trail=4.0 tp=3.5 ppm=2.5 pq=0.33 ema=30 sr=Y
+        # -> Sh=1.860 So=6.800 CAGR=16.34% DD=4.3% T=729
+        # (vs base Sh=2.13 So=4.72 CAGR=12.74% — trades Sharpe for +28% CAGR & +44% Sortino)
+        'enable_bb_signal': True, 'enable_stoch_rsi': True,
+        'partial_qty_pct': 0.33, 'vol_regime_scale': 1.1,
     },
     # ── BTC-USD weekend strategy (Config G, hold=90) ────────────────────────
     # Backtest: Combined portfolio CAGR 25.38%, Sharpe 1.632, MaxDD -12.4%, $848k
