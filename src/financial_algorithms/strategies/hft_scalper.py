@@ -1,5 +1,5 @@
 """
-High-Frequency Trading scalper strategy optimised for ~1 trade / hour.
+High-Frequency Trading scalper strategy optimized for ~1 trade / hour.
 
 Multi-timeframe approach
 ========================
