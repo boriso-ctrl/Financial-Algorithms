@@ -108,6 +108,10 @@ SPREAD_BPS = {
 KILL_LOOKBACK = 60            # trading days
 KILL_SHARPE   = 1.0           # pause if rolling Sharpe < this
 
+# Telegram notifications (optional — set in .env)
+TELEGRAM_TOKEN  = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT   = os.environ.get("TELEGRAM_CHAT_ID", "")
+
 # Data warmup (longest lookback: 126d pair window + 63d overlay = ~200;
 #  use 300 for safety)
 WARMUP_DAYS = 400             # calendar days to download before today
@@ -497,6 +501,50 @@ def alpaca_get_positions(client) -> dict[str, dict]:
     return positions
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  TELEGRAM NOTIFICATIONS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def send_telegram(message: str) -> bool:
+    """Send a Telegram message. Returns True on success, False otherwise."""
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT:
+        return False
+    import urllib.request
+    import urllib.parse
+    url = (f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
+           f"/sendMessage?chat_id={urllib.parse.quote(TELEGRAM_CHAT)}"
+           f"&parse_mode=HTML&text={urllib.parse.quote(message)}")
+    try:
+        urllib.request.urlopen(url, timeout=10)
+        logger.info("Telegram notification sent.")
+        return True
+    except Exception as e:
+        logger.warning(f"Telegram send failed: {e}")
+        return False
+
+
+def notify_trades(orders: list[dict], sig: dict, equity: float):
+    """Format and send a Telegram message summarizing today's trades."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    lines = [f"<b>v18 Trade Alert</b>  {today}"]
+    lines.append(f"Regime: {sig['regime']}  |  Sharpe: {sig['rolling_sharpe']:.2f}")
+
+    if sig["kill_switch"]:
+        lines.append("<b>KILL SWITCH ACTIVE</b> - flattening all")
+
+    if not orders:
+        lines.append("No orders needed (positions aligned)")
+    else:
+        for o in orders:
+            tag = "OK" if o["order_id"] else "FAIL"
+            lines.append(
+                f"  [{tag}] {o['side']:4s} {o['ticker']:6s}  "
+                f"qty={o['qty']}  ${o['delta_val']:+,.0f}")
+
+    lines.append(f"Equity: ${equity:,.0f}")
+    send_telegram("\n".join(lines))
+
+
 def alpaca_execute_rebalance(client, target_weights: dict[str, float],
                              account_equity: float) -> list[dict]:
     """
@@ -842,6 +890,9 @@ def main():
         state["alpaca_positions"] = {
             t: p["market_value"] for t, p in pos_after.items()
         }
+
+        # ── Send Telegram notification ──
+        notify_trades(orders, sig, acct_after["equity"])
 
     # ── 8. Update state ──
     state["positions"] = new_pos
