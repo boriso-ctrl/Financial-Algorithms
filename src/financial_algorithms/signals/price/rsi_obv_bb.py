@@ -28,10 +28,11 @@ def rsi_obv_bb_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
     mrsi = list(df['MRSI'])
     B = list(df['%B'])
     close = list(df['Close'])
+    trend = list(df['Trend'])
 
     i = 51
     while i < len(df):
-        if df['Trend'].iloc[i] == 'Uptrend':
+        if trend[i] == 'Uptrend':
             if B[i] > 0.5:
                 if rsi[i] >= 50 and mrsi[i] > mrsi[i - 1] and mrsi[i - 1] > mrsi[i - 2]:
                     if (obv[i] - obv[i - 1]) / obv[i - 1] > 5e-3:
@@ -55,7 +56,7 @@ def rsi_obv_bb_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
                     i += 1
             else:
                 i += 1
-        elif df['Trend'].iloc[i] == 'Downtrend':
+        elif trend[i] == 'Downtrend':
             if B[i] < 0.5:
                 if rsi[i] <= 50 and mrsi[i] < mrsi[i - 1] and mrsi[i - 1] < mrsi[i - 2]:
                     if (obv[i] - obv[i - 1]) / obv[i - 1] < -5e-3:

@@ -26,10 +26,11 @@ def vwsma_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
     zcore = list(df['zcore1'])
     vwsma_signal = [0] * len(df)
     close = list(df['Close'])
+    trend = list(df['Trend'])
 
     i = 51
     while i < len(df):
-        if df['Trend'].iloc[i] == 'Downtrend':
+        if trend[i] == 'Downtrend':
             if zcore[i] > 1 and zcore[i - 1] < 1:
                 vwsma_signal[i] = -1
                 count = i + 1
@@ -49,7 +50,7 @@ def vwsma_strategy(df: pd.DataFrame, sl: float) -> pd.DataFrame:
                 i = count
             else:
                 i += 1
-        elif df['Trend'].iloc[i] == 'Uptrend':
+        elif trend[i] == 'Uptrend':
             if zcore[i] < -1.5 and zcore[i - 1] > -1.5:
                 vwsma_signal[i] = 1
                 count = i + 1
