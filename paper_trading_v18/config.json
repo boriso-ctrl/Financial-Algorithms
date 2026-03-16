@@ -1,0 +1,52 @@
+{
+  "pair_configs": [
+    [
+      "XLP",
+      "XLU",
+      63,
+      2.25,
+      0.5
+    ],
+    [
+      "XLP",
+      "XLU",
+      63,
+      2.25,
+      0.75
+    ],
+    [
+      "XLP",
+      "XLU",
+      126,
+      2.25,
+      0.75
+    ],
+    [
+      "XLP",
+      "XLU",
+      63,
+      2.0,
+      0.5
+    ],
+    [
+      "XLP",
+      "XLU",
+      126,
+      1.75,
+      0.5
+    ]
+  ],
+  "pair_notional": 0.06,
+  "zp_weight": 0.85,
+  "ch_weight": 0.15,
+  "vt_target": 0.06,
+  "vt_lookback": 63,
+  "hddc_th1": -0.015,
+  "hddc_th2": -0.04,
+  "hddc_recovery": 0.015,
+  "lev_mult": 3.0,
+  "lev_cost_ann": 0.01,
+  "kill_lookback": 60,
+  "kill_sharpe": 1.0,
+  "frozen_at": "2026-03-15T19:56:11.291908+00:00"
+}

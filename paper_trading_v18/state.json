@@ -1,0 +1,24 @@
+{
+  "positions": {
+    "SPY": 0.222522,
+    "QQQ": 0.519217
+  },
+  "equity": 100000,
+  "history": [],
+  "last_run": "2026-03-15",
+  "regime": "Normal",
+  "rolling_sharpe": -0.7077,
+  "kill_switch": true,
+  "daily_returns": [
+    {
+      "date": "2026-03-15",
+      "sim_equity": 126347.63
+    },
+    {
+      "date": "2026-03-15",
+      "sim_equity": 126347.66
+    }
+  ],
+  "alpaca_equity": 100000.0,
+  "alpaca_positions": {}
+}
