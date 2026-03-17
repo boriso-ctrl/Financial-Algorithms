@@ -17,6 +17,16 @@ from financial_algorithms.strategies.price import (
     all_indicator_combo,
     multi_factor_combo,
 )
+from financial_algorithms.strategies.hft_scalper import HFTScalperStrategy
+
+
+def _hft_scalper_signal(df, **kwargs):
+    """Thin wrapper that returns an HFT scalper signal series."""
+    strat = HFTScalperStrategy(
+        min_buy_score=kwargs.get("min_buy_score", 3.0),
+        max_sell_score=kwargs.get("max_sell_score", -3.0),
+    )
+    return strat.generate_signals(df)
 
 
 class StrategyRegistry:
@@ -104,6 +114,12 @@ class StrategyRegistry:
             ),
             params={"max_signal_abs": 5.0},
             description="Composite of every available price/volume indicator (graded blend)",
+        )
+        self.register(
+            "hft_scalper",
+            func=lambda df, **kwargs: _hft_scalper_signal(df, **kwargs),
+            params={"min_buy_score": 3.0, "max_sell_score": -3.0},
+            description="HFT scalper: 7-indicator multi-timeframe strategy (~1 trade/hour)",
         )
 
     def register(self, name: str, func: Callable, params: Dict[str, Any], description: str = ""):
