@@ -106,7 +106,18 @@ class AggressiveHybridV6:
                  # Allow long entries in 'transition' regime (mixed signals).
                  # Capped at max_pos=1 and requires min_strength_bear conviction.
                  # Useful for catching early recoveries from bear markets.
-                 allow_transition_longs=False):
+                 allow_transition_longs=False,
+                 # V11: alpha signal extensions — each toggleable
+                 enable_williams_r=False,        # Williams %R oscillator for exhaustion
+                 enable_divergence=False,        # RSI/price divergence detection
+                 enable_vwap_zscore=False,       # VWAP z-score mean-reversion
+                 enable_cci_mr=False,            # CCI reversals in ranging markets
+                 enable_momentum_confirm=False,  # multi-lookback momentum confirmation
+                 williams_r_period=14,
+                 vwap_window=20,
+                 vwap_zscore_window=40,
+                 cci_window=20,
+                 momentum_lookbacks=(63, 126, 252)):
         self.ticker = ticker
         self.start  = start
         self.end    = end
@@ -160,6 +171,17 @@ class AggressiveHybridV6:
         self.entry_days            = set(entry_days) if entry_days is not None else None
         self.handoff_params        = handoff_params  # None or dict of exit params for weekday handoff
         self.allow_transition_longs = allow_transition_longs
+        # V11: alpha signal extensions
+        self.enable_williams_r       = enable_williams_r
+        self.enable_divergence       = enable_divergence
+        self.enable_vwap_zscore      = enable_vwap_zscore
+        self.enable_cci_mr           = enable_cci_mr
+        self.enable_momentum_confirm = enable_momentum_confirm
+        self.williams_r_period       = williams_r_period
+        self.vwap_window             = vwap_window
+        self.vwap_zscore_window      = vwap_zscore_window
+        self.cci_window              = cci_window
+        self.momentum_lookbacks      = momentum_lookbacks
         self.data         = None
         self.vix          = None
         self.equity       = 100_000
@@ -448,6 +470,57 @@ class AggressiveHybridV6:
                 (df['EMA50'] - df['EMA50'].shift(3)) / df['EMA50'].shift(3).clip(lower=1e-6) * 100
             ).fillna(0.0)
 
+        # ── V11: Alpha signal extension indicators ────────────────────
+
+        # Williams %R
+        _hh = df['High'].rolling(window=self.williams_r_period).max()
+        _ll = df['Low'].rolling(window=self.williams_r_period).min()
+        df['Williams_R'] = (-100 * (_hh - df['Close']) / (_hh - _ll + 1e-10)).fillna(-50)
+
+        # VWAP Z-score (rolling VWAP, not session-based — works on daily bars)
+        _pv  = df['Close'] * df['Volume']
+        _vs  = df['Volume'].rolling(window=self.vwap_window).sum()
+        df['VWAP'] = (_pv.rolling(window=self.vwap_window).sum() / (_vs + 1e-10)).fillna(df['Close'])
+        _cv  = df['Close'] - df['VWAP']
+        _cv_mean = _cv.rolling(window=self.vwap_zscore_window).mean()
+        _cv_std  = _cv.rolling(window=self.vwap_zscore_window).std()
+        df['VWAP_Zscore'] = ((_cv - _cv_mean) / (_cv_std + 1e-10)).fillna(0)
+
+        # CCI (Commodity Channel Index)
+        _tp = (df['High'] + df['Low'] + df['Close']) / 3
+        _tp_sma = _tp.rolling(window=self.cci_window).mean()
+        _mean_dev = (_tp - _tp_sma).abs().rolling(window=self.cci_window).mean()
+        df['CCI'] = ((_tp - _tp_sma) / (0.015 * _mean_dev + 1e-10)).fillna(0)
+
+        # RSI/Price Divergence (vectorised rolling detection)
+        _cls = df['Close'].values
+        _rsi = df['RSI'].values
+        _n   = len(df)
+        _div_w = 20
+        _bull_div = np.zeros(_n)
+        _bear_div = np.zeros(_n)
+        for i in range(_div_w + 1, _n):
+            p_slice = _cls[i - _div_w:i]   # prior window (exclude current)
+            r_slice = _rsi[i - _div_w:i]
+            # Bullish: price at/near new low vs window, but RSI higher
+            p_min_idx = int(np.argmin(p_slice))
+            if _cls[i] <= p_slice[p_min_idx] * 1.02 and _rsi[i] > r_slice[p_min_idx] + 2:
+                _bull_div[i] = 1
+            # Bearish: price at/near new high vs window, but RSI lower
+            p_max_idx = int(np.argmax(p_slice))
+            if _cls[i] >= p_slice[p_max_idx] * 0.98 and _rsi[i] < r_slice[p_max_idx] - 2:
+                _bear_div[i] = 1
+        df['Bull_Divergence'] = _bull_div
+        df['Bear_Divergence'] = _bear_div
+
+        # Multi-lookback momentum score (avg sign of returns over multiple windows)
+        _mom_cols = []
+        for lb in self.momentum_lookbacks:
+            col = f'Mom_{lb}'
+            df[col] = np.sign(df['Close'].pct_change(lb)).fillna(0)
+            _mom_cols.append(col)
+        df['Mom_Score'] = df[_mom_cols].mean(axis=1)
+
         self.data = df
 
     # ------------------------------------------------------------------
@@ -522,6 +595,24 @@ class AggressiveHybridV6:
         if self.enable_bb_signal and row['BB_PCT'] < 0.25 and row['Close'] > prev['Close']:
             signals.append('bb_lower_bounce');    mr_strength += 0.25
 
+        # ---- V11: Alpha signal extensions (buy side) ----
+
+        # Williams %R oversold bounce: crossed above -80 from below
+        if self.enable_williams_r and prev['Williams_R'] < -80 and row['Williams_R'] > -80:
+            signals.append('williams_r_oversold'); mr_strength += 0.30
+
+        # RSI/Price bullish divergence: price near new low but RSI higher
+        if self.enable_divergence and row['Bull_Divergence'] > 0:
+            signals.append('rsi_bull_divergence'); mr_strength += 0.40
+
+        # VWAP Z-score extreme low: mean-reversion buy
+        if self.enable_vwap_zscore and prev['VWAP_Zscore'] < -1.5 and row['VWAP_Zscore'] > prev['VWAP_Zscore']:
+            signals.append('vwap_zscore_low');     mr_strength += 0.30
+
+        # CCI reversal in ranging market: CCI crossing above -100
+        if self.enable_cci_mr and row['ADX'] < 25 and prev['CCI'] < -100 and row['CCI'] > -100:
+            signals.append('cci_reversal_buy');    mr_strength += 0.25
+
         # V10: On-chain signals (MVRV + Fear & Greed)
         if self.use_onchain:
             mvrv = row['MVRV']
@@ -537,6 +628,10 @@ class AggressiveHybridV6:
                 # Reduce long strength when on-chain says overvalued
                 strength   *= 0.60
                 mr_strength *= 0.60
+
+        # V11: multi-lookback momentum confirmation (boosts trend conviction)
+        if self.enable_momentum_confirm and row['Mom_Score'] > 0.33:
+            strength += 0.15
 
         # If MR strength exceeds trend strength, classify as MR
         if mr_strength > strength:
@@ -601,6 +696,24 @@ class AggressiveHybridV6:
         if prev['Close'] > prev['EMA20'] and row['Close'] < row['EMA20']:
             signals.append('ma_breakdown');       mr_strength += 0.25
 
+        # ---- V11: Alpha signal extensions (sell side) ----
+
+        # Williams %R overbought rollover: crossed below -20 from above
+        if self.enable_williams_r and prev['Williams_R'] > -20 and row['Williams_R'] < -20:
+            signals.append('williams_r_overbought'); mr_strength += 0.30
+
+        # RSI/Price bearish divergence: price near new high but RSI lower
+        if self.enable_divergence and row['Bear_Divergence'] > 0:
+            signals.append('rsi_bear_divergence');   mr_strength += 0.40
+
+        # VWAP Z-score extreme high: mean-reversion short
+        if self.enable_vwap_zscore and prev['VWAP_Zscore'] > 1.5 and row['VWAP_Zscore'] < prev['VWAP_Zscore']:
+            signals.append('vwap_zscore_high');      mr_strength += 0.30
+
+        # CCI reversal in ranging market: CCI crossing below +100
+        if self.enable_cci_mr and row['ADX'] < 25 and prev['CCI'] > 100 and row['CCI'] < 100:
+            signals.append('cci_reversal_sell');      mr_strength += 0.25
+
         # V10: on-chain short boosts
         if self.use_onchain:
             mvrv = row['MVRV']
@@ -613,6 +726,10 @@ class AggressiveHybridV6:
                 signals.append('fg_extreme_greed'); strength += 0.20
             # NOTE: intentionally no short suppression for low MVRV —
             # Bitcoin's biggest crashes happen as MVRV falls through the floor
+
+        # V11: multi-lookback momentum confirmation (boosts short conviction)
+        if self.enable_momentum_confirm and row['Mom_Score'] < -0.33:
+            strength += 0.15
 
         if mr_strength > strength:
             strength = mr_strength
